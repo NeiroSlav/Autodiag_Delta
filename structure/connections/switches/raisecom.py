@@ -18,7 +18,7 @@ class Raisecom(SwitchMixin):
     # диагностика порта, ошибок и аптайма
     def port(self, port: int) -> dict:
         result = {'port': '', 'uptime': '00 days 00:00:00',
-                  'ok': True, 'error': False}
+                  'enabled': True, 'ok': True, 'error': False}
         self.session.push(f'\nsh interface port {port}')
         answer = self.session.read(timeout=2, string='Forward')
 
@@ -28,6 +28,14 @@ class Raisecom(SwitchMixin):
         port_patterns = [  # список для поиска в ответе и статусы
             [r'up\([0-9]+M/[a-z]+\)', True],
             [r'down', False]]
+
+        # is port enable check
+        if self._find(f'[0-9] +disable', answer):
+            result['port'] = 'down'
+            result['enabled'] = 'Disabled'
+            result['ok'] = False
+            return result
+        result['enabled'] = 'Enabled'
 
         # поиск аптайма
         if self._find(r'[0-9]+d[0-9]+h[0-9]+m[0-9]+', answer):
@@ -87,7 +95,7 @@ class Raisecom(SwitchMixin):
 
     # включение/выключение порта
     def set_port(self, port: int, enable: bool):
-        self.session.push('\nconf')
+        self.session.push('\nconfig')
         self.session.push(f'\ninterface port {port}')
 
         if enable:
