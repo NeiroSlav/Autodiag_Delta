@@ -3,7 +3,6 @@ import threading
 import time
 from functools import wraps
 from random import randint
-
 from flask import Flask, jsonify, render_template, redirect, request
 
 static_dir = os.path.abspath('static/')
