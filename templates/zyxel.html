@@ -1,0 +1,52 @@
+{% extends 'index.html' %}
+
+{% block imports %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <div class="js-data"
+        token="{{ token }}"
+        still_active_url="{{ url_for('token_still_active', token='') }}"
+
+        get_port_url="{{ url_for('zyxel_get_port', token='') }}"
+        disable_port_url="{{ url_for('zyxel_disable_port', token='') }}"
+        get_cable_url="{{ url_for('zyxel_get_cable', token='') }}"
+
+        get_mac_url="{{ url_for('zyxel_get_mac', token='') }}"
+        get_open_port_url="{{ url_for('get_open_port', token='') }}"
+
+        get_log_url="{{ url_for('zyxel_get_log', token='') }}"
+
+    ></div>
+
+    <script src="{{ url_for('static', filename='js/zyxel/ajax_init.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/zyxel/leftrow.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/zyxel/midrow.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/zyxel/rightrow.js') }}"></script>
+
+{% endblock %}
+
+{% block leftrow %}
+    <div class="diagLongBlock" style="margin: 0 auto 0 auto;">
+        <div class="diagMiniBlock" id="portInfo"></div>
+        <div class="diagMiniBlock" id="cableInfo"></div>
+        <div class="diagMiniBlock"></div>
+    </div>
+{% endblock %}
+
+{% block midrow %}
+    <div class="diagLongBlock" style="margin: 0 auto 0 0;">
+        <div class="diagMiniBlock" id="macInfo"></div>
+        <div class="diagMiniBlock" id="openPortInfo"></div>
+        <div class="diagMiniBlock"></div>
+    </div>
+{% endblock %}
+
+{% block rightrow %}
+    <div class="diagLongBlock" style="margin: 0 auto 0 0;">
+        <div class="diagMiniBlock" id="logInfo">
+            <button class="diagButton" style="width: 236px;">Проверяю записи лога...</button>
+            <div class="diagLog"></div>
+        </div>
+        <div class="diagMiniBlock"></div>
+    </div>
+{% endblock %}
