@@ -1,4 +1,4 @@
-from .page_main import *
+from .page_assembler import *
 
 
 # обработчик для диагностики порта

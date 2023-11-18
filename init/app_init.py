@@ -1,3 +1,4 @@
+import copy
 import os
 import threading
 import time
@@ -69,6 +70,11 @@ def token_del(token: str):
             del _token_dict[token]
         except Exception as ex:
             print(f'ошибка удаления токена {token}: \n{ex}')
+
+
+# копирование данных словаря токенов
+def token_dict_image_get() -> dict:
+    return _token_dict
 
 
 #

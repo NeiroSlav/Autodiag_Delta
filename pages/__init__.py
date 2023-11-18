@@ -1,5 +1,7 @@
-from .page_dlink import *
-from .page_zyxel import *
-from .page_bdcom import *
-from .page_foxgate import *
-from .page_raisecom import *
+from .api_dlink import *
+from .api_zyxel import *
+from .api_bdcom import *
+from .api_foxgate import *
+from .api_raisecom import *
+
+from .status_page import *
