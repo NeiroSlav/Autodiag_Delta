@@ -52,7 +52,7 @@ def switch_page(switch_type, token):
         if gcdb_data.pon_port:
             switch_info += f' : {gcdb_data.pon_port}'
 
-        return render_template(  # рендерит с ним шаблон
+        return render_template(  # рендер страницы диагностики
             f'{switch_type}.html',
             topinfo=f'Вы на {switch_type.title()} {switch_info}',
             title=f'{switch_type.title()[0]} {switch_info}',
