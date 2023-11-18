@@ -55,10 +55,7 @@ def token_set(token: str, name: str, obj):
 
 # получение объекта из токена
 def token_get(token: str, name: str):
-    try:
-        return _token_dict[token][name]
-    except KeyError:
-        return False
+    return _token_dict[token][name]
 
 
 # удаление токена

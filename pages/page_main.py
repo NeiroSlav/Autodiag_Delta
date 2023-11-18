@@ -62,7 +62,7 @@ def switch_page(switch_type, token):
         return render_error('Сессия Telnet разорвана')
 
     except KeyError:  # если не нашлось токена
-        return render_error('Токен удалён')
+        return render_error(f'Токен {token} удалён, ')
 
-    # except Exception as ex:
-    #     return render_error(ex)
+    except Exception as ex:
+        return render_error(ex)
