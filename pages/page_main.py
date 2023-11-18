@@ -44,9 +44,8 @@ def switch_page(switch_type, token):
         if telnet.switch_type != switch_type:  # редирект, если другой свитч
             return redirect(f'/{telnet.switch_type}/{token}')
 
-        if not token_get(token, 'switch'):
-            switch = switch_class[switch_type](telnet)  # сохраняет в токен объект свитча
-            token_set(token, 'switch', switch)
+        switch = switch_class[switch_type](telnet)  # сохраняет в токен объект свитча
+        token_set(token, 'switch', switch)
 
         switch_info = f'{gcdb_data.switch_ip} : {gcdb_data.switch_port}'
         if gcdb_data.pon_port:
@@ -62,7 +61,7 @@ def switch_page(switch_type, token):
         return render_error('Сессия Telnet разорвана')
 
     except KeyError:  # если не нашлось токена
-        return render_error(f'Токен {token} удалён, ')
+        return render_error(f'Токен {token} удалён')
 
     except Exception as ex:
         return render_error(ex)
