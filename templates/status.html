@@ -1,25 +1,26 @@
 {% extends 'index.html' %}
 
 {% block leftrow %}
-    <div class="diagLongBlock" style="margin: 0 0 0 auto;">
+    <div class="diagLongBlock" style="margin: 0 0 0 auto; width: 160px;">
         {% for t in context.tokens %}
-            <div class="diagMiniBlock" style="font-size:20px;">токен: {{t}}</div>
+            <div class="diagMiniBlock" style="font-size:20px; margin-bottom:16px;">token: {{t}}</div>
         {% endfor %}
+        <div class="diagMiniBlock" style="margin-bottom:32px;"></div>
     </div>
 {% endblock %}
 
 {% block midrow %}
-    <div class="diagLongBlock" style="margin: 0 0 0 0;">
+    <div class="diagLongBlock" style="margin: 0 0 0 0; width: 130px;">
         {% for t in context.timeouts %}
-            <div class="diagMiniBlock" style="font-size:20px;">время: {{t}}</div>
+            <div class="diagMiniBlock" style="font-size:20px; margin-bottom:16px;">time: {{t}}</div>
         {% endfor %}
     </div>
 {% endblock %}
 
 {% block rightrow %}
-    <div class="diagLongBlock" style="margin: 0 auto 0 0;">
+    <div class="diagLongBlock" style="margin: 0 auto 0 0; width: 130px;">
         {% for u in context.usernames %}
-            <div class="diagMiniBlock" style="font-size:20px;">юзер: {{u}}</div>
+            <div class="diagMiniBlock" style="font-size:20px; margin-bottom:16px;">user: {{u}}</div>
         {% endfor %}
     </div>
 {% endblock %}

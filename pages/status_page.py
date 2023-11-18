@@ -1,7 +1,7 @@
 from init import *
 
 
-@app.route('/admin')
+@app.route('/status')
 def status_page():
     token_dict = token_dict_image_get()
     tokens = []
@@ -16,11 +16,10 @@ def status_page():
     context = {
         'tokens': tokens,
         'timeouts': timeouts,
-        'usernames': usernames,
-    }
+        'usernames': usernames}
 
     return render_template(
         'status.html',
         context=context,
-        title='Активные токены:',
+        title='Статус',
         topinfo='Активные токены:')
