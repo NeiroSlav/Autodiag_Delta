@@ -10,7 +10,9 @@ def status_page():
 
     for token, data in token_dict.items():
         tokens.append(token)
-        timeouts.append(int(time.time()) - data['_last_active'])
+        timeout = int(time.time()) - data['_last_active']
+        timeout = "%02d:%02d" % ((timeout // 60), (timeout % 60))
+        timeouts.append(timeout)
         usernames.append(data['gcdb_data'].username)
 
     context = {
