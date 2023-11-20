@@ -237,22 +237,16 @@ class Dlink(SwitchMixin):
 
     # порт в loose/strict
     def set_bind(self, port: int, loose: bool) -> dict:
-        is_loose = self.loose(port)
-        if is_loose['error']:
-            return is_loose
         command = 'config address_binding ip_mac ports ' + str(port)
 
-        if loose and not is_loose['ok']:  # если просят луз, и порт в стрикте
+        if loose:  # если просят луз
             self.session.push(command + ' arp_inspection loose \n', read=True)
             self.session.push(command + ' state enable loose \n', read=True)
             return {'ok': True, 'error': False}
 
-        elif not loose and is_loose['ok']:  # если просят в стрикт, и порт в лузе
+        else:  # если просят в стрикт
             self.session.push(command + ' arp_inspection strict \n', read=True)
             self.session.push(command + ' state enable strict \n', read=True)
-            return {'ok': True, 'error': False}
-        else:  # если порт уже в состоянии, которое просят
-            return {'ok': False, 'error': False}
 
     # очистить ошибки
     def clear(self, port: int):

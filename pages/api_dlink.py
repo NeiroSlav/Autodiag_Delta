@@ -59,6 +59,13 @@ def dlink_get_bind(token, **t_data):
 @use_token
 def dlink_get_mac(token, **t_data):
     switch, port = t_data['switch'], t_data['gcdb_data'].switch_port
+
+    if token_get(token, 'first_time_flag'):
+        if not switch.loose(port)['ok']:
+            switch.set_bind(port, loose=True)
+            token_changes(token, 'set_bind_loose')
+            token_set(token, 'first_time_flag', False)
+
     result = switch.mac(port)
     result['loose'] = switch.loose(port)
     return result

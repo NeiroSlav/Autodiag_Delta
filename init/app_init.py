@@ -40,6 +40,8 @@ def token_init():
     _token_dict[token] = {  # начальные значения:
         '_busy_query': [],  # очередь занятости токена,
         '_last_active': int(time.time()),  # время последней активности
+        '_changes': [],
+        'first_time_flag': True,
     }
     print(int(time.time()), token)
     return token
@@ -60,9 +62,29 @@ def token_get(token: str, name: str):
     return _token_dict[token][name]
 
 
+# изменение в списке токена
+def token_changes(token: str, change: str, remove: bool = False):
+    if remove and (change in _token_dict[token]['_changes']):
+        _token_dict[token]['_changes'].remove(change)
+    elif not remove:
+        _token_dict[token]['_changes'].append(change)
+
+
 # удаление токена
 def token_del(token: str):
     if token_exists(token):
+
+        _changes = _token_dict[token]['_changes']
+        gcdb_data = _token_dict[token]['gcdb_data']
+        if _changes:
+            switch = _token_dict[token]['switch']
+            if 'set_port_down' in _changes:
+                switch.set_port(gcdb_data.switch_port, True)
+                print('PORT RAISED')
+            if 'set_bind_loose' in _changes:
+                switch.set_bind(gcdb_data.switch_port, loose=False)
+                print('return strict')
+
         try:
             telnet = _token_dict[token]['telnet']
             telnet.close()
@@ -131,7 +153,7 @@ def token_still_active(token):
 
 # раз в минуту проверяет активность токенов, удерживает telnet
 def token_watch_activity():
-    print(' # Token watcher started', end='\n')
+    print(' # Token watcher started\n')
 
     while True:
         current_time = int(time.time())
