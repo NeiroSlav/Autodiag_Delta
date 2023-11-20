@@ -21,6 +21,18 @@ function wait_div(id, text) {
 }}}
 
 
+function replace_div(responce, divId, func) {
+    // console.log(responce);
+    var oldDiv = document.getElementById(divId);  // Достаём старый div
+    var newDiv = document.createElement("div");  // Создаём новый div
+    newDiv.setAttribute("id", divId);
+    newDiv.setAttribute("class", "diagMiniBlock");
+    // console.log(newDiv);
+    newDiv.innerHTML = func(responce);  // Дёргаем переданную функцию
+    oldDiv.parentNode.replaceChild(newDiv, oldDiv);  // Заменяем старый div новым
+}
+
+
 // принимает на вход юрл, название блока, и функцию, выполняет запрос
 function ajax_div(url, divId, func) {
     $.ajax({
@@ -30,23 +42,9 @@ function ajax_div(url, divId, func) {
         data: {
         },
         success: function(response){
-            console.log(response);
-            var oldDiv = document.getElementById(divId);  // Достаём старый div
-            var newDiv = document.createElement("div");  // Создаём новый div
-            newDiv.setAttribute("id", divId);
-            newDiv.setAttribute("class", "diagMiniBlock");
-            console.log(newDiv)
-            newDiv.innerHTML = func(response);  // Дёргаем переданную функцию
-            oldDiv.parentNode.replaceChild(newDiv, oldDiv);  // Заменяем старый div новым
+            replace_div(response, divId, func);
         },
         error: function(error){
-            console.log(error);
-            var oldDiv = document.getElementById(divId);  // Достаём старый div
-            var newDiv = document.createElement("div");  // Создаём новый div
-            newDiv.setAttribute("id", divId);
-            newDiv.setAttribute("class", "diagMiniBlock");
-            console.log(newDiv)
-            newDiv.innerHTML = func({'error': true});  // Дёргаем переданную функцию
-            oldDiv.parentNode.replaceChild(newDiv, oldDiv);  // Заменяем старый div новым
+            replace_div(error, divId, func);
         }
 });}

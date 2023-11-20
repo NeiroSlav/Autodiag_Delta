@@ -14,6 +14,7 @@ function get_port_business(response) {
     b2['style'] = 'width: 176px; margin-left: 3px;'
     b3['style'] = 'width: 116px; margin-left: 60px;'
     b4['style'] = 'margin-left: 3px;'
+    b2['onclick'] = b3['onclick'] = "copyDiag('port')"
 
     b4['color'] = 'Blue'
     if (response.error) {
@@ -21,6 +22,16 @@ function get_port_business(response) {
         b2['text']= b3['text'] = 'ошибка'
         b4['text'] = '-'
     } else {
+
+        var diagData = '! Порт с проблемой:\n'
+        if (response.ok) {
+            diagData = '+ Порт в порядке:\n'
+        }
+
+        diagData += gap + response.enabled + '\n' + gap + response.port + '\n';
+        updateDiagDict('port', diagData)
+
+
         b2['text'] = response.port
         b3['text'] = response.enabled
 
@@ -38,10 +49,6 @@ function get_port_business(response) {
             b4['onclick'] = "disable_port('true');"
         }
     }
-
-    console.log(b1)
-    console.log(getB(b1))
-
 
     return getB(b1) + getB(b2) + getB(b3) + getB(b4);
 }
@@ -61,6 +68,8 @@ function get_errors_business(response) {
     var b4 = setB()
     var b5 = setB()
     var b6 = setB()
+    b2['onclick'] = b3['onclick'] = b4['onclick'] = b5['onclick'] = "copyDiag('errors')"
+
 
     b2['style'] = 'width: 116px; margin-left: 3px'
     b3['style'] = b4['style'] = b5['style'] = b6['style'] = 'width: 116px; margin-left: 120px'
@@ -72,6 +81,20 @@ function get_errors_business(response) {
         b2['text'] = b3['text'] = b4['text'] = b5['text'] = 'Ошибка'
         b6['text'] = '-'
     } else {
+
+
+        var diagData = '! Есть ошибки:\n'
+        if (response.ok) {
+            diagData = '+ Ошибок нет :\n'
+        }
+
+        diagData += gap + 'crc      : ' + response.errors.crc + '\n';
+        diagData += gap + 'fragment : ' + response.errors.fragment + '\n';
+        diagData += gap + 'jabber   : ' + response.errors.jabber + '\n';
+        diagData += gap + 'drop     : ' + response.errors.drop + '\n';
+
+        updateDiagDict('errors', diagData)
+
 
         if (response.ok) {
             b1['color'] = 'Green'
@@ -109,6 +132,8 @@ function get_cable_business(response) {
 
     var bn = setB()
     bn['style'] = 'width: 236px'
+    bn['onclick'] = "copyDiag('cable')"
+
 
     if (response.error) {
         b1['color'] = bn['color'] = 'Red'
@@ -116,6 +141,18 @@ function get_cable_business(response) {
         return getB(b1) + getB(bn);
 
     } else {
+
+        var diagData = '! Проблемный кт:\n'
+        if (response.ok) {
+            diagData = '+ Кабель в порядке:\n'
+        }
+
+        for (var n in response.cable) {
+            diagData += gap + response.cable[n] + '\n';
+        }
+        updateDiagDict('cable', diagData)
+
+
         b1['color'] = 'Red'
         if (response.ok) {
             b1['color'] = 'Green'}

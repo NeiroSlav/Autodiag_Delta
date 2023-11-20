@@ -39,7 +39,8 @@ def token_init():
 
     _token_dict[token] = {  # начальные значения:
         '_busy_query': [],  # очередь занятости токена,
-        '_last_active': int(time.time())}  # время последней активности,
+        '_last_active': int(time.time()),  # время последней активности
+    }
     print(int(time.time()), token)
     return token
 

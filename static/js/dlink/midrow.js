@@ -3,18 +3,38 @@ function get_bind_business(response) {
     var b1 = setB()
     b1['text'] = 'Состояние привязки:'
     b1['style'] = 'width: 236px;'
-    b1['onclick'] = 'get_bind();'
     b1['id'] = 'mainButton'
 
     var bn = setB()
     bn['style'] = 'width: 236px; height: 60px;'
+    bn['onclick'] = "copyDiag('bind')"
 
     if (response.error) {
         b1['color'] = bn['color'] = 'Red'
         b1['text'] = bn['text'] = 'ошибка диагностики'
+
         return getB(b1) + getB(bn);
 
     } else {
+
+        bn['onclick'] = "copyDiag('bind')"
+
+        var diagData = '! Привязок нет\n'
+        if (response.ok) {
+            diagData = '+ Привязка есть:\n'
+        }
+        for (var key in response.binding) {
+
+            diagData += gap + key;
+            if (response.binding[key][1]) {
+                diagData += ' Active ' + response.binding[key][0] + '\n';
+            } else {
+                diagData += ' Inctive ' + response.binding[key][0] + '\n';
+            }
+        }
+        updateDiagDict('bind', diagData)
+
+
         b1['color'] = 'Red'
         if (response.ok) {
             b1['color'] = 'Green'}
@@ -30,7 +50,6 @@ function get_bind_business(response) {
                 }
                 bind_text = list[0] + bind_state + '\n' + key
                 bn['text'] = bind_text
-                bn['onclick'] = "saveClip('"+bind_text.replace('\n', ' ')+"');"
                 all_binds = all_binds + getB(bn)
             }
         }
@@ -60,6 +79,24 @@ function get_mac_business(response) {
         return getB(b1) + getB(bn);
 
     } else {
+
+        var diagData = '! Маки не изучены\n'
+        if (response.ok) {
+            diagData = '+ Мак изучился:\n'
+        }
+
+        for (var key in response.mac) {
+            diagData += gap + key;
+
+            if (response.mac[key]) {
+                diagData += ' прописан\n';
+            } else {
+                diagData += ' не прописан\n';
+            }
+        }
+        updateDiagDict('mac', diagData)
+
+
         b1['color'] = 'Red'
         if (response.ok) {
             b1['color'] = 'Green'}
