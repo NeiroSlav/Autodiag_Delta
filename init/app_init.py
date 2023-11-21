@@ -177,10 +177,10 @@ def token_watch_activity():
 
                 else:  # если активность не устарела
                     # не даёт закрыться сессию telnet
-                    print('держу')
                     token_wait_busy(token, 'watcher')
                     t_data['telnet'].push('\n', read=True)
                     token_set_free(token)
+                    print('держу')
 
             # удаление просроченных токенов
             for token in tokens_to_del:
