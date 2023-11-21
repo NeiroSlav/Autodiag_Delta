@@ -37,6 +37,9 @@ function copyDiag(key) {
 
         // строка для копирования
         copyString += diagDict[key] + '\n';
+        let rows = copyString.split('\n');
+        rows = rows.slice(1);
+        copyString = rows.join('\n');
 
     } else {
 
