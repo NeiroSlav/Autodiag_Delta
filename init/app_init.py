@@ -86,13 +86,14 @@ def token_del(token: str):
                 print('return strict')
 
         try:
-            telnet = _token_dict[token]['telnet']
-            telnet.close()
             tolerance = _token_dict[token]['tolerance']
             tolerance.close()
-            del _token_dict[token]
+            telnet = _token_dict[token]['telnet']
+            telnet.close()
         except Exception as ex:
-            print(f'ошибка удаления токена {token}: \n{ex}')
+            print(f'ошибка закрытия сессии {token}: \n{ex}')
+
+        del _token_dict[token]
 
 
 # копирование данных словаря токенов
