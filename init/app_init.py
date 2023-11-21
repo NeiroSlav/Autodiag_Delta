@@ -1,4 +1,4 @@
-import copy
+import gc
 import os
 import threading
 import time
@@ -187,6 +187,7 @@ def token_watch_activity():
                 token_del(token)
 
             print('- ' * 30)
+            gc.collect()
             time.sleep(60)
 
         except Exception as ex:
