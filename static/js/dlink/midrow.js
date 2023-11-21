@@ -4,6 +4,7 @@ function get_bind_business(response) {
     b1['text'] = 'Состояние привязки:'
     b1['style'] = 'width: 236px;'
     b1['id'] = 'mainButton'
+    b1['onclick'] = 'get_bind();'
 
     var bn = setB()
     bn['style'] = 'width: 236px; height: 60px;'

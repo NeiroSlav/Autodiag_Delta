@@ -158,6 +158,7 @@ def token_watch_activity():
 
     while True:
         current_time = int(time.time())
+        tokens_to_del = []
         print('- '*30)
         try:
             for token, t_data in _token_dict.items():
@@ -166,10 +167,9 @@ def token_watch_activity():
                       f'user: {t_data["gcdb_data"].username}', sep='   ', end='   ')
 
                 # если активность старше 5ти минут
-                if time_range > 300:
-                    # удаляет токен
+                if time_range > 100:
+                    tokens_to_del.append(token)
                     print('удаляю')
-                    token_del(token)
 
                 # если токен занят
                 elif t_data['_busy_query']:
@@ -181,6 +181,10 @@ def token_watch_activity():
                     token_wait_busy(token, 'watcher')
                     t_data['telnet'].push('\n', read=True)
                     token_set_free(token)
+
+            # удаление просроченных токенов
+            for token in tokens_to_del:
+                token_del(token)
 
             print('- ' * 30)
             time.sleep(60)
