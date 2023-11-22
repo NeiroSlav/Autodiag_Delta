@@ -109,10 +109,12 @@ def token_wait_busy(token: str, func_name: str):
     func_name += str(time.time())
     _token_dict[token]['_busy_query'].append(func_name)
 
-    print('- '*10, token, _token_dict[token]['_busy_query'], '- '*10, sep='\n')
+    print('- '*10, token, _token_dict[token]['_busy_query'], func_name + ' start', '- '*10, sep='\n')
 
     while _token_dict[token]['_busy_query'][0] != func_name:
         time.sleep(0.1)
+
+    print('- '*10, token, _token_dict[token]['_busy_query'], func_name + ' leave', '- '*10, sep='\n')
 
 
 # освобождение очереди токена
