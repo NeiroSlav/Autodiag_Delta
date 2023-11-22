@@ -33,7 +33,7 @@ class Foxgate(SwitchMixin):
         else:
             return {'error': True}
 
-        # is port enable check
+        # проверка, включен ли порт
         if self._find(f'state: disabled', answer):
             result['port'] = 'down'
             result['enabled'] = 'Disabled'
@@ -47,7 +47,7 @@ class Foxgate(SwitchMixin):
                 uptime = uptime.replace(' hour ', ':').replace(' minute ', ':')
                 if len(uptime) == 2:
                     uptime = '00:' + uptime
-                result['uptime'] = uptime
+                result['uptime'] = uptime.strip()
 
         return result
 

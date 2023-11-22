@@ -16,9 +16,9 @@ function get_port_business(response) {
     b5['style'] = 'width: 176px; margin-left: 60px;'
     b2['onclick'] = b3['onclick'] = b5['onclick'] = "copyDiag('port')"
 
-    b4['style'] = 'margin-left: 3px;'
     var b4 = setB() // кнопка "Выкл"
     b4['color'] = 'Blue'
+    b4['style'] = 'margin-left: 3px;'
     if (response.error) {
         b1['color'] = b2['color'] = b3['color'] = b4['color'] = b5['color'] = 'Red'
         b2['text']= b3['text'] = b4['text']= b5['text'] = 'ошибка'
