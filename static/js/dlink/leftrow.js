@@ -69,11 +69,12 @@ function get_errors_business(response) {
     var b5 = setB()
     b2['onclick'] = b3['onclick'] = b4['onclick'] = b5['onclick'] = "copyDiag('errors')"
     b2['style'] = 'width: 116px; margin-left: 3px'
-    b3['style'] = b4['style'] = b5['style'] = b6['style'] = 'width: 116px; margin-left: 120px'
 
     var b6 = setB()
     b6['color'] = 'Blue'
     b6['onclick'] = 'clear_counter();'
+
+    b3['style'] = b4['style'] = b5['style'] = b6['style'] = 'width: 116px; margin-left: 120px'
 
     if (response.error) {
         b1['color'] = b2['color'] = b3['color'] = b4['color'] = b5['color'] = 'Red'
