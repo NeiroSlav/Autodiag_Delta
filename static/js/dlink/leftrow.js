@@ -88,10 +88,10 @@ function get_errors_business(response) {
             diagData = '+ Ошибок нет :\n'
         }
 
-        diagData += gap + 'crc      : ' + response.errors.crc + '\n';
-        diagData += gap + 'fragment : ' + response.errors.fragment + '\n';
-        diagData += gap + 'jabber   : ' + response.errors.jabber + '\n';
-        diagData += gap + 'drop     : ' + response.errors.drop + '\n';
+        diagData += gap + 'crc  : ' + response.errors.crc + '\n';
+        diagData += gap + 'frag : ' + response.errors.fragment + '\n';
+        diagData += gap + 'jab  : ' + response.errors.jabber + '\n';
+        diagData += gap + 'drop : ' + response.errors.drop + '\n';
 
         updateDiagDict('errors', diagData)
 

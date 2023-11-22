@@ -10,6 +10,7 @@ function get_port_business(response) {
     var b3 = setB() // кнопка "Enabled"
     var b4 = setB() // кнопка "Выкл"
     var b5 = setB() // кнопка "Аптайм"
+    b2['onclick'] = b3['onclick'] = b5['onclick'] = "copyDiag('port')"
 
 
     b2['style'] = 'width: 176px; margin-left: 3px;'
@@ -24,6 +25,17 @@ function get_port_business(response) {
         b2['text']= b3['text'] = b4['text']= b5['text'] = 'ошибка'
         b4['text'] = '-'
     } else {
+
+        var diagData = '! Порт с проблемой:\n'
+        if (response.ok) {
+            diagData = '+ Порт в порядке:\n'
+        }
+
+        diagData += gap + response.enabled + '\n' + gap + response.port + '\n';
+        diagData += gap + response.uptime + '\n';
+        updateDiagDict('port', diagData)
+
+
         b2['text'] = response.port
         console.log(response.enabled)
         b3['text'] = response.enabled

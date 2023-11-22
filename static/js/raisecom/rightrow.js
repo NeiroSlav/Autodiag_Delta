@@ -13,6 +13,8 @@ function get_errors_business(response) {
     var b3 = setB()
     var b4 = setB()
     var b5 = setB()
+    b2['onclick'] = b3['onclick'] = b4['onclick'] = b5['onclick'] = "copyDiag('errors')"
+
 
     b2['style'] = 'width: 116px; margin-left: 3px'
     b3['style'] = b4['style'] = b5['style'] = 'width: 116px; margin-left: 120px'
@@ -21,6 +23,19 @@ function get_errors_business(response) {
         b1['color'] = b2['color'] = b3['color'] = b4['color'] = b5['color'] = 'Red'
         b2['text'] = b3['text'] = b4['text'] = b5['text'] = 'Ошибка'
     } else {
+
+        var diagData = '! Есть ошибки:\n'
+        if (response.ok) {
+            diagData = '+ Ошибок нет :\n'
+        }
+
+        diagData += gap + 'crc  : ' + response.errors.crc + '\n';
+        diagData += gap + 'frag : ' + response.errors.fragment + '\n';
+        diagData += gap + 'jab  : ' + response.errors.jabber + '\n';
+        diagData += gap + 'drop : ' + response.errors.drop + '\n';
+
+        updateDiagDict('errors', diagData)
+
 
         if (response.ok) {
             b1['color'] = 'Green'
