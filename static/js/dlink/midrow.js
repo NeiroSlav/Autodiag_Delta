@@ -30,7 +30,7 @@ function get_bind_business(response) {
             if (response.binding[key][1]) {
                 diagData += ' Active ' + response.binding[key][0] + '\n';
             } else {
-                diagData += ' Inctive ' + response.binding[key][0] + '\n';
+                diagData += ' Inactive ' + response.binding[key][0] + '\n';
             }
         }
         updateDiagDict('bind', diagData)
