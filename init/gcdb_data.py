@@ -17,13 +17,15 @@ class GcdbData:
         if not self.abon_ip:
             self.abon_ip = request.args.get('local_ip')
 
-        self.abon_mac = request.args.get('abon_mac')
-        self.stb1_mac = request.args.get('stb1_mac')
-        self.stb2_mac = request.args.get('stb2_mac')
-        self.stb3_mac = request.args.get('stb3_mac')
-        self.stb4_mac = request.args.get('stb4_mac')
-        self.stb5_mac = request.args.get('stb5_mac')
-        self.stb6_mac = request.args.get('stb6_mac')
+        self.mac_list = [
+            request.args.get('abon_mac'),
+            request.args.get('stb1_mac'),
+            request.args.get('stb2_mac'),
+            request.args.get('stb3_mac'),
+            request.args.get('stb4_mac'),
+            request.args.get('stb5_mac'),
+            request.args.get('stb6_mac'),
+        ]
 
         if not (self.username and self.switch_ip and self.switch_port):
             raise DiagError('Неполный запрос')

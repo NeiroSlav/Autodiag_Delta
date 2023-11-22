@@ -34,8 +34,9 @@ def zyxel_get_cable(token, **t_data):
 @app.route("/zyxel/get_mac/<token>")
 @use_token
 def zyxel_get_mac(token, **t_data):
-    switch, port = t_data['switch'], t_data['gcdb_data'].switch_port
-    result = switch.mac(port)
+    switch, gcdb_data = t_data['switch'], t_data['gcdb_data']
+    port, mac_list = gcdb_data.switch_port, gcdb_data.mac_list
+    result = switch.mac(port, mac_list)
     return result
 
 

@@ -26,6 +26,7 @@ def foxgate_disable_port(token, **t_data):
 @app.route("/foxgate/get_mac/<token>")
 @use_token
 def foxgate_get_mac(token, **t_data):
-    switch, port = t_data['switch'], t_data['gcdb_data'].switch_port
-    result = switch.mac(port)
+    switch, gcdb_data = t_data['switch'], t_data['gcdb_data']
+    port, mac_list = gcdb_data.switch_port, gcdb_data.mac_list
+    result = switch.mac(port, mac_list)
     return result

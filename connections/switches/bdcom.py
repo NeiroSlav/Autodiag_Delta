@@ -49,7 +49,7 @@ class Bdcom(SwitchMixin):
         return result
 
     # поиск мака
-    def mac(self, port: int, pon: int) -> dict:
+    def mac(self, port: int, pon: int, macs: list = []) -> dict:
         result = {'mac': {}, 'ok': False, 'error': False}
         command = f'show mac address-table interface ePON 0/{port}:{pon}\n'
 
@@ -68,7 +68,7 @@ class Bdcom(SwitchMixin):
         # перебор списка маков
         for mac in self._finded:
             mac = self._fix_mac(mac)
-            result['mac'][mac] = (mac == 'ТУТ БУДЕТ АБОНЕНТСКИЙ МАК')
+            result['mac'][mac] = (mac in macs)
             result['ok'] = True
 
         return result

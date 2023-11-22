@@ -54,7 +54,7 @@ class Zyxel(SwitchMixin):
                 return result
 
     # поиск мака
-    def mac(self, port: int) -> dict:
+    def mac(self, port: int, macs: list = []) -> dict:
         result = {'mac': {}, 'ok': False, 'error': False}
         self.session.read()
         self.session.push(f'\nsh mac address-table port {port}')
@@ -68,7 +68,7 @@ class Zyxel(SwitchMixin):
         mac_list = self._findall(self._mac_pattern, answer)
         for mac in mac_list:
             mac = self._fix_mac(mac)
-            result['mac'][mac] = (mac == 'ТУТ БУДЕТ АБОНЕНТСКИЙ МАК')
+            result['mac'][mac] = (mac in macs)
             result['ok'] = True
 
         return result

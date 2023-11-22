@@ -18,7 +18,8 @@ def bdcom_get_mac(token, **t_data):
     switch = t_data['switch']
     port = t_data['gcdb_data'].switch_port
     pon = t_data['gcdb_data'].pon_port
-    return switch.mac(port, pon)
+    mac_list = t_data['gcdb_data'].mac_list
+    return switch.mac(port, pon, mac_list)
 
 
 # обработчик для проверки сигнала

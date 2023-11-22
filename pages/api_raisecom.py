@@ -34,6 +34,7 @@ def raisecom_get_errors(token, **t_data):
 @app.route("/raisecom/get_mac/<token>")
 @use_token
 def raisecom_get_mac(token, **t_data):
-    switch, port = t_data['switch'], t_data['gcdb_data'].switch_port
-    result = switch.mac(port)
+    switch, gcdb_data = t_data['switch'], t_data['gcdb_data']
+    port, mac_list = gcdb_data.switch_port, gcdb_data.mac_list
+    result = switch.mac(port, mac_list)
     return result

@@ -85,7 +85,7 @@ class Dlink(SwitchMixin):
         return result
 
     # поиск мака на порту
-    def mac(self, port: int) -> dict:
+    def mac(self, port: int, macs: list = []) -> dict:
         result = {'mac': {}, 'ok': True, 'error': False}
         self.session.read()
         self.session.push(f'\nshow fdb port {port}')
@@ -100,7 +100,7 @@ class Dlink(SwitchMixin):
 
         for mac in mac_list:
             mac = self._fix_mac(mac)
-            result['mac'][mac] = (mac == 'ТУТ БУДЕТ АБОНЕНТСКИЙ МАК')
+            result['mac'][mac] = (mac in macs)
         return result
 
     # поиск ошибок

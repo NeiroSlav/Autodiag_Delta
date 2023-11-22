@@ -52,7 +52,7 @@ class Foxgate(SwitchMixin):
         return result
 
     # поиск мака
-    def mac(self, port: int) -> dict:
+    def mac(self, port: int, macs: list = []) -> dict:
         result = {'mac': {}, 'ok': True, 'error': False}
         self.session.read()
         self.session.push(f'sh mac-address-table interface ethernet 0/0/{port}\n')
@@ -62,7 +62,7 @@ class Foxgate(SwitchMixin):
             mac_list = self._finded  # перебор списка маков
             for i, mac in enumerate(mac_list):
                 mac_list[i] = self._fix_mac(mac)
-                result['mac'][mac] = (mac == 'ТУТ БУДЕТ АБОНЕНТСКИЙ МАК')
+                result['mac'][mac] = (mac in macs)
             return result
 
         # если таблица маков пустая
