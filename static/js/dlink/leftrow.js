@@ -9,14 +9,15 @@ function get_port_business(response) {
 
     var b2 = setB()
     var b3 = setB()
-    var b4 = setB()
 
     b2['style'] = 'width: 176px; margin-left: 3px;'
     b3['style'] = 'width: 116px; margin-left: 60px;'
-    b4['style'] = 'margin-left: 3px;'
     b2['onclick'] = b3['onclick'] = "copyDiag('port')"
 
+    var b4 = setB()
+    b4['style'] = 'margin-left: 3px;'
     b4['color'] = 'Blue'
+
     if (response.error) {
         b1['color'] = b2['color'] = b3['color'] = 'Red'
         b2['text']= b3['text'] = 'ошибка'
@@ -62,17 +63,15 @@ function get_errors_business(response) {
     b1['onclick'] = 'get_errors();'
     b1['id'] = 'mainButton'
 
-
     var b2 = setB()
     var b3 = setB()
     var b4 = setB()
     var b5 = setB()
-    var b6 = setB()
     b2['onclick'] = b3['onclick'] = b4['onclick'] = b5['onclick'] = "copyDiag('errors')"
-
-
     b2['style'] = 'width: 116px; margin-left: 3px'
     b3['style'] = b4['style'] = b5['style'] = b6['style'] = 'width: 116px; margin-left: 120px'
+
+    var b6 = setB()
     b6['color'] = 'Blue'
     b6['onclick'] = 'clear_counter();'
 

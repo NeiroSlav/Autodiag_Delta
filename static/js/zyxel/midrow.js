@@ -16,6 +16,25 @@ function get_mac_business(response) {
         return getB(b1) + getB(bn);
 
     } else {
+
+
+        var diagData = '! Маки не изучены\n'
+        if (response.ok) {
+            diagData = '+ Мак изучился:\n'
+        }
+
+        for (var key in response.mac) {
+            diagData += gap + key;
+
+            if (response.mac[key]) {
+                diagData += ' прописан\n';
+            } else {
+                diagData += ' не прописан\n';
+            }
+        }
+        updateDiagDict('mac', diagData)
+
+
         b1['color'] = 'Red'
         if (response.ok) {
             b1['color'] = 'Green'}
