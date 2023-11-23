@@ -40,12 +40,12 @@ def memory_watch_stats():
         command = 'sum'
 
         print(command)
+        print(' =' * 20)
+
         # try:
         #     arg = int(command.split()[1])
         # except:
         #     arg = 10
-
-        print(' =' * 20)
 
         # if 'top' in command:
         #     print(f'[ top {arg} ]')
