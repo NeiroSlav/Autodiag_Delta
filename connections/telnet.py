@@ -18,18 +18,18 @@ class Telnet:
         self.password = gcdb_data.switch_password
         self._connect(self.switch_ip)
         if not self.switch_type:
-            print(f'{self.switch_ip} лежит')
+            # print(f'{self.switch_ip} лежит')
             return
 
-        print(f'Зашёл на {self.switch_type} {self.switch_ip}')
+        # print(f'Зашёл на {self.switch_type} {self.switch_ip}')
 
         if not timing(self._login_funk)():
             self.switch_type = None
             self.close()
-            print(f'{self.switch_ip} завис')
+            # print(f'{self.switch_ip} завис')
             return
 
-        print(f'Логин на {self.switch_type} {self.switch_ip}')
+        # print(f'Логин на {self.switch_type} {self.switch_ip}')
 
     # отправка команды через канал
     def push(self, command: str, read: bool = False, timeout: float = 0) -> str:
@@ -84,9 +84,10 @@ class Telnet:
     def close(self):
         try:
             self._channel.close()
-            print(f'Сессия telnet {self.switch_ip} закрыта')
+            # print(f'Сессия telnet {self.switch_ip} закрыта')
         except Exception as ex:
-            print(f'{ex} : ошибка закрытия telnet сессии с {self.switch_ip}')
+            # print(f'{ex} : ошибка закрытия telnet сессии с {self.switch_ip}')
+            pass
 
     # методы логинов для свитчей
 

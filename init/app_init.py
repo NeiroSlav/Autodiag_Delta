@@ -5,6 +5,8 @@ import time
 from functools import wraps
 from random import randint
 from flask import Flask, jsonify, render_template, redirect, request
+import logging
+logging.basicConfig(level=logging.INFO)
 
 static_dir = os.path.abspath('static/')
 template_dir = os.path.abspath('templates/')
@@ -43,7 +45,7 @@ def token_init():
         '_changes': [],
         'first_time_flag': True,
     }
-    print(int(time.time()), token)
+    logging.info(f'{token} token created: {int(time.time())}')
     return token
 
 
@@ -80,10 +82,10 @@ def token_del(token: str):
             switch = _token_dict[token]['switch']
             if 'set_port_down' in _changes:
                 switch.set_port(gcdb_data.switch_port, True)
-                print('PORT RAISED')
+                logging.info('порт автоматически включен')
             if 'set_bind_loose' in _changes:
                 switch.set_bind(gcdb_data.switch_port, loose=False)
-                print('return strict')
+                logging.info('привязка в стрикт автоматически')
 
         try:
             tolerance = _token_dict[token]['tolerance']
@@ -91,7 +93,7 @@ def token_del(token: str):
             telnet = _token_dict[token]['telnet']
             telnet.close()
         except Exception as ex:
-            print(f'ошибка закрытия сессии {token}: \n{ex}')
+            logging.warning(f'ошибка закрытия сессии {token}: \n{ex}')
 
         del _token_dict[token]
 
@@ -106,15 +108,12 @@ def token_dict_image_get() -> dict:
 
 # функция ожидания очереди токена, и её занятия
 def token_wait_busy(token: str, func_name: str):
-    func_name += str(time.time())
-    _token_dict[token]['_busy_query'].append(func_name)
+    func_name += '_' + str(time.time())
 
-    print('- '*10, token, _token_dict[token]['_busy_query'], func_name + ' start', '- '*10, sep='\n')
+    _token_dict[token]['_busy_query'].append(func_name)
 
     while _token_dict[token]['_busy_query'][0] != func_name:
         time.sleep(0.1)
-
-    print('- '*10, token, _token_dict[token]['_busy_query'], func_name + ' leave', '- '*10, sep='\n')
 
 
 # освобождение очереди токена
@@ -130,7 +129,7 @@ def use_token(func):
             return jsonify({'error': True, 'type': 'TokenNotFound'})
 
         token_wait_busy(token, func.__name__)  # ждёт очередь, и занимает
-        print(token, func.__name__)
+        logging.info(f'токен: {token} выполняет {func.__name__}')
         try:
             func_answer = func(
                 token,  # извлекает данные по токену, передаёт в функцию
@@ -153,51 +152,53 @@ def use_token(func):
 @app.route("/still_active/<token>")
 def token_still_active(token):
     if token_exists(token):
-        print(token, 'activity')
+        logging.info(f'{token} activity')
         token_set(token, '_last_active', int(time.time()))
     return {'ok': token_exists(token)}
 
 
 # раз в минуту проверяет активность токенов, удерживает telnet
 def token_watch_activity():
-    print(' # Token watcher started\n')
+    logging.info(' # Token watcher started')
 
     while True:
         current_time = int(time.time())
         tokens_to_del = []
-        print('- '*30)
+
         try:
             for token, t_data in _token_dict.items():
                 time_range = current_time - t_data['_last_active']
-                print('', f'token: {token}', f'time range: {time_range}',
-                      f'user: {t_data["gcdb_data"].username}', sep='   ', end='   ')
+                log_string = (
+                    f'токен: {token}  ' +
+                    f'время: {time_range}  ' +
+                    f'юзер: {t_data["gcdb_data"].username}  ')
 
                 # если активность старше 5ти минут
                 if time_range > 100:
                     tokens_to_del.append(token)
-                    print('удаляю')
+                    log_string += 'удаляю'
 
                 # если токен занят
                 elif t_data['_busy_query']:
-                    print('занят')
+                    log_string += 'занят'
 
-                else:  # если активность не устарела
-                    # не даёт закрыться сессию telnet
+                else:  # не даёт закрыться сессии telnet
                     token_wait_busy(token, 'watcher')
                     t_data['telnet'].push('\n', read=True)
                     token_set_free(token)
-                    print('держу')
+                    log_string += 'держу'
+
+                logging.info(log_string)
 
             # удаление просроченных токенов
             for token in tokens_to_del:
                 token_del(token)
 
-            print('- ' * 30)
             gc.collect()
             time.sleep(60)
 
         except Exception as ex:
-            print(f'\n   ! Ошибка потока слежки за токенами \n   ! {ex}')
+            logging.error(f'Ошибка проверки словаря токенов {ex}')
 
 
 token_thread = threading.Thread(target=token_watch_activity)
