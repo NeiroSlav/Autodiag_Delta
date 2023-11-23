@@ -6,6 +6,7 @@ from functools import wraps
 from random import randint
 from flask import Flask, jsonify, render_template, redirect, request
 import logging
+
 logging.basicConfig(level=logging.INFO)
 
 static_dir = os.path.abspath('static/')
@@ -82,18 +83,20 @@ def token_del(token: str):
             switch = _token_dict[token]['switch']
             if 'set_port_down' in _changes:
                 switch.set_port(gcdb_data.switch_port, True)
-                logging.info('порт автоматически включен')
+                logging.info('порт включен автоматически')
             if 'set_bind_loose' in _changes:
                 switch.set_bind(gcdb_data.switch_port, loose=False)
                 logging.info('привязка в стрикт автоматически')
 
         try:
-            tolerance = _token_dict[token]['tolerance']
-            tolerance.close()
-            telnet = _token_dict[token]['telnet']
-            telnet.close()
+            _token_dict[token]['tolerance'].close()
+            _token_dict[token]['telnet'].close()
         except Exception as ex:
-            logging.warning(f'ошибка закрытия сессии {token}: \n{ex}')
+            logging.warning(f'ошибка закрытия сессиий токена {token}: \n{ex}')
+
+        wipe_list = list(_token_dict[token].keys())
+        for key in wipe_list:
+            del _token_dict[token][key]
 
         del _token_dict[token]
 
@@ -174,7 +177,7 @@ def token_watch_activity():
                     f'юзер: {t_data["gcdb_data"].username}  ')
 
                 # если активность старше 5ти минут
-                if time_range > 100:
+                if time_range > 300:
                     tokens_to_del.append(token)
                     log_string += 'удаляю'
 

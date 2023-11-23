@@ -1,7 +1,10 @@
 import threading
+import time
 import tracemalloc
 import linecache
 from pympler import muppy
+from pympler import summary
+
 
 tracemalloc.start()
 
@@ -32,30 +35,47 @@ def memory_display_top(snapshot, key_type='lineno', limit=10):
 def memory_watch_stats():
     while True:
 
-        command = input()
-        try:
-            arg = int(command.split()[1])
-        except:
-            arg = 1
+        # command = input()
+        time.sleep(10)
+        command = 'sum'
+
+        print(command)
+        # try:
+        #     arg = int(command.split()[1])
+        # except:
+        #     arg = 10
 
         print(' =' * 20)
 
-        if 'top' in command:
-            print(f'[ top {arg} ]')
-            snapshot = tracemalloc.take_snapshot()
-            memory_display_top(snapshot, limit=arg)
+        # if 'top' in command:
+        #     print(f'[ top {arg} ]')
+        #     snapshot = tracemalloc.take_snapshot()
+        #     memory_display_top(snapshot, limit=arg)
 
-        if 'where' in command:
-            print(f'[ where {arg} ]')
+        if 'sum' in command:
             all_objects = muppy.get_objects()
-            tb = tracemalloc.get_object_traceback(muppy.sort(all_objects)[-arg:])
+            sum1 = summary.summarize(all_objects)
+            summary.print_(sum1, limit=7)
 
-            try:
-                print(tb.format())
-            except Exception as ex:
-                print(ex)
+            del all_objects
+            del sum1
+
+        # if 'dif' in command:
+        #     if snapshot1:
+        #         snapshot2 = tracemalloc.take_snapshot()
+        #         top_stats = snapshot2.compare_to(snapshot1, 'lineno')
+        #
+        #         print("[ Top 10 differences ]")
+        #         for stat in top_stats[:arg]:
+        #             print(stat)
+        #         snapshot1 = snapshot2
+        #     else:
+        #         snapshot1 = tracemalloc.take_snapshot()
 
         print(' =' * 20)
 
 
 oom_thread = threading.Thread(target=memory_watch_stats)
+
+if __name__ == '__main__':
+    oom_thread.start()
