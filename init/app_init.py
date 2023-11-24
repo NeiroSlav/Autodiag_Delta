@@ -5,12 +5,13 @@ import time
 from functools import wraps
 from random import randint
 from flask import Flask, jsonify, render_template, redirect, request
-import logging
 
 from pympler import muppy, summary
 
-logging.basicConfig(level=logging.INFO,
-                    filename="py_log.log", filemode="w",
+import logging
+import datetime
+filename = str(datetime.datetime.now()).replace(' ', '_') + '.log'
+logging.basicConfig(level=logging.INFO, filename=filename, filemode="w",
                     format="%(asctime)s %(levelname)s | %(message)s")
 
 
