@@ -14,7 +14,7 @@ class Dlink(SwitchMixin):
         self.test_methods = [  # методы для тестов
             self.port, self.errors,
             self.loose, self.mac, self.bind,
-            self.cable, self.log]
+            self.cable, self.log, self.util]
 
     # диагностика порта
     def port(self, port: int) -> dict:
@@ -222,6 +222,39 @@ class Dlink(SwitchMixin):
 
         # 'ок':True будет, если длина лога < 50, и нет штормов/колец
         result['ok'] = (len(result['log']) < 50) and (not result['snmp'])
+        return result
+
+    # утилизация порта
+    def util(self, port: int = 0) -> dict:
+        result = {'rx': 0, 'tx': 0, 'error': False}
+
+        if port:
+            self.session.read()
+            self.session.push(f'show packet ports {port}')
+            answer = self.session.read(1, 'TX Frames')
+            self.session.push('q\n', read=True)
+            if not ('TX Frames' in answer):
+                return {'error': True}
+
+            answer = answer.replace('\\t', '')
+
+            rx = self._find(r'RX Bytes +[0-9]+ +[0-9]+', answer).split()[-1]
+            tx = self._find(r'TX Bytes +[0-9]+ +[0-9]+', answer).split()[-1]
+
+            # перевод из байтов в кбиты
+            rx = int(rx) / 128
+            tx = int(tx) / 128
+
+            # если трафик больше мбита, переводит в них
+            if tx > 1024 or rx > 1024:
+                value = ' MB/s'
+                rx, tx = rx/1024, tx/1024
+            else:
+                value = ' KB/s'
+
+            result['rx'] = f'{int(rx)} {value}'
+            result['tx'] = f'{int(tx)} {value}'
+
         return result
 
     # проверка, в лузе ли порт

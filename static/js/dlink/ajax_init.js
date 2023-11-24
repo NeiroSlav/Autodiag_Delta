@@ -15,6 +15,7 @@ var get_cable_url = get_var("get_cable_url");
 
 var get_bind_url = get_var("get_bind_url");
 var get_mac_url = get_var("get_mac_url");
+var get_util_url = get_var("get_util_url");
 var get_open_port_url = get_var("get_open_port_url");
 
 var get_log_url = get_var("get_log_url");
@@ -34,6 +35,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     setTimeout(function() {get_bind();}, 30);
     setTimeout(function() {get_mac();}, 40);
+    setTimeout(function() {get_util();}, 50);
+
     setTimeout(function() {get_open_port();}, 0);
 
     setTimeout(function() {get_log();}, 100);
@@ -107,6 +110,12 @@ function get_mac() {
 //    console.log('стартую запрос get_mac')
     wait_div('macInfo', 'Мак..')
     ajax_div(get_mac_url, 'macInfo', get_mac_business);}
+
+
+function get_util() {
+//    console.log('стартую запрос get_util')
+    wait_div('utilInfo', 'Проверка трафика..')
+    ajax_div(get_util_url, 'utilInfo', get_util_business);}
 
 
 function get_open_port() {

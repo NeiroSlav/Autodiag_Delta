@@ -15,6 +15,7 @@
 
         get_bind_url="{{ url_for('dlink_get_bind', token='') }}"
         get_mac_url="{{ url_for('dlink_get_mac', token='') }}"
+        get_util_url="{{ url_for('dlink_get_util', token='') }}"
         get_open_port_url="{{ url_for('get_open_port', token='') }}"
 
         get_log_url="{{ url_for('dlink_get_log', token='') }}"
@@ -43,6 +44,7 @@
     <div class="diagLongBlock" style="margin: 0 auto 0 0;">
         <div class="diagMiniBlock" id="bindInfo"></div>
         <div class="diagMiniBlock" id="macInfo"></div>
+        <div class="diagMiniBlock" id="utilInfo"></div>
         <div class="diagMiniBlock" id="openPortInfo"></div>
         <div class="diagMiniBlock"></div>
     </div>

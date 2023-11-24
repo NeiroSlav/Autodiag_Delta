@@ -86,5 +86,13 @@ def dlink_get_log(token, **t_data):
 @app.route("/dlink/get_full_log/<token>")
 @use_token
 def dlink_get_full_log(token, **t_data):
-    switch, port = t_data['switch'], t_data['gcdb_data'].switch_port
+    switch = t_data['switch']
     return switch.log()
+
+
+# обработчик для проверки лога
+@app.route("/dlink/get_util/<token>")
+@use_token
+def dlink_get_util(token, **t_data):
+    switch, port = t_data['switch'], t_data['gcdb_data'].switch_port
+    return switch.util(port)

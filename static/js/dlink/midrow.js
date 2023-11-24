@@ -122,3 +122,41 @@ function get_mac_business(response) {
         return getB(b1) + all_macs;
     }
 }
+
+
+var util_info
+
+
+function get_util_business(response) {
+
+    console.log(response)
+
+    var b1 = setB()
+    b1['text'] = 'Трафик на порту:'
+    b1['onclick'] = 'get_util();'
+    b1['style'] = 'width: 236px;'
+    b1['id'] = 'mainButton'
+    b1['color'] = 'Green'
+
+    var b2 = setB()
+    b2['style'] = 'width: 116px;'
+    b2['id'] = ''
+
+    var b3 = setB()
+    b3['style'] = 'width: 116px; margin-left: 3px;'
+    b3['id'] = ''
+
+    if (response.error) {
+        b1['color'] = b2['color'] = b3['color'] = 'Red'
+        b1['text'] = 'Ошибка проверки'
+        b2['text'] = b3['text'] = 'Ошибка'
+        return getB(b1) + getB(b2) + getB(b3)
+    } else {
+
+        b2['text'] = 'in ' + response.tx
+        b3['text'] = 'out ' + response.rx
+
+        return getB(b1) + getB(b2) + getB(b3);
+
+    }
+}
