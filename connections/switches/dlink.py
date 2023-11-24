@@ -9,6 +9,7 @@ class Dlink(SwitchMixin):
 
     def __init__(self, session: Telnet):
         self.session = session
+        self.session.push('enable clipaging')
         self.session.read()
         self.test_methods = [  # методы для тестов
             self.port, self.errors,
@@ -168,7 +169,6 @@ class Dlink(SwitchMixin):
         result = {'snmp': [], 'log': [],
                   'ok': True, 'error': False}
         self.session.read()
-        self.session.push('\nenable clip', read=True)
         self.session.push('\nshow log')
         answer = self.session.read(timeout=2, string='Index')
         answer = answer.replace('\\n\\r      ', ' ')
