@@ -7,13 +7,24 @@ from random import randint
 from flask import Flask, jsonify, render_template, redirect, request
 import logging
 
-logging.basicConfig(level=logging.INFO)
+from pympler import muppy, summary
+
+logging.basicConfig(level=logging.INFO,
+                    filename="py_log.log", filemode="w",
+                    format="%(asctime)s %(levelname)s | %(message)s")
+
 
 static_dir = os.path.abspath('static/')
 template_dir = os.path.abspath('templates/')
+
 app = Flask(__name__, static_folder=static_dir, template_folder=template_dir)
-app.secret_key = os.urandom(12)
-_token_dict = {}
+app.secret_key = os.urandom(12)  # назначение секретного ключа (чтобы работали сессии)
+
+_token_dict = {}  # инициализация словаря токенов
+changes_list = []  # лог-список выключения/включения портов
+
+log = logging.getLogger('werkzeug')  # перенаправление лога flask
+log.disabled = True  # и выключение его, чтобы не видеть get-запросы
 
 
 # собственный класс исключений
@@ -46,7 +57,7 @@ def token_init():
         '_changes': [],
         'first_time_flag': True,
     }
-    logging.info(f'{token} token created: {int(time.time())}')
+    logging.info(f'{token} token created')
     return token
 
 
@@ -83,16 +94,16 @@ def token_del(token: str):
             switch = _token_dict[token]['switch']
             if 'set_port_down' in _changes:
                 switch.set_port(gcdb_data.switch_port, True)
-                logging.info('порт включен автоматически')
+                logging.info('port enabled automatically')
             if 'set_bind_loose' in _changes:
                 switch.set_bind(gcdb_data.switch_port, loose=False)
-                logging.info('привязка в стрикт автоматически')
+                logging.info('binding set strict automatically')
 
         try:
             _token_dict[token]['tolerance'].close()
             _token_dict[token]['telnet'].close()
         except Exception as ex:
-            logging.warning(f'ошибка закрытия сессиий токена {token}: \n{ex}')
+            logging.error(f'cant close token connection {token}: \n{ex}')
 
         wipe_list = list(_token_dict[token].keys())
         for key in wipe_list:
@@ -132,7 +143,7 @@ def use_token(func):
             return jsonify({'error': True, 'type': 'TokenNotFound'})
 
         token_wait_busy(token, func.__name__)  # ждёт очередь, и занимает
-        logging.info(f'токен: {token} выполняет {func.__name__}')
+        logging.info(f'token {token} runs {func.__name__}')
         try:
             func_answer = func(
                 token,  # извлекает данные по токену, передаёт в функцию
@@ -172,24 +183,24 @@ def token_watch_activity():
             for token, t_data in _token_dict.items():
                 time_range = current_time - t_data['_last_active']
                 log_string = (
-                    f'токен: {token}  ' +
-                    f'время: {time_range}  ' +
-                    f'юзер: {t_data["gcdb_data"].username}  ')
+                    f'token: {token}  ' +
+                    f'last_time: {time_range}  ' +
+                    f'user: {t_data["gcdb_data"].username}  ')
 
                 # если активность старше 5ти минут
                 if time_range > 300:
                     tokens_to_del.append(token)
-                    log_string += 'удаляю'
+                    log_string += 'delete'
 
                 # если токен занят
                 elif t_data['_busy_query']:
-                    log_string += 'занят'
+                    log_string += 'is busy'
 
                 else:  # не даёт закрыться сессии telnet
                     token_wait_busy(token, 'watcher')
                     t_data['telnet'].push('\n', read=True)
                     token_set_free(token)
-                    log_string += 'держу'
+                    log_string += 'hold'
 
                 logging.info(log_string)
 
@@ -197,11 +208,19 @@ def token_watch_activity():
             for token in tokens_to_del:
                 token_del(token)
 
+            # сборка мусора, вывод данных о памяти
             gc.collect()
+            print('=' * 42)
+            all_objects = muppy.get_objects()
+            sum1 = summary.summarize(all_objects)
+            summary.print_(sum1, limit=7)
+            del all_objects
+            del sum1
+
             time.sleep(60)
 
         except Exception as ex:
-            logging.error(f'Ошибка проверки словаря токенов {ex}')
+            logging.error(f'error while checking token dict {ex}')
 
 
 token_thread = threading.Thread(target=token_watch_activity)

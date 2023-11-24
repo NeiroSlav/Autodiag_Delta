@@ -164,7 +164,7 @@ class Dlink(SwitchMixin):
         return {'error': True}
 
     # парсинг лога
-    def log(self, port: int, hours: int = 24) -> dict:
+    def log(self, port: int = 0, hours: int = 24) -> dict:
         result = {'snmp': [], 'log': [],
                   'ok': True, 'error': False}
         self.session.read()
@@ -181,30 +181,40 @@ class Dlink(SwitchMixin):
 
         pattern = (  # паттерн любой записи лога
             r'[0-9]+ +[0-9-]+ +[0-9:]+ +[0-9:A-Za-z()., -"+]+\\')
-        log = self._findall(pattern, answer)
+        log = []
+        for elem in self._findall(pattern, answer):
+            log.append(elem.strip('\\'))
 
         # поиск времени последней записи
         self._find(r'[0-9-]+ [0-9]+:', answer)
         log_last_time = self._time_to_hours(self._finded)
         log_time_range = 0
+        attempt = 0
         # print(answer)
 
-        # пока охват меньше заданных часов, и количество записей меньше 100
-        while (log_time_range < hours) and (len(log) < 1000):
+        # пока охват меньше заданных часов, и проходов меньше 200
+        while (log_time_range < hours) and (attempt < 200):
+
+            attempt += 1
             self.session.push('nnn')
             answer = self.session.read()
             answer = answer.replace('\\n\\r     ', ' ')
             answer = ' '.join(answer.split())
 
-            log += self._findall(pattern, answer)
+            for elem in self._findall(pattern, answer):
+                log.append(elem.strip('\\'))
+
             if log:  # если лог не пустой, определяет охват времени
                 log_bottom_time = self._find(r'[0-9-]+ [0-9]+:', log[-1])
                 log_time_range = log_last_time - self._time_to_hours(log_bottom_time)
 
         self.session.push('q', read=True)  # прервать выдачу лога
 
+        if port == 0:
+            result['log'] = log
+            return result
+
         for elem in log:  # выборка записей о нужном порте
-            elem = elem.replace('\\', ' ')
             if ((f'ort {port} ' in elem) or (f'orts {port} ' in elem)) and (len(result['log']) < 20):
                 result['log'].append(elem)
                 if ('storm' in elem) or ('loop' in elem):

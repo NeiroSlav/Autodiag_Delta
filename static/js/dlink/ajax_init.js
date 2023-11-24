@@ -18,6 +18,7 @@ var get_mac_url = get_var("get_mac_url");
 var get_open_port_url = get_var("get_open_port_url");
 
 var get_log_url = get_var("get_log_url");
+var get_full_log_url = get_var("get_full_log_url");
 
 
 console.log(token);
@@ -118,5 +119,12 @@ function get_open_port() {
 
 function get_log() {
 //    console.log('стартую запрос get_open_port')
-    wait_div('logInfo', 'Проверяю записи лога...')
+    wait_div('logInfo', 'Проверяю')
     ajax_div(get_log_url, 'logInfo', get_log_business);}
+
+
+function get_full_log() {
+//    console.log('стартую запрос get_open_port')
+    wait_div('logInfo', 'Проверяю', buttonId='#mainButton2')
+    ajax_div(get_full_log_url, 'logInfo', get_full_log_business);}
+

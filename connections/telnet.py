@@ -23,7 +23,7 @@ class Telnet:
 
         # print(f'Зашёл на {self.switch_type} {self.switch_ip}')
 
-        if not timing(self._login_funk)():
+        if not self._login_funk():
             self.switch_type = None
             self.close()
             # print(f'{self.switch_ip} завис')
@@ -56,7 +56,6 @@ class Telnet:
         return answer_full
 
     # вход на свитч, и определения свитча
-    @timing
     def _connect(self, switch_ip: str):
         try:
             self._channel = telnetlib.Telnet(switch_ip, timeout=5)

@@ -18,7 +18,8 @@ def status_page():
     context = {
         'tokens': tokens,
         'timeouts': timeouts,
-        'usernames': usernames}
+        'usernames': usernames,
+        'changes_list': reversed(changes_list)}
 
     return render_template(
         'status.html',

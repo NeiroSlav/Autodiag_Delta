@@ -98,7 +98,7 @@ class Zyxel(SwitchMixin):
             return {'error': True}
 
     # парсинг лога
-    def log(self, port: int) -> dict:
+    def log(self, port: int = 0) -> dict:
         result = {'log': [], 'ok': True, 'error': False}
         self.session.read()
         self.session.push('\nsh logging')
@@ -111,11 +111,18 @@ class Zyxel(SwitchMixin):
             return {'error': True}
 
         log_pattern = (  # паттерн записи лога с участием портов
-            r'[0-9]+ [A-Za-z ]+ [0-9]+ +[0-9:]+ [A-Za-z0-9():, -=>]+ort ' +
-            str(port) +
-            ' [A-Za-z0-9():, -=>]+')
+            r'[0-9]+ [A-Za-z ]+ [0-9]+ +[0-9:]+ [A-Za-z0-9():, -=>]+ort [0-9] [A-Za-z0-9():, -=>]+')
 
-        result['log'] = self._findall(log_pattern, answer)
+        log = self._findall(log_pattern, answer)
+
+        if port == 0:
+            result['log'] = log
+            return result
+
+        for elem in log:
+            if f'ort {port} ' in elem:
+                result['log'].append(elem)
+
         result['ok'] = (len(result['log']) > 20)
         return result
 

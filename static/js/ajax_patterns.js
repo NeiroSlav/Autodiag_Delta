@@ -11,10 +11,10 @@ function still_active() {
 
 
 // принимает на вход название блока и текст, меняет текст кнопки mainButton в блоке
-function wait_div(id, text) {
+function wait_div(id, text, buttonId="#mainButton") {
     var block = document.getElementById(id);
     if (block) {
-        var button = block.querySelector("#mainButton");
+        var button = block.querySelector(buttonId);
         if (button) {
             button.innerText = text;
             button.style.border = "2px solid #999999";

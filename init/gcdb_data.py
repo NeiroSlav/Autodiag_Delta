@@ -1,4 +1,4 @@
-from .app_init import DiagError
+from .app_init import DiagError, logging
 from connections import switch_login, switch_password
 
 
@@ -26,6 +26,8 @@ class GcdbData:
             request.args.get('stb5_mac'),
             request.args.get('stb6_mac'),
         ]
+
+        logging.info(f'{self.username} on {self.switch_ip} : {self.switch_port} : {self.pon_port}')
 
         if not (self.username and self.switch_ip and self.switch_port):
             raise DiagError('Неполный запрос')

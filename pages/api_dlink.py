@@ -17,8 +17,11 @@ def dlink_disable_port(token, **t_data):
     enable = request.args.get('enable') == 'true'
     switch, gcdb_data = t_data['switch'], t_data['gcdb_data']
     ip, port = gcdb_data.switch_ip, gcdb_data.switch_port
-    # тут будет логирование данных
-    print(f'{gcdb_data.username} {ip}:{port} ena:{enable}')
+
+    log_string = f'{gcdb_data.username} {"enabled" if enable else "disabled"} {ip}:{port}'
+    logging.warning(log_string)
+    changes_list.append(log_string)
+
     return switch.set_port(port, enable=enable)
 
 
@@ -77,3 +80,11 @@ def dlink_get_mac(token, **t_data):
 def dlink_get_log(token, **t_data):
     switch, port = t_data['switch'], t_data['gcdb_data'].switch_port
     return switch.log(port)
+
+
+# обработчик для проверки лога
+@app.route("/dlink/get_full_log/<token>")
+@use_token
+def dlink_get_full_log(token, **t_data):
+    switch, port = t_data['switch'], t_data['gcdb_data'].switch_port
+    return switch.log()
