@@ -188,7 +188,7 @@ def token_watch_activity():
                 time_range = current_time - t_data['_last_active']
                 log_string = (
                         f'token: {token}  ' +
-                        f'last_time: {time_range}  ' +
+                        f'time: {time_range}  ' +
                         f'user: {t_data["gcdb_data"].username}  ')
 
                 # если активность старше 5ти минут
