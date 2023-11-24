@@ -175,18 +175,21 @@ def token_still_active(token):
 # раз в минуту проверяет активность токенов, удерживает telnet
 def token_watch_activity():
     logging.info(' # Token watcher started')
+    sep = '=' * 42
 
     while True:
         current_time = int(time.time())
         tokens_to_del = []
 
+        logging.info(sep)
+
         try:
             for token, t_data in _token_dict.items():
                 time_range = current_time - t_data['_last_active']
                 log_string = (
-                    f'token: {token}  ' +
-                    f'last_time: {time_range}  ' +
-                    f'user: {t_data["gcdb_data"].username}  ')
+                        f'token: {token}  ' +
+                        f'last_time: {time_range}  ' +
+                        f'user: {t_data["gcdb_data"].username}  ')
 
                 # если активность старше 5ти минут
                 if time_range > 300:
@@ -211,10 +214,16 @@ def token_watch_activity():
 
             # сборка мусора, вывод данных о памяти
             gc.collect()
-            print('=' * 42)
             all_objects = muppy.get_objects()
             sum1 = summary.summarize(all_objects)
-            summary.print_(sum1, limit=7)
+
+            logging.info(sep)
+            print(sep)
+
+            for line in summary.format_(sum1, limit=7, sort='size', order='descending'):
+                logging.info(line)
+                print(line)
+
             del all_objects
             del sum1
 
