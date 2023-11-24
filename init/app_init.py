@@ -6,18 +6,16 @@ from functools import wraps
 from random import randint
 from flask import Flask, jsonify, render_template, redirect, request
 
-from pympler import muppy, summary
-
+# инициализация лога
 import logging
 import datetime
 filename = str(datetime.datetime.now()).replace(' ', '_') + '.log'
 logging.basicConfig(level=logging.INFO, filename=filename, filemode="w",
                     format="%(asctime)s %(levelname)s | %(message)s")
 
-
+# инициализация приложения flask
 static_dir = os.path.abspath('static/')
 template_dir = os.path.abspath('templates/')
-
 app = Flask(__name__, static_folder=static_dir, template_folder=template_dir)
 app.secret_key = os.urandom(12)  # назначение секретного ключа (чтобы работали сессии)
 
@@ -175,14 +173,12 @@ def token_still_active(token):
 
 # раз в минуту проверяет активность токенов, удерживает telnet
 def token_watch_activity():
-    logging.info(' # Token watcher started')
-    sep = '=' * 42
+    logging.info('# Token watcher started')
+    sep = '-' * 42
 
     while True:
         current_time = int(time.time())
         tokens_to_del = []
-
-        logging.info(sep)
 
         try:
             for token, t_data in _token_dict.items():
@@ -192,8 +188,8 @@ def token_watch_activity():
                         f'time: {time_range}  ' +
                         f'user: {t_data["gcdb_data"].username}  ')
 
-                # если активность старше 5ти минут
-                if time_range > 300:
+                # если активность старше 3ёх минут
+                if time_range > 1800:
                     tokens_to_del.append(token)
                     log_string += 'delete'
 
@@ -213,22 +209,11 @@ def token_watch_activity():
             for token in tokens_to_del:
                 token_del(token)
 
-            # сборка мусора, вывод данных о памяти
-            gc.collect()
-            all_objects = muppy.get_objects()
-            sum1 = summary.summarize(all_objects)
-
+            # сборка мусора
             logging.info(sep)
-            print(sep)
-
-            for line in summary.format_(sum1, limit=7, sort='size', order='descending'):
-                logging.info(line)
-                print(line)
-
-            del all_objects
-            del sum1
-
+            gc.collect()
             time.sleep(60)
+            logging.info(sep)
 
         except Exception as ex:
             logging.error(f'error while checking token dict {ex}')
