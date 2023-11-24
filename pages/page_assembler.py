@@ -19,6 +19,9 @@ def main_redirect():
         if not telnet.switch_type:  # если тип свитча не определён
             raise DiagError(f'Тип {switch_ip} не определён')
 
+        if telnet.switch_type == 'DGS':
+            raise DiagError(f'Это DGS, родной. Кыш отсюда')
+
         #  создание токена, сохранение данных, запись в сессию
         token = token_init()
         token_set(token, 'gcdb_data', gcdb_data)

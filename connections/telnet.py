@@ -65,6 +65,7 @@ class Telnet:
         answer = ''
         # словарь фраз для определения свитча
         phrases = {
+            'DGS': ['DGS', self.close],
             'D-Link': ['dlink', self._dlink_login],
             'User name:': ['zyxel', self._zyxel_login],
             'Login:': ['raisecom', self._raisecom_login],
