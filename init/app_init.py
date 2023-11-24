@@ -151,9 +151,10 @@ def use_token(func):
                 tolerance=token_get(token, 'tolerance'),
                 telnet=token_get(token, 'telnet'),
                 switch=token_get(token, 'switch'))
-            token_set_free(token)  # освобождает очередь
         except Exception as e:
             func_answer = {'error': True, 'type': f'PythonError: {e}'}
+
+        token_set_free(token)  # освобождает очередь
         return jsonify(func_answer)  # возвращает ответ функции в формате json
 
     return wrapper

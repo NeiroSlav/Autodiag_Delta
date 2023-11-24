@@ -50,6 +50,7 @@ def zyxel_get_log(token, **t_data):
     switch, port = t_data['switch'], t_data['gcdb_data'].switch_port
     return switch.log(port)
 
+
 # обработчик для проверки лога
 @app.route("/zyxel/get_full_log/<token>")
 @use_token

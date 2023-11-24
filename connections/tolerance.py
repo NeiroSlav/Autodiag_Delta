@@ -10,8 +10,8 @@ class Tolerance:
     telnet_error = None
 
     def __init__(self, gcdb_data):
-        self.username = gcdb_data.switch_login
-        self.password = gcdb_data.switch_password
+        self.username = gcdb_data.tolerance_login
+        self.password = gcdb_data.tolerance_password
         self._ssh_connect()
 
     # создание соединения ssh, объявление локальных атрибутов _client и _channel

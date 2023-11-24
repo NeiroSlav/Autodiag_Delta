@@ -89,6 +89,8 @@ function get_full_log_business (response) {
 
     var diagLogLong = ['<div class="diagLog" style="height: 312px;">','</div>']
     var diagLogBlock = ['<div class="diagLogBlock">','</div>']
+    var diagLogRed = ['<div class="diagLog" style="border: 2px solid #FF8855; height: 200px;">','</div>']
+
 
     if (response.error) {  // если вернулась ошибка
         b3['color'] = 'Red'

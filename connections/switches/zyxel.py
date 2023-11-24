@@ -18,12 +18,14 @@ class Zyxel(SwitchMixin):
     def port(self, port: int) -> dict:
         result = {'enabled': 'Enabled', 'port': 'Down', 'uptime': '0:00:00', 'errors': '0',
                   'ok': True, 'error': False}
+        self.session.push('q\n\n\n', read=True)
         self.session.push(f'\nsh int {port}')
         self.session.push('q\n\n\n')
 
-        answer = self.session.read(timeout=2, string='Port NO')
+        answer = self.session.read(timeout=2, string='RX CRC')
         answer = answer.replace('\\t', ' ')
-        if not ('Port NO' in answer):
+        print(answer)
+        if not ('RX CRC' in answer):
             return {'error': True}
 
         port_patterns = [  # список для поиска в ответе и статусы
@@ -78,10 +80,10 @@ class Zyxel(SwitchMixin):
         result = {'cable': [], 'ok': True, 'error': False}
         self.session.read()
         self.session.push(f'\ncable-diagnostics {port}')
-        answer = self.session.read(timeout=2, string='pair')
+        answer = self.session.read(timeout=2, string='pairB')
         answer = answer.replace('\\r', ' ').replace("'b'", '')
 
-        if 'unknown' in answer:
+        if not ('pair' in answer):
             return {'ok': False, 'error': False}
 
         # поиск пар А, B, C, D
@@ -107,6 +109,9 @@ class Zyxel(SwitchMixin):
         # ждёт ответ свитча
         answer = self.session.read(timeout=2, string='Clear')
         answer += self.session.read()
+
+        self.session.push('\nq\n\n')
+
         if not ('INFO' in answer):
             return {'error': True}
 

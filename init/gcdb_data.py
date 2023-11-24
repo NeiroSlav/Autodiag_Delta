@@ -1,6 +1,6 @@
 from .app_init import DiagError, logging
 from connections import switch_login, switch_password
-
+from connections import tolerance_login, tolerance_password
 
 class GcdbData:
 
@@ -8,6 +8,8 @@ class GcdbData:
         self.username = request.args.get('username')
         self.switch_login = switch_login
         self.switch_password = switch_password
+        self.tolerance_login = tolerance_login
+        self.tolerance_password = tolerance_password
 
         self.switch_ip = request.args.get('switch_ip')
         self.switch_port = request.args.get('switch_port')
