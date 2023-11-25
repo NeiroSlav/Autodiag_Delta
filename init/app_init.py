@@ -189,7 +189,7 @@ def token_watch_activity():
                         f'user: {t_data["gcdb_data"].username}  ')
 
                 # если активность старше 3ёх минут
-                if time_range > 1800:
+                if time_range > 180:
                     tokens_to_del.append(token)
                     log_string += 'delete'
 
