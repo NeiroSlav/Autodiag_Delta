@@ -21,7 +21,7 @@ def get_mem():
     stat_list = []
     for stat in snap_new.compare_to(snap_old, 'lineno'):
         if not ('B (+0 B)' in str(stat) or 'bootstrap' in str(stat)):
-            if 'Autodiag_Delta' in stat:
+            if 'Autodiag_Delta' in str(stat):
                 stat = str(stat).split('Autodiag_Delta')[-1]
             stat_list.append(stat)
 
