@@ -13,7 +13,7 @@ def format_string(s: str) -> str:
 
     s = s.replace(': ', ', ').split(', ')
 
-    s_ = s[0] + '&nbsp;'*(95-(len(s[0])))
+    s_ = s[0] + '&nbsp;'*(75-(len(s[0])))
     s.pop(0)
     for elem in s:
         elem = elem.strip()
@@ -35,14 +35,25 @@ def set_mem():
 @app.route("/compare")
 def get_mem():
     snap_new = tracemalloc.take_snapshot()
-    stat_list = []
+    stat_list_plus = []
+    stat_list_minus = []
     for stat in snap_new.compare_to(snap_old, 'lineno'):
         if not ('B (+0 B)' in str(stat) or 'bootstrap' in str(stat) or 'size=0' in str(stat)):
             stat = str(stat)
             if 'Autodiag_Delta' in stat:
                 stat = stat.split('Autodiag_Delta')[-1]
-            stat_list.append(format_string(stat))
 
-    return ('<code>' +
-            'mem changes: ' + str(len(stat_list)) + '<br>' +
-            '<br>'.join((stat_list)) + '</code>')
+            if '(+' in stat:
+                stat_list_plus.append(format_string(stat))
+            else:
+                stat_list_minus.append(format_string(stat))
+
+    return (
+        '<code>' +
+        'mem addidions: ' + str(len(stat_list_plus)) + '<br>' +
+        '<br>'.join(stat_list_plus) + '<br>' +
+        '='*148 + '<br>' +
+        'mem removes: ' + str(len(stat_list_minus)) + '<br>' +
+        '<br>'.join(stat_list_minus) +
+        '</code>'
+    )
