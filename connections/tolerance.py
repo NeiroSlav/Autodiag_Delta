@@ -44,8 +44,9 @@ class Tolerance:
         answer = ''
         self._channel.settimeout(timeout)
         try:
-            while True:
+            for i in range(20):
                 answer += str(self._channel.recv(1000))
+            raise TimeoutError
         except TimeoutError:
             answer = answer.replace('\\r', '')
             answer = answer.replace('\\n', '\n')
