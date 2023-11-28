@@ -30,7 +30,7 @@ def count_all_weight():
     process = psutil.Process()
     weight = process.memory_info().rss
     weight = weight / (1024*1024)
-    return weight
+    return int(weight)
 
 
 # обработчик для взятия первого слепка памяти
