@@ -1,6 +1,8 @@
 # инициализация монитора памяти
+import psutil
 import tracemalloc
 from .app_init import app
+
 tracemalloc.start()
 snap_old = tracemalloc.take_snapshot()
 test = ['aboba']
@@ -21,6 +23,14 @@ def format_string(s: str) -> str:
         if elem != s[-1]:
             s_ += '&nbsp;'*(30-(len(elem)))
     return s_
+
+
+# посчитать, сколько мб весит процесс питона
+def count_all_weight():
+    process = psutil.Process()
+    weight = process.memory_info().rss
+    weight = weight / (1024*1024)
+    return weight
 
 
 # обработчик для взятия первого слепка памяти
@@ -50,6 +60,7 @@ def get_mem():
 
     return (
         '<code>' +
+        'total process weight: ' + str(count_all_weight()) + ' Mb' + '<br>' +
         'mem addidions: ' + str(len(stat_list_plus)) + '<br>' +
         '<br>'.join(stat_list_plus) + '<br>' +
         '='*148 + '<br>' +
