@@ -176,29 +176,30 @@ def token_still_active(token):
 
 # раз в минуту проверяет активность токенов, удерживает telnet
 def token_watch_activity():
-    logging.info('# Token watcher started')
-    sep = '-' * 42
+    logging.critical('Token watcher started')
 
     while True:
         current_time = int(time.time())
         tokens_to_del = []
+        log_string = ''
 
         try:
             for token, t_data in _token_dict.items():
                 time_range = current_time - t_data['_last_active']
-                log_string = (
-                        f'token: {token}  ' +
-                        f'time: {time_range}  ' +
-                        f'user: {t_data["gcdb_data"].username}  ')
+
+                log_string += (
+                    f'\ntoken: {token}  '
+                    f'user: {t_data["gcdb_data"].username}{" "*(12-len(t_data["gcdb_data"].username))}'
+                    f'time: {"%02d:%02d" % ((time_range // 60), (time_range % 60))}  ')
 
                 # если активность старше 3ёх минут
                 if time_range > 180:
                     tokens_to_del.append(token)
-                    log_string += 'delete'
+                    log_string += ' del'
 
                 # если токен занят
                 elif t_data['_busy_query']:
-                    log_string += 'is busy'
+                    log_string += 'busy'
 
                 else:  # не даёт закрыться сессии telnet
                     token_wait_busy(token, 'watcher')
@@ -206,6 +207,7 @@ def token_watch_activity():
                     token_set_free(token)
                     log_string += 'hold'
 
+            if log_string:
                 logging.info(log_string)
 
             # удаление просроченных токенов
@@ -213,13 +215,11 @@ def token_watch_activity():
                 token_del(token)
 
             # сборка мусора
-            logging.info(sep)
             gc.collect()
             time.sleep(60)
-            logging.info(sep)
 
         except Exception as ex:
-            logging.error(f'error while checking token dict {ex}')
+            logging.critical(f'error while token dict checking:\n{ex}')
 
 
 token_thread = threading.Thread(target=token_watch_activity)
