@@ -43,7 +43,7 @@ def get_mem():
             if 'Autodiag_Delta' in stat:
                 stat = stat.split('Autodiag_Delta')[-1]
 
-            if '(+' in stat:
+            if 'B (+' in stat:
                 stat_list_plus.append(format_string(stat))
             else:
                 stat_list_minus.append(format_string(stat))
