@@ -1,25 +1,15 @@
-var jsData = document.querySelector(".js-data")
-function get_var(name) {
-    return jsData.getAttribute(name);
-}
+var get_port_url = "/dlink/get_port/";
+var disable_port_url = "/dlink/disable_port/";
+var get_errors_url = "/dlink/get_errors/";
+var clear_url = "/dlink/clear/";
+var get_cable_url = "/dlink/cable_diag/";
 
-var token = get_var("token");
-var still_active_url = get_var("still_active_url");
-//var watch_activity_url = get_var("watch_activity_url");
+var get_bind_url = "/dlink/get_bind/";
+var get_mac_url = "/dlink/get_mac/";
+var get_util_url = "/dlink/get_util/";
 
-var get_port_url = get_var("get_port_url");
-var disable_port_url = get_var("disable_port_url");
-var get_errors_url = get_var("get_errors_url");
-var clear_url = get_var("clear_url");
-var get_cable_url = get_var("get_cable_url");
-
-var get_bind_url = get_var("get_bind_url");
-var get_mac_url = get_var("get_mac_url");
-var get_util_url = get_var("get_util_url");
-var get_open_port_url = get_var("get_open_port_url");
-
-var get_log_url = get_var("get_log_url");
-var get_full_log_url = get_var("get_full_log_url");
+var get_log_url = "/dlink/get_log/";
+var get_full_log_url = "/dlink/get_full_log/";
 
 
 console.log(token);

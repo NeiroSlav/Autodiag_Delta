@@ -90,7 +90,7 @@ def dlink_get_full_log(token, **t_data):
     return switch.log()
 
 
-# обработчик для проверки лога
+# обработчик для проверки трафика
 @app.route("/dlink/get_util/<token>")
 @use_token
 def dlink_get_util(token, **t_data):

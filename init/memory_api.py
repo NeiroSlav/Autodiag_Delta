@@ -37,7 +37,7 @@ def get_mem():
     snap_new = tracemalloc.take_snapshot()
     stat_list = []
     for stat in snap_new.compare_to(snap_old, 'lineno'):
-        if not ('B (+0 B)' in str(stat) or 'bootstrap' in str(stat)):
+        if not ('B (+0 B)' in str(stat) or 'bootstrap' in str(stat) or 'size=0' in str(stat)):
             stat = str(stat)
             if 'Autodiag_Delta' in stat:
                 stat = stat.split('Autodiag_Delta')[-1]

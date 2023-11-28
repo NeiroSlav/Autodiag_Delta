@@ -1,22 +1,9 @@
-var jsData = document.querySelector(".js-data")
-function get_var(name) {
-    return jsData.getAttribute(name);
-}
+var get_port_url = "/bdcom/get_port/";
+var get_mac_url = "/bdcom/get_mac/";
 
-var token = get_var("token");
-var still_active_url = get_var("still_active_url");
-//var watch_activity_url = get_var("watch_activity_url");
+var get_signal_url = "/bdcom/get_signal/";
+var get_active_url = "/bdcom/get_active/";
 
-var get_port_url = get_var("get_port_url");
-var get_mac_url = get_var("get_mac_url");
-
-var get_signal_url = get_var("get_signal_url");
-var get_active_url = get_var("get_active_url");
-
-var get_open_port_url = get_var("get_open_port_url");
-
-
-console.log(token);
 
 document.addEventListener("DOMContentLoaded", function() {
     // код, который отработает при входе на страницу

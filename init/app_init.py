@@ -9,8 +9,8 @@ from flask import Flask, jsonify, render_template, redirect, request
 # инициализация лога
 import logging
 import datetime
-# filename = 'log.log'
-filename = str(datetime.datetime.now()).replace(' ', '_') + '.log'
+filename = 'log.log'
+# filename = str(datetime.datetime.now()).replace(' ', '_') + '.log'
 log_file_path = os.path.join('log', filename)
 logging.basicConfig(level=logging.INFO, filename=log_file_path, filemode="w",
                     format="%(asctime)s %(levelname)s | %(message)s")

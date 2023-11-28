@@ -1,24 +1,12 @@
-var jsData = document.querySelector(".js-data")
-function get_var(name) {
-    return jsData.getAttribute(name);
-}
+var get_port_url = "/zyxel/get_port/";
+var disable_port_url = "/zyxel/disable_port/";
+var get_cable_url = "/zyxel/cable_diag/";
 
-var token = get_var("token");
-var still_active_url = get_var("still_active_url");
-//var watch_activity_url = get_var("watch_activity_url");
+var get_mac_url = "/zyxel/get_mac/";
 
-var get_port_url = get_var("get_port_url");
-var disable_port_url = get_var("disable_port_url");
-var get_cable_url = get_var("get_cable_url");
+var get_log_url = "/zyxel/get_log/";
+var get_full_log_url = "/zyxel/get_full_log/";
 
-var get_mac_url = get_var("get_mac_url");
-var get_open_port_url = get_var("get_open_port_url");
-
-var get_log_url = get_var("get_log_url");
-var get_full_log_url = get_var("get_full_log_url");
-
-
-console.log(token);
 
 document.addEventListener("DOMContentLoaded", function() {
     // код, который отработает при входе на страницу

@@ -1,21 +1,10 @@
-var jsData = document.querySelector(".js-data")
-function get_var(name) {
-    return jsData.getAttribute(name);
-}
+var get_port_url = "/raisecom/get_port/";
+var disable_port_url = "/raisecom/disable_port/";
 
-var token = get_var("token");
-var still_active_url = get_var("still_active_url");
+var get_mac_url = "/raisecom/get_errors/";
 
-var get_port_url = get_var("get_port_url");
-var disable_port_url = get_var("disable_port_url");
+var get_errors_url = "/raisecom/get_mac/";
 
-var get_mac_url = get_var("get_mac_url");
-
-var get_errors_url = get_var("get_errors_url")
-var get_open_port_url = get_var("get_open_port_url");
-
-
-console.log(token);
 
 document.addEventListener("DOMContentLoaded", function() {
     // код, который отработает при входе на страницу

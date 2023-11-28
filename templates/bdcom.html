@@ -2,21 +2,6 @@
 
 {% block imports %}
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <div class="js-data"
-        token="{{ token }}"
-        still_active_url="{{ url_for('token_still_active', token='') }}"
-
-        get_port_url="{{ url_for('bdcom_get_port', token='') }}"
-
-        get_mac_url="{{ url_for('bdcom_get_mac', token='') }}"
-
-        get_signal_url="{{ url_for('bdcom_get_signal', token='') }}"
-
-        get_active_url="{{ url_for('bdcom_get_active', token='') }}"
-
-    ></div>
-
     <script src="{{ url_for('static', filename='js/bdcom/ajax_init.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bdcom/leftrow.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bdcom/rightrow.js') }}"></script>
