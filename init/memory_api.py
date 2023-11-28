@@ -1,6 +1,7 @@
 # инициализация монитора памяти
 import psutil
 import tracemalloc
+import os
 from .app_init import app
 
 tracemalloc.start()
