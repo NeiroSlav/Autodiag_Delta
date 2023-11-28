@@ -83,3 +83,6 @@ class Foxgate(SwitchMixin):
             self.session.push('shutdown\n')
 
         self.session.push('exit\nexit\n', read=True)
+
+    def __del__(self):
+        print('foxgate object deleted')

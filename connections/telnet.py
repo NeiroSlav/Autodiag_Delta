@@ -3,6 +3,7 @@ import re
 import time
 
 from .switches.utils.timing import timing
+from .personal_data import switch_login, switch_password
 
 
 class Telnet:
@@ -14,8 +15,8 @@ class Telnet:
 
     def __init__(self, gcdb_data):
         self.switch_ip = gcdb_data.switch_ip
-        self.username = gcdb_data.switch_login
-        self.password = gcdb_data.switch_password
+        self.username = switch_login
+        self.password = switch_password
         self._connect(self.switch_ip)
         if not self.switch_type:
             # print(f'{self.switch_ip} лежит')

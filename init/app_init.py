@@ -9,8 +9,10 @@ from flask import Flask, jsonify, render_template, redirect, request
 # инициализация лога
 import logging
 import datetime
+# filename = 'log.log'
 filename = str(datetime.datetime.now()).replace(' ', '_') + '.log'
-logging.basicConfig(level=logging.INFO, filename=filename, filemode="w",
+log_file_path = os.path.join('log', filename)
+logging.basicConfig(level=logging.INFO, filename=log_file_path, filemode="w",
                     format="%(asctime)s %(levelname)s | %(message)s")
 
 # инициализация приложения flask
@@ -104,11 +106,12 @@ def token_del(token: str):
         except Exception as ex:
             logging.error(f'cant close token connection {token}: \n{ex}')
 
-        wipe_list = list(_token_dict[token].keys())
+        wipe_list = tuple(_token_dict[token].keys())
         for key in wipe_list:
             del _token_dict[token][key]
 
         del _token_dict[token]
+        del wipe_list
 
 
 # копирование данных словаря токенов
@@ -142,7 +145,7 @@ def use_token(func):
             return jsonify({'error': True, 'type': 'TokenNotFound'})
 
         token_wait_busy(token, func.__name__)  # ждёт очередь, и занимает
-        logging.info(f'token {token} runs {func.__name__}')
+        # logging.info(f'token {token} runs {func.__name__}')
         try:
             func_answer = func(
                 token,  # извлекает данные по токену, передаёт в функцию

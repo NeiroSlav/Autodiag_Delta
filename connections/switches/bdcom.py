@@ -111,3 +111,6 @@ class Bdcom(SwitchMixin):
             result['ok'] = False
 
         return result
+
+    def __del__(self):
+        print('bdcom object deleted')

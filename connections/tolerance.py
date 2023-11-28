@@ -1,5 +1,6 @@
 import re
 import paramiko
+from .personal_data import tolerance_login, tolerance_password
 
 
 class Tolerance:
@@ -9,9 +10,9 @@ class Tolerance:
     hostname = 'tolerance.dec.net.ua'
     telnet_error = None
 
-    def __init__(self, gcdb_data):
-        self.username = gcdb_data.tolerance_login
-        self.password = gcdb_data.tolerance_password
+    def __init__(self):
+        self.username = tolerance_login
+        self.password = tolerance_password
         self._ssh_connect()
 
     # создание соединения ssh, объявление локальных атрибутов _client и _channel
@@ -83,3 +84,6 @@ class Tolerance:
 
     def close(self):
         self._client.close()
+
+    def __del__(self):
+        print('tolerance object deleted')

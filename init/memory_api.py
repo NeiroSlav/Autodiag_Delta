@@ -6,6 +6,23 @@ snap_old = tracemalloc.take_snapshot()
 test = ['aboba']
 
 
+# форматирует текст в табличный вид
+def format_string(s: str) -> str:
+    s = s.replace('<', '')
+    s = s.replace('>', '')
+
+    s = s.replace(': ', ', ').split(', ')
+
+    s_ = s[0] + '&nbsp;'*(95-(len(s[0])))
+    s.pop(0)
+    for elem in s:
+        elem = elem.strip()
+        s_ += elem
+        if elem != s[-1]:
+            s_ += '&nbsp;'*(30-(len(elem)))
+    return s_
+
+
 # обработчик для взятия первого слепка памяти
 @app.route("/snap")
 def set_mem():
@@ -24,6 +41,8 @@ def get_mem():
             stat = str(stat)
             if 'Autodiag_Delta' in stat:
                 stat = stat.split('Autodiag_Delta')[-1]
-            stat_list.append(stat)
+            stat_list.append(format_string(stat))
 
-    return str(len(stat_list)) + '<br>'.join(sorted(stat_list))
+    return ('<code>' +
+            'mem changes: ' + str(len(stat_list)) + '<br>' +
+            '<br>'.join((stat_list)) + '</code>')

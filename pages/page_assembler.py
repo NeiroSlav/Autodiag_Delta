@@ -9,7 +9,7 @@ def main_redirect():
     try:
         #  инициализация данных из GET запроса
         gcdb_data = GcdbData(request)  # парсинг GET запроса
-        tolerance = Tolerance(gcdb_data)  # логин на tolerance
+        tolerance = Tolerance()  # логин на tolerance
         switch_ip = gcdb_data.switch_ip
 
         if not tolerance.ping(switch_ip):  # если свитч не отвечает
@@ -44,7 +44,11 @@ def switch_page(switch_type, token):
         gcdb_data = token_get(token, 'gcdb_data')
         telnet = token_get(token, 'telnet')
 
-        if telnet.switch_type != switch_type:  # редирект, если другой свитч
+        if switch_type == 'delete':  # удаляет токен
+            token_del(token)
+            raise DiagError(f'Вы удалили токен {token}')
+
+        elif telnet.switch_type != switch_type:  # редирект, если другой свитч
             return redirect(f'/{telnet.switch_type}/{token}')
 
         switch = switch_class[switch_type](telnet)  # сохраняет в токен объект свитча
