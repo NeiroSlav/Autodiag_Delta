@@ -17,6 +17,9 @@ body {
     border: 0px solid #CCC;
 	position: fixed;
 }
+.diagButtonBlue:hover {
+    background-color: #444;
+}
 .logo:active {
     background-color: #555;
 }
@@ -31,9 +34,13 @@ body {
     border: 0px solid #CCC;
 	position: fixed;
 }
-.copy:active {
+.diagButtonBlue:hover {
+    background-color: #444;
+}
+.logo:active {
     background-color: #555;
 }
+
 
 
 .update {
@@ -46,9 +53,13 @@ body {
     border: 0px solid #CCC;
 	position: fixed;
 }
-.update:active {
+.diagButtonBlue:hover {
+    background-color: #444;
+}
+.logo:active {
     background-color: #555;
 }
+
 
 
 
