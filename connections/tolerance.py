@@ -44,7 +44,7 @@ class Tolerance:
         answer = ''
         self._channel.settimeout(timeout)
         try:
-            for i in range(20):
+            for i in range(100):
                 answer += str(self._channel.recv(1000))
             raise TimeoutError
         except TimeoutError:

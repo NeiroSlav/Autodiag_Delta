@@ -38,7 +38,7 @@ class DiagError(Exception):
 # функция отрисовки ошибки
 def render_error(err_text):
     return render_template(
-        'index.html',
+        'error.html',
         title='Ошибка', topinfo=err_text)
 
 
