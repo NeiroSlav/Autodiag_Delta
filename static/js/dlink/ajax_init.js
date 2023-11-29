@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     updateAll();
     setTimeout(function() {get_open_port();}, 0);
-    setTimeout(function() {get_log();}, 100);
+    setTimeout(function() {get_log();}, 300);
 
     // подтверждает активность токена раз в минуту
     setInterval(still_active, 60000);
@@ -30,12 +30,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function updateAll() {
     setTimeout(function() {get_port();}, 0);
-    setTimeout(function() {get_errors();}, 10);
-    setTimeout(function() {get_cable();}, 20);
+    setTimeout(function() {get_errors();}, 50);
+    setTimeout(function() {get_cable();}, 100);
 
-    setTimeout(function() {get_bind();}, 30);
-    setTimeout(function() {get_mac();}, 40);
-    setTimeout(function() {get_util();}, 50);
+    setTimeout(function() {get_bind();}, 150);
+    setTimeout(function() {get_mac();}, 200);
+    setTimeout(function() {get_util();}, 250);
 }
 
 

@@ -10,17 +10,27 @@
 
 {% block leftrow %}
     <div class="diagLongBlock" style="margin: 0 auto 0 auto;">
-        <div class="diagMiniBlock" id="portInfo"></div>
-        <div class="diagMiniBlock" id="signalInfo"></div>
-        <div class="diagMiniBlock" id="activeInfo"></div>
+        <div class="diagMiniBlock" id="portInfo">
+            <button class="diagButton" style="width: 236px; height: 60px;"></button>
+        </div>
+        <div class="diagMiniBlock" id="signalInfo">
+            <button class="diagButton" style="width: 236px;"></button>
+        </div>
+        <div class="diagMiniBlock" id="activeInfo">
+            <button class="diagButton" style="width: 236px;"></button>
+        </div>
         <div class="diagMiniBlock"></div>
     </div>
 {% endblock %}
 
 {% block rightrow %}
     <div class="diagLongBlock" style="margin: 0 auto 0 0;">
-        <div class="diagMiniBlock" id="macInfo"></div>
-        <div class="diagMiniBlock" id="openPortInfo"></div>
+        <div class="diagMiniBlock" id="macInfo">
+            <button class="diagButton" style="width: 236px; height: 60px;"></button>
+        </div>
+        <div class="diagMiniBlock" id="openPortInfo">
+            <button class="diagButton" style="width: 236px;"></button>
+        </div>
         <div class="diagMiniBlock"></div>
     </div>
 {% endblock %}
