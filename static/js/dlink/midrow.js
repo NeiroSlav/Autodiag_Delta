@@ -72,7 +72,7 @@ function get_mac_business(response) {
     b1['id'] = 'mainButton'
 
     var bn = setB()
-    bn['style'] = 'width: 176px; margin-left: 3px;'
+    bn['style'] = 'width: 176px;'
 
     if (response.error) {
         b1['color'] = bn['color'] = 'Red'
@@ -108,7 +108,7 @@ function get_mac_business(response) {
                 bn['color'] = 'Green'
             }
             if (all_macs != '') {
-                bn['style'] = 'width: 176px; margin-left: 60px;'
+                bn['style'] = 'width: 176px; margin-left: 62px;'
             }
             bn['text'] = key
             bn['onclick'] = "saveClip('"+key+"');"
@@ -136,14 +136,13 @@ function get_util_business(response) {
     b1['onclick'] = 'get_util();'
     b1['style'] = 'width: 236px;'
     b1['id'] = 'mainButton'
-    b1['color'] = 'Green'
 
     var b2 = setB()
     b2['style'] = 'width: 116px;'
     b2['id'] = ''
 
     var b3 = setB()
-    b3['style'] = 'width: 116px; margin-left: 3px;'
+    b3['style'] = 'width: 116px;'
     b3['id'] = ''
 
     if (response.error) {

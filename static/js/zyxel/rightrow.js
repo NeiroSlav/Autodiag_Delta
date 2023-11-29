@@ -9,7 +9,7 @@ function get_log_business (response) {
     var b3 = setB()
     b3['text'] = 'Весь лог'
     b3['onclick'] = 'get_full_log();'
-    b3['style'] = 'width: 116px; margin-left:3px;'
+    b3['style'] = 'width: 116px;'
     b3['id'] = 'mainButton2'
 
     var diagLog = ['<div class="diagLog">','</div>']
@@ -54,7 +54,7 @@ function get_full_log_business (response) {
     var b3 = setB()
     b3['text'] = 'Весь лог'
     b3['onclick'] = 'get_full_log();'
-    b3['style'] = 'width: 116px; margin-left:3px;'
+    b3['style'] = 'width: 116px;'
     b3['id'] = 'mainButton2'
 
     var diagLog = ['<div class="diagLog">','</div>']

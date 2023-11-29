@@ -6,7 +6,6 @@ function get_signal_business (response) {
     b1['id'] = 'mainButton'
 
     var b2 = setB()
-    b2['style'] = 'margin-left: 3px;'
     b2['onclick'] = "copyDiag('signal')"
 
     if (response.error) {  // если вернулась ошибка

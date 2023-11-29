@@ -1,20 +1,15 @@
 var get_port_url = "/raisecom/get_port/";
 var disable_port_url = "/raisecom/disable_port/";
 
-var get_mac_url = "/raisecom/get_errors/";
+var get_mac_url = "/raisecom/get_mac/";
 
-var get_errors_url = "/raisecom/get_mac/";
+var get_errors_url = "/raisecom/get_errors/";
 
 
 document.addEventListener("DOMContentLoaded", function() {
     // код, который отработает при входе на страницу
 
-    still_active();  // подтверждает активность
-
-    setTimeout(function() {get_port();}, 0);
-    setTimeout(function() {get_errors();}, 30);
-
-    setTimeout(function() {get_mac();}, 20);
+    updateAll();
     setTimeout(function() {get_open_port();}, 0);
 
     // подтверждает активность токена раз в минуту
@@ -22,6 +17,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
 });
 
+function updateAll() {
+    setTimeout(function() {get_port();}, 0);
+    setTimeout(function() {get_errors();}, 30);
+
+    setTimeout(function() {get_mac();}, 20);
+}
 
 
 ////////////  ФУНКЦИИ ЛЕВОГО РЯДА:

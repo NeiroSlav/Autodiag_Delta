@@ -10,8 +10,8 @@ function get_port_business(response) {
     var b6 = setB() // кнопка "Ошибки"
 
 
-    b2['style'] = 'width: 176px; margin-left: 3px;'
-    b6['style'] = 'width: 176px; margin-left: 60px;'
+    b2['style'] = 'width: 176px;'
+    b6['style'] = 'width: 176px; margin-left: 62px;'
     b2['onclick'] = b6['onclick'] = "copyDiag('port')"
 
 
@@ -52,7 +52,7 @@ function get_mac_business(response) {
     b1['id'] = 'mainButton'
 
     var bn = setB()
-    bn['style'] = 'width: 176px; margin-left: 3px;'
+    bn['style'] = 'width: 176px;'
 
     if (response.error) {
         b1['color'] = bn['color'] = 'Red'
@@ -89,7 +89,7 @@ function get_mac_business(response) {
                 bn['color'] = 'Green'
             }
             if (all_macs != '') {
-                bn['style'] = 'width: 176px; margin-left: 60px;'
+                bn['style'] = 'width: 176px; margin-left: 62px;'
             }
             bn['text'] = key
             bn['onclick'] = "saveClip('"+key+"');"

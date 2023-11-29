@@ -14,11 +14,21 @@ var get_full_log_url = "/dlink/get_full_log/";
 
 console.log(token);
 
+
 document.addEventListener("DOMContentLoaded", function() {
     // код, который отработает при входе на страницу
 
-    still_active();  // подтверждает активность
+    updateAll();
+    setTimeout(function() {get_open_port();}, 0);
+    setTimeout(function() {get_log();}, 100);
 
+    // подтверждает активность токена раз в минуту
+    setInterval(still_active, 60000);
+
+});
+
+
+function updateAll() {
     setTimeout(function() {get_port();}, 0);
     setTimeout(function() {get_errors();}, 10);
     setTimeout(function() {get_cable();}, 20);
@@ -26,17 +36,7 @@ document.addEventListener("DOMContentLoaded", function() {
     setTimeout(function() {get_bind();}, 30);
     setTimeout(function() {get_mac();}, 40);
     setTimeout(function() {get_util();}, 50);
-
-    setTimeout(function() {get_open_port();}, 0);
-
-    setTimeout(function() {get_log();}, 100);
-
-
-    // подтверждает активность токена раз в минуту
-    setInterval(still_active, 60000);
-
-});
-
+}
 
 
 ////////////  ФУНКЦИИ ЛЕВОГО РЯДА:

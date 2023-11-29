@@ -24,7 +24,6 @@ class Zyxel(SwitchMixin):
 
         answer = self.session.read(timeout=2, string='RX CRC')
         answer = answer.replace('\\t', ' ')
-        print(answer)
         if not ('RX CRC' in answer):
             return {'error': True}
 

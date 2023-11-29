@@ -2,81 +2,88 @@
     width: 56px;
     height: 28px;
     margin-top: 4px;
-    background-color: #FFFFFF;
-    border: 2px solid #999999;
-    border-radius: 4px;
+    margin-right: 2px;
+    margin-left: 2px;
+    background-color: #CCC;
+    border: 3px solid #CCC;
+    border-radius: 5px;
     font-weight: bold;
-    color: #000000;
+    color: #000;
     font-size: 15px;
     transition: 0.1s;
+
 }
 .diagButton:hover {
-    background-color: #DDDDDD;
+    background-color: #FFF;
 }
 .diagButton:active {
-    background-color: #DDDDDD;
-    border: 2px solid #000000;
+    background-color: #FFF;
+    border: 3px solid #333;
 }
 
 .diagButtonRed {
     width: 56px;
     height: 28px;
     margin-top: 4px;
-    background-color: #FFFFFF;
-    border: 2px solid #FF8855;
-    border-radius: 4px;
+    margin-right: 2px;
+    margin-left: 2px;
+    background-color: #FFDD00;
+    border: 3px solid #FFDD00;
+    border-radius: 5px;
     font-weight: bold;
-    color: #000000;
+    color: #000;
     font-size: 15px;
     transition: 0.1s;
 }
 .diagButtonRed:hover {
-    background-color: #FFC599;
-    background-color: #DDDDDD;
+    background-color: #FFF;
 }
 .diagButtonRed:active {
-    background-color: #DDDDDD;
-    border: 2px solid #000000;
+    background-color: #FFF;
+    border: 3px solid #333;
 }
 
 .diagButtonGreen {
     width: 56px;
     height: 28px;
     margin-top: 4px;
-    background-color: #FFFFFF;
-    border: 2px solid #33DD33;
-    border-radius: 4px;
+    margin-right: 2px;
+    margin-left: 2px;
+    background-color: #55DD55;
+    border: 3px solid #33DD33;
+    border-radius: 5px;
     font-weight: bold;
-    color: #000000;
+    color: #000;
     font-size: 15px;
     transition: 0.1s;
 }
 .diagButtonGreen:hover {
-    background-color: #CCFFBB;
-    background-color: #DDDDDD;
+    background-color: #FFF;
 }
 .diagButtonGreen:active {
-    background-color: #DDDDDD;
-    border: 2px solid #000000;
+    background-color: #FFF;
+    border: 3px solid #333;
 }
 
 .diagButtonBlue {
     width: 56px;
     height: 28px;
     margin-top: 4px;
-    background-color: #FFFFFF;
-    border: 2px solid #8888FF;
-    border-radius: 4px;
+    margin-right: 2px;
+    margin-left: 2px;
+    background-color: #384d84;
+    border: 3px solid #384d84;
+    border-radius: 5px;
     font-weight: bold;
-    color: #000000;
+    color: #FFF;
     font-size: 15px;
     transition: 0.1s;
 }
 .diagButtonBlue:hover {
-    background-color: #DDDDFF;
-    background-color: #DDDDDD;
+    color: #000;
+    background-color: #FFF;
 }
 .diagButtonBlue:active {
-    background-color: #DDDDDD;
-    border: 2px solid #000000;
+    background-color: #FFF;
+    border: 3px solid #55F;
 }

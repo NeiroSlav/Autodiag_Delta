@@ -7,11 +7,7 @@ var get_mac_url = "/foxgate/get_mac/";
 document.addEventListener("DOMContentLoaded", function() {
     // код, который отработает при входе на страницу
 
-    still_active();  // подтверждает активность
-
-    setTimeout(function() {get_port();}, 0);
-
-    setTimeout(function() {get_mac();}, 20);
+    updateAll();
     setTimeout(function() {get_open_port();}, 0);
 
     // подтверждает активность токена раз в минуту
@@ -19,6 +15,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
 });
 
+function updateAll() {
+    setTimeout(function() {get_port();}, 0);
+    setTimeout(function() {get_mac();}, 20);
+}
 
 
 ////////////  ФУНКЦИИ ЛЕВОГО РЯДА:

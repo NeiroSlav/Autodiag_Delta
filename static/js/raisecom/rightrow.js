@@ -16,8 +16,8 @@ function get_errors_business(response) {
     b2['onclick'] = b3['onclick'] = b4['onclick'] = b5['onclick'] = "copyDiag('errors')"
 
 
-    b2['style'] = 'width: 116px; margin-left: 3px'
-    b3['style'] = b4['style'] = b5['style'] = 'width: 116px; margin-left: 120px'
+    b2['style'] = 'width: 116px;'
+    b3['style'] = b4['style'] = b5['style'] = 'width: 116px; margin-left: 122px'
 
     if (response.error) {
         b1['color'] = b2['color'] = b3['color'] = b4['color'] = b5['color'] = 'Red'

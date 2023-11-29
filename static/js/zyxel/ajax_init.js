@@ -11,20 +11,21 @@ var get_full_log_url = "/zyxel/get_full_log/";
 document.addEventListener("DOMContentLoaded", function() {
     // код, который отработает при входе на страницу
 
-    still_active();  // подтверждает активность
-
-    setTimeout(function() {get_port();}, 0);
-    setTimeout(function() {get_cable();}, 20);
-
-    setTimeout(function() {get_mac();}, 40);
+    updateAll();
     setTimeout(function() {get_open_port();}, 0);
-
     setTimeout(function() {get_log();}, 100);
 
     // подтверждает активность токена раз в минуту
     setInterval(still_active, 60000);
 
 });
+
+function updateAll() {
+    setTimeout(function() {get_port();}, 0);
+    setTimeout(function() {get_cable();}, 20);
+
+    setTimeout(function() {get_mac();}, 40);
+}
 
 
 

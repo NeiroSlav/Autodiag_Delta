@@ -23,14 +23,12 @@
 {% block imports %}
 {% endblock %}
 
-<div class="mainMenu" style="z-index: 1000; margin-top: 0px">
-        <td align="left" id="logo_block" width="15%">
-            <a href="https://gcdbviewer.matrixhome.net/" title="gcdbviewer" style="color: #CCC; border: none; text-decoration: none;">
-                <div style="height: 26px; padding-left: 66px; line-height: 26px; font-size: 17px; font-weight: bold; float: left;">
-                </div>
-            </a>
-        </td>
-</div>
+
+<a href="https://gcdbviewer.matrixhome.net/" class="logo"></a>
+
+<button onclick="copyDiag('all');" class="copy" ></button>
+
+<button onclick="updateAll();" class="update" ></button>
 
 
 <div class="topMargin"></div>

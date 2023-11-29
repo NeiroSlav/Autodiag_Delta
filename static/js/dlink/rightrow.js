@@ -9,7 +9,7 @@ function get_log_business (response) {
     var b3 = setB()
     b3['text'] = 'Весь лог'
     b3['onclick'] = 'get_full_log();'
-    b3['style'] = 'width: 116px; margin-left:3px;'
+    b3['style'] = 'width: 116px;'
     b3['id'] = 'mainButton2'
 
 
@@ -49,11 +49,7 @@ function get_log_business (response) {
         if (response.ok) {  // если ок
             b1['color'] = b2['color'] = 'Green'
 
-            if (response.log.length < 5) {
-                return getB(b1) + getB(b3) + diagLog[0] + all_logs + diagLog[1] + getB(b2)
-            } else {
-                return getB(b1) + getB(b3) + diagLogLong[0] + all_logs + diagLogLong[1] + getB(b2)
-            }
+            return getB(b1) + getB(b3) + diagLogLong[0] + all_logs + diagLogLong[1] + getB(b2)
 
         } else {  // если не ок
             b1['color'] = 'Red'
@@ -84,7 +80,7 @@ function get_full_log_business (response) {
     var b3 = setB()
     b3['text'] = 'Весь лог'
     b3['onclick'] = 'get_full_log();'
-    b3['style'] = 'width: 116px; margin-left:3px;'
+    b3['style'] = 'width: 116px;'
     b3['id'] = 'mainButton2'
 
     var diagLogLong = ['<div class="diagLog" style="height: 312px;">','</div>']

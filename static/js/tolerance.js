@@ -14,7 +14,6 @@ function get_open_port_business(response) {
     b1['id'] = 'mainButton'
 
     var b2 = setB()
-    b2['style'] = 'margin-left: 3px;'
 
     if (response.port) {
         b1['color'] = b2['color'] = 'Green'

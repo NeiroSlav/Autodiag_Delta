@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/buttons.css') }}">
+    <title>{{title}}</title>
+
+</head>
+<body>
+
+<a href="https://gcdbviewer.matrixhome.net/" class="logo"></a>
+
+<div class="topMargin"></div>
+
+<div class="diagTopFrame" style="border-radius: 10px 10px 10px 10px;">
+    <div class="diagTopFrameSub" style="border-radius: 10px 10px 10px 10px;">
+        {{ topinfo }}
+    </div>
+</div>
+
+</body>
+</html>

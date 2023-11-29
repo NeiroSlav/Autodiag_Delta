@@ -13,10 +13,9 @@ function get_port_business(response) {
     b2['onclick'] = b3['onclick'] = b5['onclick'] = "copyDiag('port')"
 
 
-    b2['style'] = 'width: 176px; margin-left: 3px;'
-    b3['style'] = 'width: 116px; margin-left: 60px;'
-    b4['style'] = 'margin-left: 3px;'
-    b5['style'] = 'width: 176px; margin-left: 60px;'
+    b2['style'] = 'width: 176px;'
+    b3['style'] = 'width: 116px; margin-left: 62px;'
+    b5['style'] = 'width: 176px; margin-left: 62px;'
 
 
     b4['color'] = 'Blue'

@@ -11,14 +11,13 @@ function get_port_business(response) {
     var b5 = setB() // кнопка "Аптайм"
 
 
-    b2['style'] = 'width: 176px; margin-left: 3px;'
-    b3['style'] = 'width: 116px; margin-left: 60px;'
-    b5['style'] = 'width: 176px; margin-left: 60px;'
+    b2['style'] = 'width: 176px;'
+    b3['style'] = 'width: 116px; margin-left: 62px;'
+    b5['style'] = 'width: 176px; margin-left: 62px;'
     b2['onclick'] = b3['onclick'] = b5['onclick'] = "copyDiag('port')"
 
     var b4 = setB() // кнопка "Выкл"
     b4['color'] = 'Blue'
-    b4['style'] = 'margin-left: 3px;'
     if (response.error) {
         b1['color'] = b2['color'] = b3['color'] = b4['color'] = b5['color'] = 'Red'
         b2['text']= b3['text'] = b4['text']= b5['text'] = 'ошибка'
@@ -72,7 +71,7 @@ function get_mac_business(response) {
     b1['id'] = 'mainButton'
 
     var bn = setB()
-    bn['style'] = 'width: 176px; margin-left: 3px;'
+    bn['style'] = 'width: 176px;'
 
     if (response.error) {
         b1['color'] = bn['color'] = 'Red'
@@ -108,7 +107,7 @@ function get_mac_business(response) {
                 bn['color'] = 'Green'
             }
             if (all_macs != '') {
-                bn['style'] = 'width: 176px; margin-left: 60px;'
+                bn['style'] = 'width: 176px; margin-left: 62px;'
             }
             bn['text'] = key
             bn['onclick'] = "saveClip('"+key+"');"

@@ -49,22 +49,6 @@ function copyDiag(key) {
                 copyString += diagDict[key] + '\n';
             }
         }
-
     }
-
     saveClip(copyString);
-
 }
-
-
-// Функция обработки события нажатия клавиш
-function handleKeyPress(event) {
-    // Проверяем, что нажаты именно Ctrl и C
-    if (event.ctrlKey && event.key === 'c') {
-        // Запускаем функцию копирования данных в буфер обмена
-        copyDiag('all');
-    }
-}
-
-// Добавляем обработчик события к элементу (например, к document)
-document.addEventListener('keydown', handleKeyPress);

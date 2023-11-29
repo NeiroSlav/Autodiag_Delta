@@ -1,12 +1,11 @@
 {% extends 'index.html' %}
 
 {% block imports %}
-
     <script src="{{ url_for('static', filename='js/raisecom/ajax_init.js') }}"></script>
     <script src="{{ url_for('static', filename='js/raisecom/leftrow.js') }}"></script>
     <script src="{{ url_for('static', filename='js/raisecom/rightrow.js') }}"></script>
-
 {% endblock %}
+
 
 {% block leftrow %}
     <div class="diagLongBlock" style="margin: 0 auto 0 auto;">
@@ -20,9 +19,6 @@
     <div class="diagLongBlock" style="margin: 0 auto 0 0;">
         <div class="diagMiniBlock" id="errorsInfo"></div>
         <div class="diagMiniBlock" id="openPortInfo"></div>
-        <div class="diagMiniBlock">
-            <button class="diagButton" style="width: 236px;" onclick="copyDiag('all')">Копировать всё</button>
-        </div>
         <div class="diagMiniBlock"></div>
     </div>
 {% endblock %}
