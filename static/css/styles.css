@@ -6,12 +6,13 @@
 }
 
 body {
-	background:#CCC;
+	background:#AAA;
 	color:#000;
 	margin:0;
 	padding:0;
 	font-family:Arial;
 	font-size:13px;
+	height: calc(100vh);
 }
 
 .mainFrameSub {
