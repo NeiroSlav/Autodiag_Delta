@@ -224,7 +224,7 @@ class Dlink(SwitchMixin):
                     result['snmp'].append(elem)
 
         if attempt > 20:
-            result['log'].append('Прочитанный лог меньше суток! Вероятно, кто-то ПОСил.')
+            result['log'].append('Прочитал лог меньше суток! Вероятно, кто-то ПОСил.')
 
         # 'ок':True будет, если длина лога < 50, и нет штормов/колец
         result['ok'] = (len(result['log']) < 50) and (not result['snmp'])
