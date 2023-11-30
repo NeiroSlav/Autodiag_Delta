@@ -193,13 +193,16 @@ class Dlink(SwitchMixin):
         # print(answer)
 
         # пока охват меньше заданных часов, и проходов меньше 200
-        while (log_time_range < hours) and (attempt < 200):
+        while log_time_range < hours:
 
             attempt += 1
+            if attempt > 20:
+                break
+
             self.session.push('nnn')
             answer = self.session.read()
-            answer = answer.replace('\\n\\r     ', ' ')
-            answer = ' '.join(answer.split())
+            answer = answer.replace('\\n\\r     ', ' +++')
+            answer = ' '.join(answer.split()).replace('+++', '')
 
             for elem in self._findall(pattern, answer):
                 log.append(elem.strip('\\'))
@@ -219,6 +222,9 @@ class Dlink(SwitchMixin):
                 result['log'].append(elem)
                 if ('storm' in elem) or ('loop' in elem):
                     result['snmp'].append(elem)
+
+        if attempt > 20:
+            result['log'].append('Прочитанный лог меньше суток! Вероятно, кто-то ПОСил.')
 
         # 'ок':True будет, если длина лога < 50, и нет штормов/колец
         result['ok'] = (len(result['log']) < 50) and (not result['snmp'])
