@@ -19,7 +19,7 @@ function get_log_business (response) {
 
     var diagLog = ['<div class="diagLog">','</div>']
     var diagLogLong = ['<div class="diagLog" style="height: 280px;">','</div>']
-    var diagLogRed = ['<div class="diagLog" style="border: 3px solid #FFDD00; height: 200px;">','</div>']
+    var diagLogRed = ['<div class="diagLog" style="border-color: #FFDD00 ; height: 280px; background-color: #FFDD00;">','</div>']
 
     var diagSnmp = ['<div class="diagLog" style="height: 88px;">','</div>']
     var diagLogBlock = ['<div class="diagLogBlock">','</div>']
@@ -28,7 +28,7 @@ function get_log_business (response) {
         b1['color'] = b2['color'] = 'Red'
         b2['text'] = 'ошибки они такие...'
         errMsg = diagLogBlock[0] + 'ошибка проверки лога' + diagLogBlock[1]
-        return getB(b1) + diagLogRed[0] + errMsg + diagLogRed[1] + getB(b2)
+        return getB(b1) + getB(b3) + diagLogRed[0] + errMsg + diagLogRed[1] + getB(b2)
     } else {
 
         var all_logs = ''  // составление списка лога
@@ -85,7 +85,7 @@ function get_full_log_business (response) {
 
     var diagLogLong = ['<div class="diagLog" style="height: 312px;">','</div>']
     var diagLogBlock = ['<div class="diagLogBlock">','</div>']
-    var diagLogRed = ['<div class="diagLog" style="border: 2px solid #FF8855; height: 200px;">','</div>']
+    var diagLogRed = ['<div class="diagLog" style="border-color: #FFDD00 ; height: 312px; background-color: #FFDD00;">','</div>']
 
 
     if (response.error) {  // если вернулась ошибка

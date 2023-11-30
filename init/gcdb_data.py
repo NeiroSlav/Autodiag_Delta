@@ -9,10 +9,13 @@ class GcdbData:
                  "switch_port",
                  "pon_port",
                  "abon_ip",
-                 "mac_list")
+                 "mac_list",
+                 "anumber")
 
     def __init__(self, request):
+
         self.username = request.args.get('username')
+        self.anumber = request.args.get('anumber')
 
         self.switch_ip = request.args.get('switch_ip')
         self.switch_port = request.args.get('switch_port')
@@ -33,6 +36,7 @@ class GcdbData:
         )
 
         logging.info(f'{self.username} on {self.switch_ip} : {self.switch_port} : {self.pon_port}')
+
 
         if not (self.username and self.switch_ip and self.switch_port):
             raise DiagError('Неполный запрос')

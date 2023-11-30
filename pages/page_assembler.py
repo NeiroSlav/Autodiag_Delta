@@ -3,6 +3,16 @@ from connections import Tolerance, Telnet
 from init import *
 
 
+@app.route("/test/<switch_type>/")
+def test_page(switch_type):
+    return render_template(  # рендер тестовой страницы
+        f'{switch_type}.html',
+        switchip='192.168.13.54',
+        switchtype=switch_type.upper(),
+        topinfo='192.168.13.54 : 12',
+        title=f'D 192.168.13.54')
+
+
 # вход на свитч, перенаправление на страницу свитча
 @app.route("/", methods=["GET"])
 def main_redirect():
@@ -60,7 +70,10 @@ def switch_page(switch_type, token):
 
         return render_template(  # рендер страницы диагностики
             f'{switch_type}.html',
-            topinfo=f'Вы на {switch_type.title()} {switch_info}',
+            anumber=gcdb_data.anumber,
+            switchip=gcdb_data.switch_ip,
+            switchtype=switch_type.upper(),
+            topinfo=f'{switch_type.title()} {switch_info}',
             title=f'{switch_type.title()[0]} {switch_info}',
             token=token)
 

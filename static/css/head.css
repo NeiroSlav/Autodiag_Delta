@@ -1,0 +1,45 @@
+.head-button {
+    margin-right: 7px;
+    margin-left: 2px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 3px solid #384d84;
+    transition: 0.1s;
+    float: left;
+    font-size: 20px;
+    color: #FFF;
+}
+.head-button:hover {
+    background-color: #000;
+    border: 3px solid #CCC;
+}
+.head-button:active {
+    background-color: #FFF;
+    border: 3px solid #CCC;
+    border-radius: 15px;
+}
+
+
+.topMargin {
+    height: 32px;
+}
+
+.diagTopFrame {
+    height: 102px;
+    background: #FAFAFA;
+    min-width: 800px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    width: calc(100vw - 150px);
+    border-radius: 10px 10px 0 0;
+    display: flex;
+}
+
+.diagTopFrameSub {
+    height: 40px;
+    width: 244px;
+    margin: 33px auto 0 0;
+}
+

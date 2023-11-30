@@ -9,9 +9,10 @@ from flask import Flask, jsonify, render_template, redirect, request
 # инициализация лога
 import logging
 import datetime
-filename = str(datetime.datetime.now()).replace(' ', '_') + '.log'
-# filename = 'log.log'
-log_file_path = os.path.join('log', filename)
+date_time = str(datetime.datetime.now()).split('.')[0]
+date_time = date_time.replace(' ', '-').replace(':', '-')
+log_file_path = os.path.join('log', f'LOG-{date_time}.log')
+
 logging.basicConfig(level=logging.INFO, filename=log_file_path, filemode="w",
                     format="%(asctime)s %(levelname)s | %(message)s")
 
@@ -179,6 +180,7 @@ def token_watch_activity():
     logging.critical('Token watcher started')
 
     while True:
+        time.sleep(60)
         current_time = int(time.time())
         tokens_to_del = []
         log_string = ''
@@ -216,7 +218,6 @@ def token_watch_activity():
 
             # сборка мусора
             gc.collect()
-            time.sleep(60)
 
         except Exception as ex:
             logging.critical(f'error while token dict checking:\n{ex}')

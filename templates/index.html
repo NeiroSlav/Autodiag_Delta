@@ -4,6 +4,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/head.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/buttons.css') }}">
     <title>{{title}}</title>
     <script src="{{ url_for('static', filename='js/buttons.js') }}"></script>
@@ -27,18 +28,62 @@
 {% endblock %}
 
 
-<a href="https://gcdbviewer.matrixhome.net/" class="logo"></a>
 
-<button onclick="copyDiag('all');" class="copy" ></button>
 
-<button onclick="updateAll();" class="update" ></button>
+
 
 
 <div class="topMargin"></div>
 
 <div class="diagTopFrame">
+    <div class="diagTopFrameSub" style="margin-left: auto;">
+
+            <button class="head-button"
+                    onclick="openInNewTab('https://gcdbviewer.matrixhome.net/usersearch.php?anumber=' + '{{ anumber }}');" style="
+                    background: #384d84 url('{{  url_for('static', filename='img/matrix.png') }}');
+                    background-position: 0px 1px; background-repeat: no-repeat; background-size: 33px;"
+            ></button>
+
+            <button class="head-button"
+                    onclick="copyDiag('all');" style="
+                    background: #384d84 url('{{  url_for('static', filename='img/clipboard.png') }}');
+                    background-position: 2px 0px; background-repeat: no-repeat; background-size: 30px;"
+            ></button>
+
+            <button class="head-button"
+                    onclick="updateAll();" style="
+                    background: #384d84 url('{{  url_for('static', filename='img/update.png') }}');
+                    background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
+            ></button>
+
+            <button class="head-button"
+                    onclick="" style="
+                    background: #384d84 url();
+                    background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
+            ></button>
+
+            <button class="head-button"
+                    onclick="" style="margin-right: 0;
+                    background: #384d84 url();
+                    background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
+            ></button>
+
+    </div>
+
+
     <div class="diagTopFrameSub">
-        {{ topinfo }}
+        <button class="diagButton"
+                style="width: 236px; height: 40px; margin-top: 0; font-size: 18px;">
+            {{ topinfo }}
+        </button>
+
+    </div>
+
+    <div class="diagTopFrameSub">
+        <button class="diagButton"
+                style="width: 236px; height: 40px; margin-top: 0; font-size: 18px;"
+                onclick="saveClip('{{ switchip }}')">
+        </button>
     </div>
 </div>
 
