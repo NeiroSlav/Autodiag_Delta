@@ -12,6 +12,7 @@ class Telnet:
 
     _channel = None
     switch_type = None
+    switch_model = None
 
     def __init__(self, gcdb_data):
         self.switch_ip = gcdb_data.switch_ip
@@ -80,6 +81,9 @@ class Telnet:
                 if re.search(key, str(answer)):  # поиск совпадения в словаре свитчей
                     self.switch_type = var[0]
                     self._login_funk = var[1]
+                    if self.switch_type == 'dlink':
+                        self.switch_model = re.search(r'DES[0-9\-]+', answer).group()
+
                     return True
 
     def close(self):

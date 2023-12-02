@@ -9,6 +9,9 @@ class Dlink(SwitchMixin):
 
     def __init__(self, session: Telnet):
         self.session = session
+        self.model = session.switch_model
+        ports = int(self.model.split('-')[-1])
+        self.allowed_ports = 24 if ports > 24 else (ports - 2)
         self.session.push('enable clipaging')
         self.session.read()
         self.test_methods = [  # методы для тестов
@@ -243,7 +246,6 @@ class Dlink(SwitchMixin):
                 return {'error': True}
 
             answer = answer.replace('\\t', '')
-
             rx = self._find(r'RX Bytes +[0-9]+ +[0-9]+', answer).split()[-1]
             tx = self._find(r'TX Bytes +[0-9]+ +[0-9]+', answer).split()[-1]
 
@@ -252,11 +254,10 @@ class Dlink(SwitchMixin):
             tx = int(tx) / 128
 
             # если трафик больше мбита, переводит в них
+            value = ' KB/s'
             if tx > 1024 or rx > 1024:
                 value = ' MB/s'
                 rx, tx = rx/1024, tx/1024
-            else:
-                value = ' KB/s'
 
             result['rx'] = f'{int(rx)} {value}'
             result['tx'] = f'{int(tx)} {value}'

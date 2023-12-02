@@ -29,7 +29,7 @@ def main_redirect():
             raise DiagError(f'Тип {switch_ip} не определён')
 
         if telnet.switch_type == 'DGS':
-            raise DiagError(f'Это DGS, родной. Кыш отсюда')
+            raise DiagError(f'Гигабитный свитч, доступ запрещён')
 
         #  создание токена, сохранение данных, запись в сессию
         token = token_init()
@@ -52,15 +52,14 @@ def switch_page(switch_type, token):
         gcdb_data = token_get(token, 'gcdb_data')
         telnet = token_get(token, 'telnet')
 
-        if switch_type == 'delete':  # удаляет токен
-            token_del(token)
-            raise DiagError(f'Вы удалили токен {token}')
-
-        elif telnet.switch_type != switch_type:  # редирект, если другой свитч
+        if telnet.switch_type != switch_type:  # редирект, если другой свитч
             return redirect(f'/{telnet.switch_type}/{token}')
 
         switch = switch_class[switch_type](telnet)  # сохраняет в токен объект свитча
         token_set(token, 'switch', switch)
+
+        if int(gcdb_data.switch_port) > switch.allowed_ports:  # если порт выше допустимого
+            return DiagError('Гигабитный порт, доступ запрещён!')
 
         switch_info = f'{gcdb_data.switch_ip} : {gcdb_data.switch_port}'
         if gcdb_data.pon_port:
@@ -70,16 +69,18 @@ def switch_page(switch_type, token):
             f'{switch_type}.html',
             anumber=gcdb_data.anumber,
             switchip=gcdb_data.switch_ip,
-            switchtype=switch_type.upper(),
-            topinfo=f'{switch_type.title()} {switch_info}',
+            switchtype=f'{switch_type.upper()} {switch.model}',
+            topinfo=switch_info,
             title=f'{switch_type.title()[0]} {switch_info}',
             token=token)
 
     except EOFError:  # если сессия telnet была разорвана
+        token_del(token)
         return render_error('Сессия Telnet разорвана')
 
     except KeyError:  # если не нашлось токена
         return render_error(f'Токен {token} удалён')
 
     except Exception as ex:
+        token_del(token)
         return render_error(ex)
