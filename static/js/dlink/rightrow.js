@@ -21,7 +21,7 @@ function get_log_business (response) {
     var diagLogLong = ['<div class="diagLog" style="height: 280px;">','</div>']
     var diagLogRed = ['<div class="diagLog" style="border-color: #FFDD00 ; height: 280px; background-color: #FFDD00;">','</div>']
 
-    var diagSnmp = ['<div class="diagLog" style="height: 88px;">','</div>']
+    var diagSnmp = ['<div class="diagLog" style="height: 86px;">','</div>']
     var diagLogBlock = ['<div class="diagLogBlock">','</div>']
 
     if (response.error) {  // если вернулась ошибка
