@@ -10,8 +10,6 @@ class Dlink(SwitchMixin):
     def __init__(self, session: Telnet):
         self.session = session
         self.model = session.switch_model
-        ports = int(self.model.split('-')[-1])
-        self.allowed_ports = 24 if ports > 24 else (ports - 2)
         self.session.push('enable clipaging')
         self.session.read()
         self.test_methods = [  # методы для тестов
@@ -271,10 +269,13 @@ class Dlink(SwitchMixin):
         self.session.push('nnnn')
         answer = self.session.read(string='ARP')
 
+        print(answer)
+
         if not ('ARP' in answer):
             return {'error': True}
 
-        loose = bool(self._find('r' + str(port) + '[ ]+Loose', answer))
+        strict = bool(self._find('r ' + str(port) + '[ ]+Strict', answer))
+        loose = not strict
         return {'ok': loose, 'error': False}
 
     # включение/выключение порта

@@ -31,6 +31,12 @@ def main_redirect():
         if telnet.switch_type == 'DGS':
             raise DiagError(f'Гигабитный свитч, доступ запрещён')
 
+        if telnet.switch_type == 'dlink':
+            ports = int(telnet.switch_model[-2] + telnet.switch_model[-1])
+            allowed_ports = 24 if ports > 24 else (ports - 2)
+            if int(gcdb_data.switch_port) > allowed_ports:
+                raise DiagError(f'Гигабитный порт, доступ запрещён')
+
         #  создание токена, сохранение данных, запись в сессию
         token = token_init()
         token_set(token, 'gcdb_data', gcdb_data)
@@ -57,9 +63,6 @@ def switch_page(switch_type, token):
 
         switch = switch_class[switch_type](telnet)  # сохраняет в токен объект свитча
         token_set(token, 'switch', switch)
-
-        if int(gcdb_data.switch_port) > switch.allowed_ports:  # если порт выше допустимого
-            return DiagError('Гигабитный порт, доступ запрещён!')
 
         switch_info = f'{gcdb_data.switch_ip} : {gcdb_data.switch_port}'
         if gcdb_data.pon_port:
