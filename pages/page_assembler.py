@@ -1,5 +1,5 @@
 from connections import switch_class
-from connections import Tolerance, Telnet
+from connections import Telnet, fping, nmap
 from init import *
 
 
@@ -19,10 +19,9 @@ def main_redirect():
     try:
         #  инициализация данных из GET запроса
         gcdb_data = GcdbData(request)  # парсинг GET запроса
-        tolerance = Tolerance()  # логин на tolerance
         switch_ip = gcdb_data.switch_ip
 
-        if not tolerance.ping(switch_ip):  # если свитч не отвечает
+        if not fping(switch_ip):  # если свитч не отвечает
             raise DiagError(f'Свитч {switch_ip} лежит')
 
         telnet = Telnet(gcdb_data)  # логин на свитч
@@ -35,7 +34,6 @@ def main_redirect():
         #  создание токена, сохранение данных, запись в сессию
         token = token_init()
         token_set(token, 'gcdb_data', gcdb_data)
-        token_set(token, 'tolerance', tolerance)
         token_set(token, 'telnet', telnet)
 
         # если тип свитча определён, открыть его страницу

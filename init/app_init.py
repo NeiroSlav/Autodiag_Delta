@@ -102,10 +102,9 @@ def token_del(token: str):
                 logging.info('binding set strict automatically')
 
         try:
-            _token_dict[token]['tolerance'].close()
             _token_dict[token]['telnet'].close()
         except Exception as ex:
-            logging.error(f'cant close token connection {token}: \n{ex}')
+            logging.error(f'cant close telnet connection {token}: \n{ex}')
 
         wipe_list = tuple(_token_dict[token].keys())
         for key in wipe_list:
@@ -151,7 +150,6 @@ def use_token(func):
             func_answer = func(
                 token,  # извлекает данные по токену, передаёт в функцию
                 gcdb_data=token_get(token, 'gcdb_data'),
-                tolerance=token_get(token, 'tolerance'),
                 telnet=token_get(token, 'telnet'),
                 switch=token_get(token, 'switch'))
         except Exception as e:
