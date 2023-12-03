@@ -96,4 +96,4 @@ def dlink_get_full_log(token, **t_data):
 @use_token
 def dlink_get_util(token, **t_data):
     switch, port = t_data['switch'], t_data['gcdb_data'].switch_port
-    return switch.util(port)
+    return switch.util(port) | switch.flood()
