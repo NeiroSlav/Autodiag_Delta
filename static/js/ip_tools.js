@@ -19,7 +19,7 @@ function get_open_port_business(response) {
         b1['color'] = b2['color'] = 'Green'
         b1['text'] = 'Открытый порт:'
         b2['text'] = response.port
-        b2['onclick'] = "openInNewTab('http://" + response.ip + ":" + response.port + "');"
+        b2['onclick'] = "openInNewTab('" + response.protocol + "://" + response.ip + ":" + response.port + "');"
         return getB(b1) + getB(b2);
 
     } else {
