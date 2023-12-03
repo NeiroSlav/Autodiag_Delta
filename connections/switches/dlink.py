@@ -269,8 +269,6 @@ class Dlink(SwitchMixin):
         self.session.push('nnnn')
         answer = self.session.read(string='ARP')
 
-        print(answer)
-
         if not ('ARP' in answer):
             return {'error': True}
 

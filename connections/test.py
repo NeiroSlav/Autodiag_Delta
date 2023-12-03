@@ -28,3 +28,4 @@ def switch_test():
 
 
 switch_test()
+input()
