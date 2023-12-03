@@ -14,7 +14,7 @@ def dlink_get_port(token, **t_data):
 @use_token
 def dlink_disable_port(token, **t_data):
     # забирает аргумент из запроса
-    enable = request.args.get('enable') == 'true'
+    enable = bool(request.args.get('enable') == 'true')
     switch, gcdb_data = t_data['switch'], t_data['gcdb_data']
     ip, port = gcdb_data.switch_ip, gcdb_data.switch_port
 
@@ -64,11 +64,12 @@ def dlink_get_mac(token, **t_data):
     switch, gcdb_data = t_data['switch'], t_data['gcdb_data']
     port, mac_list = gcdb_data.switch_port, gcdb_data.mac_list
 
+    # если это первая проверка мака, перевод порта в луз, если он стрикт
     if token_get(token, 'first_time_flag'):
         if not switch.loose(port)['ok']:
             switch.set_bind(port, loose=True)
             token_changes(token, 'set_bind_loose')
-            token_set(token, 'first_time_flag', False)
+        token_set(token, 'first_time_flag', False)
 
     result = switch.mac(port, mac_list)
     return result

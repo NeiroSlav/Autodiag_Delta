@@ -19,13 +19,14 @@ class Zyxel(SwitchMixin):
     def port(self, port: int) -> dict:
         result = {'enabled': 'Enabled', 'port': 'Down', 'uptime': '0:00:00', 'errors': '0',
                   'ok': True, 'error': False}
+        self.session.read(timeout=0)
         self.session.push('q\n\n\n', read=True)
         self.session.push(f'\nsh int {port}')
         self.session.push('q\n\n\n')
 
-        answer = self.session.read(timeout=2, string='RX CRC')
+        answer = self.session.read(timeout=2, string=':0')
         answer = answer.replace('\\t', ' ')
-        if not ('RX CRC' in answer):
+        if not (':0' in answer):
             return {'error': True}
 
         port_patterns = [  # список для поиска в ответе и статусы
@@ -58,12 +59,13 @@ class Zyxel(SwitchMixin):
     # поиск мака
     def mac(self, port: int, macs: list = []) -> dict:
         result = {'mac': {}, 'ok': False, 'error': False}
-        self.session.read()
+        self.session.read(timeout=0)
         self.session.push(f'\nsh mac address-table port {port}')
 
         # ждёт ответ свитча
-        answer = self.session.read(timeout=2, string='Type')
-        if not ('Type' in answer):
+        answer = self.session.read(timeout=2, string='ype')
+
+        if not ('ype' in answer):
             return {'error': True}
 
         # перебор списка маков
@@ -78,7 +80,7 @@ class Zyxel(SwitchMixin):
     # диагностика кабеля
     def cable(self, port: int) -> dict:
         result = {'cable': [], 'ok': True, 'error': False}
-        self.session.read()
+        self.session.read(timeout=0)
         self.session.push(f'\ncable-diagnostics {port}')
         answer = self.session.read(timeout=2, string='pairB')
         answer = answer.replace('\\r', ' ').replace("'b'", '')
@@ -102,7 +104,7 @@ class Zyxel(SwitchMixin):
     # парсинг лога
     def log(self, port: int = 0) -> dict:
         result = {'log': [], 'ok': True, 'error': False}
-        self.session.read()
+        self.session.read(timeout=0)
         self.session.push('\nsh logging')
         self.session.push('\n'*3)
 

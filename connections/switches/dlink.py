@@ -20,10 +20,10 @@ class Dlink(SwitchMixin):
     # диагностика порта
     def port(self, port: int) -> dict:
         result = {'enabled': 'Enabled', 'port': '', 'ok': True, 'error': False}
-        self.session.read()
+        self.session.read(timeout=0)
         self.session.push(f'\nshow ports {port} ')
         answer = self.session.read(string='Speed', timeout=1)
-        self.session.push('q', read=True)
+        self.session.push('q')
 
         if self._find(r'[0-9][ ]+Disabled[ ]+', answer):
             result['enabled'] = 'Disabled'
@@ -48,11 +48,11 @@ class Dlink(SwitchMixin):
     # диагностика привязки
     def bind(self, port: int) -> dict:
         result = {'binding': {}, 'ok': True, 'error': False}
-        self.session.read()
+        self.session.read(timeout=0)
         self.session.push(f'\nshow address_binding dhcp_snoop binding_entry port {port}')
         answer = self.session.read(timeout=2, string='Entries')
         # print(str(answer))
-        self.session.push('q', read=True)
+        self.session.push('q')
         des_binding_patterns = [
             ['DES-3028',  # список паттернов для DES-3028
              r'Port[ ]+Status',
@@ -89,10 +89,10 @@ class Dlink(SwitchMixin):
     # поиск мака на порту
     def mac(self, port: int, macs: list = []) -> dict:
         result = {'mac': {}, 'ok': True, 'error': False}
-        self.session.read()
+        self.session.read(timeout=0)
         self.session.push(f'\nshow fdb port {port}')
         answer = self.session.read(timeout=2, string='Entries')
-        # print(answer)
+
         if not ('Entries' in answer):
             return {'error': True}
 
@@ -108,10 +108,10 @@ class Dlink(SwitchMixin):
     # поиск ошибок
     def errors(self, port: int) -> dict:
         result = {'errors': {}, 'ok': True, 'error': False}
-        self.session.read()
+        self.session.read(timeout=0)
         self.session.push(f'\nshow error ports {port}')
         answer = self.session.read(string='RX Frames', timeout=1)
-        self.session.push('\nq', read=True)
+        self.session.push('\nq')
 
         if not ('RX Frames' in answer):
             return {'error': True}
@@ -133,10 +133,10 @@ class Dlink(SwitchMixin):
     # диагностика кабеля
     def cable(self, port: int) -> dict:
         result = {'cable': [], 'ok': True, 'error': False}
-        self.session.read()
+        self.session.read(timeout=0)
         self.session.push(f'cable_diag ports {port}\n')
         answer = self.session.read(timeout=2, string='Result')
-        self.session.push('q\n', read=True)
+        self.session.push('q\n')
 
         if self._findall(r'Pair[A-Za-z0-9 ]+M', answer):
             pairs = self._finded
@@ -169,7 +169,7 @@ class Dlink(SwitchMixin):
     def log(self, port: int = 0, hours: int = 24) -> dict:
         result = {'snmp': [], 'log': [],
                   'ok': True, 'error': False}
-        self.session.read()
+        self.session.read(timeout=0)
         self.session.push('\nshow log')
         answer = self.session.read(timeout=2, string='Index')
         answer = answer.replace('\\n\\r      ', ' ')
@@ -177,7 +177,7 @@ class Dlink(SwitchMixin):
 
         # если лог не отобразился
         if not ('Index' in answer):
-            self.session.push('q', read=True)  # прервать команду лога
+            self.session.push('q')  # прервать команду лога
             return {'error': True}
 
         pattern = (  # паттерн любой записи лога
@@ -212,7 +212,7 @@ class Dlink(SwitchMixin):
                 log_bottom_time = self._find(r'[0-9-]+ [0-9]+:', log[-1])
                 log_time_range = log_last_time - self._time_to_hours(log_bottom_time)
 
-        self.session.push('q', read=True)  # прервать выдачу лога
+        self.session.push('q')  # прервать выдачу лога
 
         if port == 0:
             result['log'] = log
@@ -236,10 +236,10 @@ class Dlink(SwitchMixin):
         result = {'rx': 0, 'tx': 0, 'error': False}
 
         if port:
-            self.session.read()
+            self.session.read(timeout=0)
             self.session.push(f'show packet ports {port}')
             answer = self.session.read(1, 'TX Frames')
-            self.session.push('q\n', read=True)
+            self.session.push('q\n')
             if not ('TX Frames' in answer):
                 return {'error': True}
 
@@ -259,6 +259,35 @@ class Dlink(SwitchMixin):
 
             result['rx'] = f'{int(rx)} {value}'
             result['tx'] = f'{int(tx)} {value}'
+
+        return result
+
+    # проверка, есть ли флуд
+    def flood(self) -> dict:
+        result = {'flood': False, 'error': False}
+        self.session.read(timeout=0)
+        self.session.push('\nshow util ports')
+        answer = self.session.read(string='RX')
+        self.session.push('q')
+        if not ('RX' in answer):
+            return {'error': True}
+
+        answer = answer.split('\\n\\r')
+        rx_low = []
+        rx_high = []
+        for elem in answer:
+            try:
+                elem = int(elem.split()[1])
+            except:
+                elem = 0
+            finally:
+                if elem > 4_000:
+                    rx_high.append(elem)
+                elif elem:
+                    rx_low.append(elem)
+
+        if len(rx_low) < 4 and (rx_high[0]-rx_high[-1]) < 5_000:
+            return {'flood': True, 'flood_rx': rx_high[0], 'error': False}
 
         return result
 

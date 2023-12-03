@@ -20,6 +20,7 @@ class Raisecom(SwitchMixin):
     def port(self, port: int) -> dict:
         result = {'port': '', 'uptime': '00 days 00:00:00',
                   'enabled': True, 'ok': True, 'error': False}
+        self.session.read(timeout=0)
         self.session.push(f'\nsh interface port {port}')
         answer = self.session.read(timeout=2, string='Forward')
 
@@ -55,6 +56,7 @@ class Raisecom(SwitchMixin):
     # поиск мака
     def mac(self, port: int, macs: list = []) -> dict:
         result = {'mac': {}, 'ok': True, 'error': False}
+        self.session.read(timeout=0)
         self.session.push(f'\nsh mac-address-table l2-address port {port}')
         answer = self.session.read(timeout=2, string='-----')
         answer += self.session.read(timeout=0.3, string='#')
@@ -76,6 +78,7 @@ class Raisecom(SwitchMixin):
     # поиск ошибок
     def errors(self, port: int) -> dict:
         result = {'errors': {}, 'ok': True, 'error': False}
+        self.session.read(timeout=0)
         self.session.push(f'\nshow interface port {port} statistics')
         answer = self.session.read(timeout=2, string='Statistics')
         if not ('Statistics' in answer):
