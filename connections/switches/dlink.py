@@ -302,5 +302,5 @@ class Dlink(SwitchMixin):
         self.session.push(f'clear counter ports {port}', read=True)
         return {'ok': True}
 
-    def __del__(self):
-        print('dlink object deleted')
+    # def __del__(self):
+    #     print('dlink object deleted')

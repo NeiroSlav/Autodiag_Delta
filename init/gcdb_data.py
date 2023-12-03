@@ -39,5 +39,5 @@ class GcdbData:
         if not (self.username and self.switch_ip and self.switch_port):
             raise DiagError('Неполный запрос')
 
-    def __del__(self):
-        print('gcdb_data object deleted')
+    # def __del__(self):
+    #     print('gcdb_data object deleted')

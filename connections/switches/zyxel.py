@@ -144,5 +144,5 @@ class Zyxel(SwitchMixin):
         self.session.push('\nexit', read=True)
         self.session.push('\nexit', read=True, timeout=0.3)
 
-    def __del__(self):
-        print('zyxel object deleted')
+    # def __del__(self):
+    #     print('zyxel object deleted')

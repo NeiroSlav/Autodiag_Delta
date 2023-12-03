@@ -113,5 +113,5 @@ class Bdcom(SwitchMixin):
 
         return result
 
-    def __del__(self):
-        print('bdcom object deleted')
+    # def __del__(self):
+    #     print('bdcom object deleted')

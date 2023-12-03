@@ -106,5 +106,5 @@ class Raisecom(SwitchMixin):
 
         self.session.push('\nexit'*2, read=True)
 
-    def __del__(self):
-        print('raisecom object deleted')
+    # def __del__(self):
+    #     print('raisecom object deleted')

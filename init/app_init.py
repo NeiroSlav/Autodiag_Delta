@@ -106,12 +106,7 @@ def token_del(token: str):
         except Exception as ex:
             logging.error(f'cant close telnet connection {token}: \n{ex}')
 
-        wipe_list = tuple(_token_dict[token].keys())
-        for key in wipe_list:
-            del _token_dict[token][key]
-
         del _token_dict[token]
-        del wipe_list
 
 
 # копирование данных словаря токенов

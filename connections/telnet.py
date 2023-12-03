@@ -87,6 +87,8 @@ class Telnet:
             pass
         return True
 
+    #
+
     # методы логинов для свитчей
 
     def _dlink_login(self):
