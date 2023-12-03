@@ -11,8 +11,8 @@ class Telnet:
        Хранит информацию о типе свитча"""
 
     _channel = None
-    switch_type = None
-    switch_model = None
+    switch_type = ''
+    switch_model = ''
 
     def __init__(self, gcdb_data):
         self.switch_ip = gcdb_data.switch_ip
