@@ -21,12 +21,12 @@ def switch_test():
     print(session.switch_model)
     #
     switch = Dlink(session)
-    print(switch.port(9))
-    print(switch.flood())
-    print(switch.util(9))
+    print(switch.igmp(6))
+    print(switch.igmp(2))
+    print(switch.igmp(3))
+    print(switch.igmp(6))
+    print(switch.igmp(7))
 
-    print(switch.flood())
-    print(switch.util(9))
     # print(switch.set_port(GcdbData.switch_port, True))
     # print(switch.test_all(GcdbData.switch_port))
     # while True:

@@ -264,7 +264,6 @@ class Dlink(SwitchMixin):
 
     # проверка, есть ли флуд
     def flood(self) -> dict:
-        result = {'flood': False, 'error': False}
         self.session.read(timeout=0)
         self.session.push('\nshow util ports')
         answer = self.session.read(string='RX')
@@ -276,7 +275,7 @@ class Dlink(SwitchMixin):
         rx_low = []
         rx_high = []
         for elem in answer:
-            try:
+            try:  # пытается взять кол-во пакетов из строки
                 elem = int(elem.split()[1])
             except:
                 elem = 0
@@ -289,6 +288,32 @@ class Dlink(SwitchMixin):
         if len(rx_low) < 4 and (rx_high[0]-rx_high[-1]) < 5_000:
             return {'flood': True, 'flood_rx': rx_high[0], 'error': False}
 
+        return {'flood': False, 'error': False}
+
+    # проверка, есть ли подписки
+    def igmp(self, port: int) -> dict:
+        result = {'port': False, 'other': False, 'error': False}
+        self.session.read(timeout=0)
+        self.session.push('\nshow igmp_snooping host')
+        answer = self.session.read(string='Entries')
+        if not ('Entries' in answer):
+            return {'error': True}
+
+        subscribes = self._findall(r'[0-9]+ +[0-9.]+ +[0-9]+ +[0-9.]+', answer)
+        if not subscribes:
+            return result
+
+        port_igmp = 0  # поиск подписок нужного порта
+        for elem in subscribes:
+            if int(elem.split()[2]) == port:
+                port_igmp += 1
+
+        if port_igmp:  # если есть подписки порта
+            result['port'] = port_igmp
+            return result
+
+        #  если нет подписок нужного порта, укажет подписки других
+        result['other'] = len(subscribes) - port_igmp
         return result
 
     # проверка, в лузе ли порт

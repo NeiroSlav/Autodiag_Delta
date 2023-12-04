@@ -145,7 +145,7 @@ function get_util_business(response) {
 
     var b4 = setB()
     b4['style'] = 'width: 236px;'
-    b4['text'] = 'флуд не обнаружен'
+    b4['text'] = 'Флуд не обнаружен'
 
     var b5 = setB()
 
@@ -164,7 +164,7 @@ function get_util_business(response) {
         if (response.flood) {
             b3['color'] = b4['color'] = 'Red'
             b3['style'] = b4['style'] = 'width: 116px;'
-            b3['text'] = 'тут флуд:'
+            b3['text'] = 'Есть флуд:'
             b4['text'] = response.flood_rx + ' frame'
             return util_buttons + getB(b3) + getB(b4);
         } else {
