@@ -107,26 +107,39 @@ class Dlink(SwitchMixin):
 
     # поиск ошибок
     def errors(self, port: int) -> dict:
-        result = {'errors': {}, 'ok': True, 'error': False}
-        self.session.read(timeout=0)
+        result = {'rx': {}, 'tx': {}, 'ok': True, 'ok_tx': True, 'error': False}
+        self.session.read()
         self.session.push(f'\nshow error ports {port}')
         answer = self.session.read(string='RX Frames', timeout=1)
-        self.session.push('\nq')
+        self.session.push('\nq', read=True)
 
         if not ('RX Frames' in answer):
             return {'error': True}
 
         err_patterns = {'crc': r'CRC Error[ ]+[0-9-]+',
-                        'fragment': r'Fragment[ ]+[0-9-]+',
-                        'jabber': r'Jabber[ ]+[0-9-]+',
-                        'drop': r'Drop Pkts[ ]+[0-9-]+'}
+                        'frg': r'Fragment[ ]+[0-9-]+',
+                        'jab': r'Jabber[ ]+[0-9-]+'}
 
         for key, pattern in err_patterns.items():
             if self._find(pattern, answer):
-                result['errors'][key] = self._finded.split()[-1]
-                result['errors'][key] = result['errors'][key].replace('-', '0')
-                if int(result['errors'][key]):
+                res = self._finded.split()[-1]
+                result['rx'][key] = res
+                if int(res):
                     result['ok'] = False
+
+        err_patterns = {'xdef': r'Excessive Deferral[ ]+[0-9-]+',
+                        'lcol': r'Late Collision[ ]+[0-9-]+',
+                        'xcol': r'Excessive Collision[ ]+[0-9-]+',
+                        'scol': r'Single Collision[ ]+[0-9-]+',
+                        'col': r'   Collision[ ]+[0-9-]+'}
+
+        for key, pattern in err_patterns.items():
+            if self._find(pattern, answer):
+                res = self._finded.split()[-1]
+                result['tx'][key] = res
+                if int(res):
+                    result['ok'] = False
+                    result['ok_tx'] = False
 
         return result
 
