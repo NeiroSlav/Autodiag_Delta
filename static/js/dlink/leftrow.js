@@ -127,7 +127,7 @@ function get_errors_business(response) {
         b2['text'] = 'crc ' + response.rx.crc
         b3['text'] = 'frg ' + response.rx.frg
         b4['text'] = 'jab ' + response.rx.jab
-        b9['text'] = 'очистить'
+        b9['text'] = 'Очистить'
 
         var count = 3
         var i = 0
