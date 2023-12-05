@@ -58,39 +58,56 @@ function get_errors_business(response) {
 
     var b1 = setB()
     b1['text'] = 'Ошибки:'
-    b1['style'] = 'width: 116px;'
     b1['onclick'] = 'get_errors();'
     b1['id'] = 'mainButton'
 
     var b2 = setB()
     var b3 = setB()
     var b4 = setB()
+
     var b5 = setB()
-    b2['onclick'] = b3['onclick'] = b4['onclick'] = b5['onclick'] = "copyDiag('errors')"
-    b2['style'] = 'width: 116px;'
-
     var b6 = setB()
-    b6['color'] = 'Blue'
-    b6['onclick'] = 'clear_counter();'
+    var b7 = setB()
 
-    b3['style'] = b4['style'] = b5['style'] = b6['style'] = 'width: 116px; margin-left: 122px'
+    var b9 = setB()
+    b9['color'] = 'Blue'
+    b9['onclick'] = 'clear_counter();'
+
+    b2['onclick'] = b3['onclick'] = b4['onclick'] = "copyDiag('errors')"
+    b5['onclick'] = b6['onclick'] = b7['onclick'] = "copyDiag('errors')"
+
+    b1['style'] = b2['style'] = b3['style'] = b4['style'] = 'width: 116px;'
+    b9['style'] = b5['style'] = b6['style'] = b7['style'] = 'width: 116px;'
+
 
     if (response.error) {
-        b1['color'] = b2['color'] = b3['color'] = b4['color'] = b5['color'] = 'Red'
-        b2['text'] = b3['text'] = b4['text'] = b5['text'] = 'Ошибка'
-        b6['text'] = '-'
-    } else {
+        b1['color'] = b2['color'] = b3['color'] = b4['color'] = 'Red'
+        b5['color'] = b6['color'] = b7['color'] = 'Red'
 
+        b2['text'] = b3['text'] = b4['text'] = 'Ошибка'
+        b5['text'] = b6['text'] = b7['text'] = 'Ошибка'
+
+        b9['text'] = '-'
+    } else {
 
         var diagData = '! Есть ошибки:\n'
         if (response.ok) {
             diagData = '+ Ошибок нет :\n'
         }
 
-        diagData += gap + 'crc  : ' + response.errors.crc + '\n';
-        diagData += gap + 'frag : ' + response.errors.fragment + '\n';
-        diagData += gap + 'jab  : ' + response.errors.jabber + '\n';
-        diagData += gap + 'drop : ' + response.errors.drop + '\n';
+        diagData += gap + 'crc error : ' + response.rx.crc + '\n';
+        diagData += gap + 'fragment : ' + response.rx.frg + '\n';
+        diagData += gap + 'jabber : ' + response.rx.jab + '\n';
+
+
+        if (!response.ok_tx) {
+            diagData += '\n';
+            diagData += gap + 'deferral : ' + response.tx.xdef + '\n';
+            diagData += gap + 'late coll : ' + response.tx.lcol + '\n';
+            diagData += gap + 'excess coll : ' + response.tx.xcol + '\n';
+            diagData += gap + 'single coll : ' + response.tx.scol + '\n';
+            diagData += gap + 'collision : ' + response.tx.col + '\n';
+        }
 
         updateDiagDict('errors', diagData)
 
@@ -98,27 +115,47 @@ function get_errors_business(response) {
         if (response.ok) {
             b1['color'] = 'Green'
         } else {
-            if (response.errors.crc != '0') {
+            if (response.rx.crc != '0') {
                 b2['color'] = 'Red'}
-
-            if (response.errors.fragment != '0') {
+            if (response.rx.frg != '0') {
                 b3['color'] = 'Red'}
-
-            if (response.errors.jabber != '0') {
+            if (response.rx.jab != '0') {
                 b4['color'] = 'Red'}
-
-            if (response.errors.drop != '0') {
-                b5['color'] = 'Red'}
-
             b1['color'] = 'Red'
         }
-        b2['text'] = 'crc ' + response.errors.crc
-        b3['text'] = 'frag ' + response.errors.fragment
-        b4['text'] = 'jab ' + response.errors.jabber
-        b5['text'] = 'drop ' + response.errors.drop
-        b6['text'] = 'очистить'
+
+        b2['text'] = 'crc ' + response.rx.crc
+        b3['text'] = 'frg ' + response.rx.frg
+        b4['text'] = 'jab ' + response.rx.jab
+        b9['text'] = 'очистить'
+
+        var count = 3
+        var i = 0
+        var tx_row = [b5, b6, b7]
+        var already = []
+
+        while (i<count) {
+            var biggest = -1
+            var add = ''
+            console.log(i)
+
+            for (const [key, value] of Object.entries(response.tx)) {
+                if ( parseInt(value) > biggest && !(already.includes(key)) ) {
+                    biggest = parseInt(value)
+                    console.log(key, value)
+                    tx_row[i]['text'] = key + ' ' + value
+                    if (value != '0') {
+                        tx_row[i]['color'] = 'Red'
+                    }
+                    add = key
+                }
+            }
+            already.push(add)
+        console.log(already)
+        i++
+        }
     }
-    return getB(b1) + getB(b2) + getB(b3) + getB(b4) + getB(b5) + getB(b6);
+    return getB(b1) + getB(b9) + getB(b2) + getB(tx_row[2]) + getB(b3) + getB(tx_row[1]) + getB(b4) + getB(tx_row[0]);
 }
 
 function get_cable_business(response) {

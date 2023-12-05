@@ -68,7 +68,6 @@ function get_errors() {
 
 
 function clear_counter() {
-    console.log('вошёл');
     $.ajax({
         type: 'GET',
         url : clear_url + token,
