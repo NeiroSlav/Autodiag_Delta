@@ -14,8 +14,8 @@ def get_open_port(token):
     if not answer['port']:  # если открытый порт не найден
         return jsonify(answer)  # возврат ответа в json
 
-    try:  # попытка запроса на https, если не удалось - http
-        requests.get(f'https://{answer["ip"]}/', timeout=1)
-        return jsonify(answer | {'protocol': 'https'})
-    except Exception:
+    try:  # попытка запроса на http, если не удалось - https
+        requests.get(f'http://{answer["ip"]}:{answer["port"]}/', timeout=1)
         return jsonify(answer | {'protocol': 'http'})
+    except Exception:
+        return jsonify(answer | {'protocol': 'https'})
