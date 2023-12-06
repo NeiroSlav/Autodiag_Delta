@@ -150,10 +150,10 @@ function get_util_business(response) {
     var b5 = setB()
 
     if (response.error) {
-        b1['color'] = b2['color'] = b3['color'] = 'Red'
+        b1['color'] = b2['color'] = b3['color'] = b4['color'] = 'Red'
         b1['text'] = 'Ошибка проверки'
-        b2['text'] = b3['text'] = 'Ошибка'
-        return getB(b1) + getB(b2) + getB(b3)
+        b2['text'] = b3['text'] = b4['text'] = 'Ошибка'
+        return getB(b1) + getB(b2) + getB(b3) + getB(b4)
     } else {
 
         b2['text'] = 'in ' + response.tx

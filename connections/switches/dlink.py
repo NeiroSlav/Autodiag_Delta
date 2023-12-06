@@ -295,7 +295,7 @@ class Dlink(SwitchMixin):
             finally:
                 if elem > 4_000:
                     rx_high.append(elem)
-                elif elem:
+                elif elem >= 0:
                     rx_low.append(elem)
 
         if len(rx_low) < 4 and (rx_high[0]-rx_high[-1]) < 5_000:

@@ -29,4 +29,10 @@ def switch_test():
             print(switch.errors(i))
 
 
-switch_test()
+decview_api = 'https://decview.matrixhome.net/api/devices_rest/status/ipaddress/'
+decview_info = requests.get(decview_api+'192.168.66.96').json()
+
+state = int(decview_info['dev']['status'])
+time = decview_info['dev']['timestamp']
+
+print(state, time)

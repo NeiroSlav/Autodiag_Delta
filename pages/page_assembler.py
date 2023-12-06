@@ -22,7 +22,12 @@ def main_redirect():
         switch_ip = gcdb_data.switch_ip
 
         if not fping(switch_ip):  # если свитч не отвечает
-            raise DiagError(f'Свитч {switch_ip} лежит')
+            decview_api = 'https://decview.matrixhome.net/api/devices_rest/status/ipaddress/'
+            decview_info = requests.get(decview_api + switch_ip).json()
+            state = int(decview_info['dev']['status'])
+            time = decview_info['dev']['timestamp']
+            state = 'поднят' if state else 'лежит'
+            raise DiagError(f'Свитч {switch_ip} {state} с {time}')
 
         telnet = Telnet(gcdb_data)  # логин на свитч
         if not telnet.switch_type:  # если тип свитча не определён
