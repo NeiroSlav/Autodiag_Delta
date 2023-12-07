@@ -51,7 +51,7 @@ class Bdcom(SwitchMixin):
         return result
 
     # поиск мака
-    def mac(self, port: int, pon: int, macs: list = []) -> dict:
+    def mac(self, port: int, pon: int, macs: list) -> dict:
         result = {'mac': {}, 'ok': False, 'error': False}
         command = f'show mac address-table interface ePON 0/{port}:{pon}\n'
 

@@ -55,7 +55,7 @@ class Raisecom(SwitchMixin):
                 return result
 
     # поиск мака
-    def mac(self, port: int, macs: list = []) -> dict:
+    def mac(self, port: int, macs: list) -> dict:
         result = {'mac': {}, 'ok': True, 'error': False}
         self.session.read(timeout=0)
         self.session.push(f'\nsh mac-address-table l2-address port {port}')

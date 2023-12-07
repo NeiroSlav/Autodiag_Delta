@@ -88,7 +88,7 @@ class Dlink(SwitchMixin):
         return result
 
     # поиск мака на порту
-    def mac(self, port: int, macs: list = []) -> dict:
+    def mac(self, port: int, macs: list) -> dict:
         result = {'mac': {}, 'ok': True, 'error': False}
         self.session.read(timeout=0)
         self.session.push(f'\nshow fdb port {port}')

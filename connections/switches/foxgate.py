@@ -54,7 +54,7 @@ class Foxgate(SwitchMixin):
         return result
 
     # поиск мака
-    def mac(self, port: int, macs: list = []) -> dict:
+    def mac(self, port: int, macs: list) -> dict:
         result = {'mac': {}, 'ok': True, 'error': False}
         self.session.read()
         self.session.push(f'sh mac-address-table interface ethernet 0/0/{port}\n')
