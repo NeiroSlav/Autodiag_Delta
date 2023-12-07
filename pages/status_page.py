@@ -5,24 +5,21 @@ from init import *
 def status_page():
     token_dict = token_dict_image_get()
     tokens = []
-    timeouts = []
-    usernames = []
+    users = []
 
     for token, data in token_dict.items():
-        tokens.append(token)
-        timeout = int(time.time()) - data['_last_active']
-        timeout = "%02d:%02d" % ((timeout // 60), (timeout % 60))
-        timeouts.append(timeout)
-        usernames.append(data['gcdb_data'].username)
-
-    context = {
-        'tokens': tokens,
-        'timeouts': timeouts,
-        'usernames': usernames,
-        'changes_list': reversed(changes_list)}
+        time_ = int(time.time()) - data['_last_active']
+        time_ = "%02d:%02d" % ((time_ // 60), (time_ % 60))
+        user = data['gcdb_data'].username
+        tokens.append(f'token: {token} time: {time_}')
+        users.append(f'user: {user}')
 
     return render_template(
         'status.html',
-        context=context,
+        tokens=tokens,
+        users=users,
+        changes_list=reversed(changes_list),
         title='Статус',
-        topinfo='Активные токены:')
+        topinfo='Активные токены:',
+        rightinfo='Кто там что дёргал:'
+    )

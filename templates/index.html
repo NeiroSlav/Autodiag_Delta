@@ -9,8 +9,6 @@
     <title>{{title}}</title>
     <script src="{{ url_for('static', filename='js/buttons.js') }}"></script>
     <script src="{{ url_for('static', filename='js/ajax_patterns.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/tolerance.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/diag_buf_copy.js') }}"></script>
 
     <link rel="shortcat icon" href="{{  url_for('static', filename='img/gear_icon.png') }}" type="image/x-icon"/>
 
@@ -26,11 +24,6 @@
 
 {% block imports %}
 {% endblock %}
-
-
-
-
-
 
 
 <div class="topMargin"></div>
@@ -51,7 +44,7 @@
             ></button>
 
             <button class="head-button"
-                    onclick="updateAll();" style="
+                    onclick="location.reload();" style="
                     background: #384d84 url('{{  url_for('static', filename='img/update.png') }}');
                     background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
             ></button>
@@ -81,8 +74,8 @@
 
     <div class="diagTopFrameSub">
         <button class="diagButton"
-                style="width: 236px; height: 40px; margin-top: 0; font-size: 18px;"
-                onclick="saveClip('{{ switchip }}')">
+                style="width: 236px; height: 40px; margin-top: 0; font-size: 18px;">
+            {{ rightinfo }}
         </button>
     </div>
 </div>
@@ -99,12 +92,6 @@
         {% block rightrow %}
         {% endblock %}
 
-</div>
-
-
-<div>
-        {% block bottom %}
-        {% endblock %}
 </div>
 
 </body>

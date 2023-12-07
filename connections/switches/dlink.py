@@ -341,7 +341,6 @@ class Dlink(SwitchMixin):
             return {'error': True}
 
         answer = answer.replace('\\r', '  ').replace('\\n', '\n')
-        print(answer)
 
         if bool(self._find(' ' + str(port) + '[ ]+Disabled', answer)):
             return {'state': 'Disabled', 'error': False}
