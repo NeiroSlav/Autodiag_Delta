@@ -88,6 +88,8 @@ function get_errors_business(response) {
         b5['text'] = b6['text'] = b7['text'] = 'Ошибка'
 
         b9['text'] = '-'
+
+        return getB(b1) + getB(b9) + getB(b2) + getB(b5) + getB(b3) + getB(b6) + getB(b4) + getB(b7);
     } else {
 
         var diagData = '! Есть ошибки:\n'

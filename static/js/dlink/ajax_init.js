@@ -6,6 +6,7 @@ var get_cable_url = "/dlink/cable_diag/";
 
 var get_bind_url = "/dlink/get_bind/";
 var get_mac_url = "/dlink/get_mac/";
+var set_bind_url = "/dlink/set_bind/";
 var get_util_url = "/dlink/get_util/";
 
 var get_log_url = "/dlink/get_log/";
@@ -99,6 +100,20 @@ function get_mac() {
 //    console.log('стартую запрос get_mac')
     wait_div('macInfo', 'Мак..')
     ajax_div(get_mac_url, 'macInfo', get_mac_business);}
+
+
+function set_loose(loose_var) {
+    $.ajax({
+        type: 'GET',
+        url : set_bind_url + token,
+        dataType: 'json',
+        data: {
+        loose: loose_var
+        },
+        success: function(response){
+            console.log(response);
+            setTimeout(function() {get_mac();}, 500);
+}});}
 
 
 function get_util() {

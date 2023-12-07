@@ -58,6 +58,7 @@ def token_init():
         '_last_active': int(time.time()),  # время последней активности
         '_changes': [],
         'first_time_flag': True,
+        'default_bind_state': 'loose',
     }
     logging.info(f'{token} token created')
     return token
@@ -99,7 +100,7 @@ def token_del(token: str):
                 logging.info('port enabled automatically')
             if 'set_bind_loose' in _changes:
                 switch.set_bind(gcdb_data.switch_port, loose=False)
-                logging.info('binding set strict automatically')
+                logging.warning(f'token {token} set strict on {switch.ip}')
 
         try:
             _token_dict[token]['telnet'].close()

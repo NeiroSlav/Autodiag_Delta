@@ -10,6 +10,7 @@ class Zyxel(SwitchMixin):
     def __init__(self, session: Telnet):
         self.session = session
         self.model = session.switch_model
+        self.ip = session.switch_ip
         self.session.read()
         self.test_methods = [  # методы для тестов
             self.port, self.mac,

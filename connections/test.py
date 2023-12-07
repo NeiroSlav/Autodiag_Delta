@@ -9,8 +9,8 @@ from personal_data import switch_login, switch_password
 class GcdbData:
     switch_login = switch_login
     switch_password = switch_password
-    switch_ip = '192.168.30.60'
-    switch_port = 9
+    switch_ip = '192.168.44.131'
+    switch_port = 16
 
 
 def switch_test():
@@ -22,17 +22,14 @@ def switch_test():
         session = Telnet(data)
         print(session.switch_type)
         print(session.switch_model)
+        print(session.switch_ip)
         #
         switch = Dlink(session)
-        ports = int(session.switch_model[-2] + session.switch_model[-1])
-        for i in range(1, ports):
-            print(switch.errors(i))
+
+        print(switch.bind_state(1))
+        # ports = int(session.switch_model[-2] + session.switch_model[-1])
+        # for i in range(1, ports):
+        #     print(switch.errors(i))
 
 
-decview_api = 'https://decview.matrixhome.net/api/devices_rest/status/ipaddress/'
-decview_info = requests.get(decview_api+'192.168.66.96').json()
-
-state = int(decview_info['dev']['status'])
-time = decview_info['dev']['timestamp']
-
-print(state, time)
+switch_test()

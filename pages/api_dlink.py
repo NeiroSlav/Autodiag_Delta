@@ -53,8 +53,20 @@ def dlink_get_cable(token, **t_data):
 @app.route("/dlink/get_bind/<token>")
 @use_token
 def dlink_get_bind(token, **t_data):
+
     switch, port = t_data['switch'], t_data['gcdb_data'].switch_port
-    return switch.bind(port)
+
+    # если это первая проверка мака
+    if token_get(token, 'first_time_flag'):
+        bind_state = switch.bind_state(port) | {'auto': True}
+        token_set(token, 'default_bind_state', bind_state['state'])
+        token_set(token, 'first_time_flag', False)
+
+    # если привязка отключена, ставит флаг disabled
+    if token_get(token, 'default_bind_state') == 'Disabled':
+        return {'binding': {}, 'disabled': True, 'ok': True, 'error': False}
+
+    return switch.bind(port) | {'disabled': False}
 
 
 # обработчик для проверки мака
@@ -64,15 +76,31 @@ def dlink_get_mac(token, **t_data):
     switch, gcdb_data = t_data['switch'], t_data['gcdb_data']
     port, mac_list = gcdb_data.switch_port, gcdb_data.mac_list
 
-    # если это первая проверка мака, перевод порта в луз, если он стрикт
-    if token_get(token, 'first_time_flag'):
-        if not switch.loose(port)['ok']:
-            switch.set_bind(port, loose=True)
-            token_changes(token, 'set_bind_loose')
-        token_set(token, 'first_time_flag', False)
+    # если изначально был strict, то проверяет
+    bind_state = {'state': token_get(token, 'default_bind_state'), 'auto': True}
+    if bind_state['state'] == 'Strict':
+        bind_state = switch.bind_state(port) | {'auto': False}
 
     result = switch.mac(port, mac_list)
-    return result
+    return result | bind_state
+
+
+# обработчик перевода в loose
+@app.route("/dlink/set_bind/<token>")
+@use_token
+def dlink_set_bind(token, **t_data):
+    # забирает аргумент из запроса
+    loose = bool(request.args.get('loose') == 'true')
+    switch, gcdb_data = t_data['switch'], t_data['gcdb_data']
+    ip, port = gcdb_data.switch_ip, gcdb_data.switch_port
+
+    # создаёт запись лога
+    log_string = f'{gcdb_data.username} {"set loose" if loose else "set strict"} {ip}:{port}'
+    logging.warning(log_string)
+    changes_list.append(log_string)
+
+    token_changes(token, 'set_bind_loose', remove=not bool(loose))
+    return switch.set_bind(port, loose=loose)
 
 
 # обработчик для проверки лога

@@ -10,6 +10,7 @@ class Bdcom(SwitchMixin):
     def __init__(self, session: Telnet):
         self.session = session
         self.model = session.switch_model
+        self.ip = session.switch_ip
         self.session.read()
         self.session.push('\nena')
         self.session.read(2, '#')

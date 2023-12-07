@@ -4,17 +4,18 @@ from connections.telnet import Telnet
 
 class Dlink(SwitchMixin):
     """Класс для работы со свитчами Dlink \n
-    проверки:\n port, bind, mac, errors, cable, loose, log
+    проверки:\n port, bind, mac, errors, cable, bind_state, log
     действия:\n set_port, set_bind, clear"""
 
     def __init__(self, session: Telnet):
         self.session = session
         self.model = session.switch_model
+        self.ip = session.switch_ip
         self.session.push('enable clipaging')
         self.session.read()
         self.test_methods = [  # методы для тестов
             self.port, self.errors,
-            self.loose, self.mac, self.bind,
+            self.bind_state, self.mac, self.bind,
             self.cable, self.log, self.util]
 
     # диагностика порта
@@ -330,7 +331,7 @@ class Dlink(SwitchMixin):
         return result
 
     # проверка, в лузе ли порт
-    def loose(self, port: int) -> dict:
+    def bind_state(self, port: int) -> dict:
         self.session.read()
         self.session.push('\nshow address_binding ports')
         self.session.push('nnnn')
@@ -339,9 +340,14 @@ class Dlink(SwitchMixin):
         if not ('ARP' in answer):
             return {'error': True}
 
-        strict = bool(self._find('r ' + str(port) + '[ ]+Strict', answer))
-        loose = not strict
-        return {'ok': loose, 'error': False}
+        answer = answer.replace('\\r', '  ').replace('\\n', '\n')
+        print(answer)
+
+        if bool(self._find(' ' + str(port) + '[ ]+Disabled', answer)):
+            return {'state': 'Disabled', 'error': False}
+        else:
+            strict = bool(self._find('[ ]' + str(port) + '[ ]+Strict', answer))
+            return {'state': 'Strict' if strict else 'Loose', 'error': False}
 
     # включение/выключение порта
     def set_port(self, port: int, enable: bool):

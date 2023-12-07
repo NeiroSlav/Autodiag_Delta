@@ -55,8 +55,13 @@ function get_bind_business(response) {
             }
         }
         if (all_binds == '') {
-            bn['text'] = 'привязок не обнаружено'
-            all_binds = getB(bn)
+            if (response.disabled) {
+                bn['text'] = 'привязка отключена'
+                all_binds = getB(bn)
+            } else {
+                bn['text'] = 'привязок не обнаружено'
+                all_binds = getB(bn)
+            }
         }
 
         return getB(b1) + all_binds;
@@ -71,13 +76,22 @@ function get_mac_business(response) {
     b1['onclick'] = 'get_mac();'
     b1['id'] = 'mainButton'
 
+    var b8 = setB()
+    b8['style'] = 'margin-left: 62px;'
+
+    var b9 = setB()
+    b9['text'] = 'Перевести'
+    b9['color'] = 'Blue'
+    b9['style'] = 'width: 116px;'
+
     var bn = setB()
     bn['style'] = 'width: 176px;'
 
     if (response.error) {
-        b1['color'] = bn['color'] = 'Red'
-        bn['text'] = 'ошибка'
-        return getB(b1) + getB(bn);
+        b1['color'] = bn['color'] = b8['color'] = 'Red'
+        bn['text'] = b8['text'] = 'ошибка'
+        b8['style'] = 'width: 176px; margin-left: 62px;'
+        return getB(b1) + getB(bn) + getB(b8);
 
     } else {
 
@@ -119,13 +133,33 @@ function get_mac_business(response) {
             all_macs = getB(bn)
         }
 
-        return getB(b1) + all_macs;
+        var mac_block = getB(b1) + all_macs;
+        var bind_state_block = ''
+
+        if (response.auto) {
+            b8['style'] = 'width: 176px; margin-left: 62px;'
+            if (response.state == 'Disabled') {
+                b8['text'] = 'Привязка отключена'
+            } else {
+                b8['text'] = 'Привязка в loose'
+            }
+            bind_state_block = getB(b8);
+        } else {
+            b8['text'] = response.state;
+            if (response.state == 'Loose') {
+                b9['onclick'] = "set_loose('false');";
+            } else {
+                b9['onclick'] = "set_loose('true');";
+            }
+            bind_state_block = getB(b8) + getB(b9);
+        }
+        return mac_block + bind_state_block
     }
 }
 
 
-var util_info
 
+var util_info
 
 function get_util_business(response) {
 
