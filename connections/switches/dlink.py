@@ -189,8 +189,8 @@ class Dlink(SwitchMixin):
         self.session.read(timeout=0)
         self.session.push('\nshow log')
         answer = self.session.read(timeout=2, string='Index')
-        answer = answer.replace('\\n\\r      ', ' ')
-        answer = ' '.join(answer.split())
+        answer = answer.replace('\\n\\r     ', '+++')
+        answer = ' '.join(answer.split()).replace('+++', '')
 
         # если лог не отобразился
         if not ('Index' in answer):
@@ -201,7 +201,7 @@ class Dlink(SwitchMixin):
             r'[0-9]+ +[0-9-]+ +[0-9:]+ +[0-9:A-Za-z()., -"+]+\\')
         log = []
         for elem in self._findall(pattern, answer):
-            log.append(elem.strip('\\'))
+            log.append(elem.strip('\\').replace('  ', ' '))
 
         # поиск времени последней записи
         self._find(r'[0-9-]+ [0-9]+:', answer)
@@ -219,11 +219,11 @@ class Dlink(SwitchMixin):
 
             self.session.push('nnn')
             answer = self.session.read()
-            answer = answer.replace('\\n\\r     ', ' +++')
+            answer = answer.replace('\\n\\r     ', '+++')
             answer = ' '.join(answer.split()).replace('+++', '')
 
             for elem in self._findall(pattern, answer):
-                log.append(elem.strip('\\'))
+                log.append(elem.strip('\\').replace('  ', ' '))
 
             if log:  # если лог не пустой, определяет охват времени
                 log_bottom_time = self._find(r'[0-9-]+ [0-9]+:', log[-1])
@@ -236,7 +236,7 @@ class Dlink(SwitchMixin):
             return result
 
         for elem in log:  # выборка записей о нужном порте
-            if ((f'ort {port} ' in elem) or (f'orts {port} ' in elem)) and (len(result['log']) < 20):
+            if ((f'ort {port} ' in elem+' ') or (f'orts {port} ' in elem+' ')) and (len(result['log']) < 20):
                 result['log'].append(elem)
                 if ('storm' in elem) or ('loop' in elem):
                     result['snmp'].append(elem)
