@@ -456,7 +456,7 @@ class Dlink1210(Dlink):
             return result
 
         for elem in log:  # выборка записей о нужном порте
-            if ((f'ort {port} ' in elem) or (f'orts {port} ' in elem) or (f' {port}"' in elem)) and (len(result['log']) < 20):
+            if (f'ort {port} ' in elem) or (f'orts {port} ' in elem) or f' {port}"' in elem:
                 result['log'].append(elem)
                 if ('storm' in elem) or ('loop' in elem):
                     result['snmp'].append(elem)
