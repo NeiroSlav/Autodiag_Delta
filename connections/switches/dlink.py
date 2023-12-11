@@ -301,6 +301,7 @@ class Dlink(SwitchMixin):
             except Exception:
                 pass
 
+        #  если нет большого трафла, или разница в трафике больше 5к
         if not rx_high or (rx_high[0] - rx_high[-1]) > 5_000:
             return {'flood': False, 'error': False}
 
