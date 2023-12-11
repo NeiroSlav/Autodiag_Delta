@@ -279,7 +279,7 @@ class Dlink(SwitchMixin):
 
         return result
 
-    # проверка, есть ли флуд
+    # обнаружение флуда
     def flood(self) -> dict:
         self.session.read(timeout=0)
         self.session.push('\nshow util ports')
@@ -294,18 +294,17 @@ class Dlink(SwitchMixin):
         for elem in answer:
             try:  # пытается взять кол-во пакетов из строки
                 elem = int(elem.split()[1])
-            except:
-                elem = 0
-            finally:
                 if elem > 4_000:
                     rx_high.append(elem)
                 elif elem >= 0:
                     rx_low.append(elem)
+            except Exception:
+                pass
 
-        if len(rx_low) < 4 and (rx_high[0]-rx_high[-1]) < 5_000:
-            return {'flood': True, 'flood_rx': rx_high[0], 'error': False}
+        if not rx_high or (rx_high[0] - rx_high[-1]) > 5_000:
+            return {'flood': False, 'error': False}
 
-        return {'flood': False, 'error': False}
+        return {'flood': True, 'flood_rx': rx_high[0], 'error': False}
 
     # проверка, есть ли подписки
     def igmp(self, port: int) -> dict:
