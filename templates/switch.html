@@ -30,81 +30,77 @@
 
 <div class="topMargin"></div>
 
-    <div class="diagTopFrame">
-        <div class="diagTopFrameSub" style="margin-left: auto;">
+<div style="display: flex; flex-direction: row;">
 
-            <button class="head-button"
-                    title='Профиль&#10;Абонента'
-                    onclick="openInNewTab('https://gcdbviewer.matrixhome.net/usersearch.php?anumber=' + '{{ anumber }}');" style="
-                    background: #384d84 url('{{  url_for('static', filename='img/matrix.png') }}');
-                    background-position: 0px 1px; background-repeat: no-repeat; background-size: 33px;"
-            ></button>
+    <div class="mainFrameSub" style="margin: 0 auto 0 auto;">
 
-            <button class="head-button"
-                    title='Копировать&#10;Диагностику'
-                    onclick="copyDiag('all');" style="
-                    background: #384d84 url('{{  url_for('static', filename='img/clipboard.png') }}');
-                    background-position: 2px 0px; background-repeat: no-repeat; background-size: 30px;"
-            ></button>
+        <div class="diagLongBlock">
 
-            <button class="head-button"
-                    title='Обновить&#10;Данные'
-                    onclick="updateAll();" style="
-                    background: #384d84 url('{{  url_for('static', filename='img/update.png') }}');
-                    background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
-            ></button>
+            <div style="margin-bottom: 40px;"></div>
 
-            <button class="head-button"
-                    onclick="" style="
-                    background: #384d84 url();
-                    background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
-            ></button>
+            <div class="diagMiniBlock" style="height: 40px;">
 
-            <button class="head-button"
-                    onclick="" style="margin-right: 0;
-                    background: #384d84 url();
-                    background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
-            ></button>
+                <button class="head-button"
+                        title='Профиль&#10;Абонента'
+                        onclick="openInNewTab('https://gcdbviewer.matrixhome.net/usersearch.php?anumber=' + '{{ anumber }}');" style="
+                        background: #384d84 url('{{  url_for('static', filename='img/matrix.png') }}');
+                        background-position: 0px 1px; background-repeat: no-repeat; background-size: 33px;"
+                ></button>
 
+                <button class="head-button"
+                        title='Копировать&#10;Диагностику'
+                        onclick="copyDiag('all');" style="
+                        background: #384d84 url('{{  url_for('static', filename='img/clipboard.png') }}');
+                        background-position: 2px 0px; background-repeat: no-repeat; background-size: 30px;"
+                ></button>
+
+                <button class="head-button"
+                        title='Обновить&#10;Данные'
+                        onclick="updateAll();" style="
+                        background: #384d84 url('{{  url_for('static', filename='img/update.png') }}');
+                        background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
+                ></button>
+
+                <button class="head-button"
+                        onclick="" style="
+                        background: #384d84 url();
+                        background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
+                ></button>
+
+                <button class="head-button"
+                        onclick="" style="margin-right: 0;
+                        background: #384d84 url();
+                        background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
+                ></button>
+
+            </div>
+
+            {% block leftrow %}
+            {% endblock %}
+        </div>
+
+            {% block midrow %}
+            {% endblock %}
+
+            {% block rightrow %}
+            {% endblock %}
     </div>
 
+<!--    <div class="mainFrameSub" style="margin: 0 auto 0 0;">-->
 
-    <div class="diagTopFrameSub">
-        <button class="diagButton"
-                style="width: 236px; height: 40px; margin-top: 0; font-size: 18px;
-">
-            {{ switchtype }}
-        </button>
+<!--        {% block addition %}-->
+<!--        <div id="addition" style="margin: 0 auto 0 auto;">-->
+<!--            <div class="diagLongBlock">-->
+<!--                <div style="margin-bottom: 40px;"></div>-->
 
-    </div>
+<!--                <div class="diagMiniBlock">-->
+<!--                    <div class="diagLog"></div>-->
+<!--                    <button class="diagButton">ababa</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        {% endblock %}-->
 
-    <div class="diagTopFrameSub">
-        <button class="diagButton"
-                style="width: 236px; height: 40px; margin-top: 0; font-size: 18px;"
-                onclick="saveClip('{{ switchip }}')">
-            {{ topinfo }}
-        </button>
-    </div>
-</div>
-
-
-<div class="mainFrameSub">
-
-        {% block leftrow %}
-        {% endblock %}
-
-        {% block midrow %}
-        {% endblock %}
-
-        {% block rightrow %}
-        {% endblock %}
-
-</div>
-
-
-<div>
-        {% block bottom %}
-        {% endblock %}
 </div>
 
 </body>

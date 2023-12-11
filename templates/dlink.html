@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block leftrow %}
-    <div class="diagLongBlock" style="margin: 0 auto 0 auto;">
+
         <div class="diagMiniBlock" id="portInfo">
             <button class="diagButton" style="width: 236px; height: 60px;"></button>
         </div>
@@ -21,11 +21,22 @@
             <button class="diagButton" style="width: 236px; height: 60px;"></button>
         </div>
         <div class="diagMiniBlock"></div>
-    </div>
 {% endblock %}
 
 {% block midrow %}
+
     <div class="diagLongBlock" style="margin: 0 auto 0 0;">
+
+        <div style="margin-bottom: 40px;"></div>
+
+        <div class="diagMiniBlock">
+            <button class="diagButton"
+                    style="width: 236px; height: 40px; margin-top: 0; font-size: 18px;
+">
+                {{ switchtype }}
+            </button>
+        </div>
+
         <div class="diagMiniBlock" id="bindInfo">
             <button class="diagButton" style="width: 236px; height: 92px;"></button>
         </div>
@@ -44,6 +55,17 @@
 
 {% block rightrow %}
     <div class="diagLongBlock" style="margin: 0 auto 0 0;">
+
+        <div style="margin-bottom: 40px;"></div>
+
+        <div class="diagMiniBlock">
+            <button class="diagButton"
+                    style="width: 236px; height: 40px; margin-top: 0; font-size: 18px;"
+                    onclick="saveClip('{{ switchip }}')">
+                {{ topinfo }}
+            </button>
+        </div>
+
         <div class="diagMiniBlock" id="logInfo">
             <button class="diagButton" style="width: 236px;"></button>
             <div class="diagLog" style="height: 310px;"></div>

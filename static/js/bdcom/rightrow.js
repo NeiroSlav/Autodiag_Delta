@@ -48,7 +48,7 @@ function get_active_business (response) {
 
     if (response.error) {  // если вернулась ошибка
         b1['color'] = 'Red'
-        b1['text'] = 'Ошибка проверки неактивных'
+        b1['text'] = 'Ошибка проверки'
         return getB(b1)
     } else {
 

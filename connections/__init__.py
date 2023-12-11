@@ -11,6 +11,7 @@ from .personal_data import *
 
 switch_class = {
     'dlink': Dlink,
+    'dlink1210': Dlink1210,
     'zyxel': Zyxel,
     'bdcom': Bdcom,
     'foxgate': Foxgate,
