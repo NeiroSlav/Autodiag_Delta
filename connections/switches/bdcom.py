@@ -86,10 +86,13 @@ class Bdcom(SwitchMixin):
         answer = self.session.read(timeout=1, string='DBm')
 
         # если не нашёл ответ
-        if not self._find(r'received power\(DBm\): -[0-9.]+', answer):
+        if not ('#' in answer):
             return {'error': True}
 
         # проверка качества сигнала
+        if not self._find(r'received power\(DBm\): -[0-9.]+', answer):
+            return {'error': False, 'ok': False, 'signal': '0'}
+
         signal = self._finded.split('-')
         result['signal'] = f'-{signal[-1]}'
         signal = float(signal[-1])

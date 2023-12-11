@@ -31,8 +31,8 @@ class Dlink(SwitchMixin):
             result['ok'] = False
 
         port_patterns = [  # список для поиска в ответе и статусы
-            [r'100M/Full/None', True],
-            [r'[0-9]+M/\w\w\w\w/None', False],
+            [r'100M/Full/[A-Za-z]+', True],
+            [r'[0-9]+M/\w\w\w\w/[A-Za-z]+', False],
             [r'LinkDown', False],
             [r'Link Down', False],
             [r'Err-Disabled', False]]
@@ -52,8 +52,8 @@ class Dlink(SwitchMixin):
         self.session.read(timeout=0)
         self.session.push(f'\nshow address_binding dhcp_snoop binding_entry port {port}')
         answer = self.session.read(timeout=2, string='Entries')
-        # print(str(answer))
         self.session.push('q')
+
         des_binding_patterns = [
             ['DES-3028',  # список паттернов для DES-3028
              r'Port[ ]+Status',
@@ -62,7 +62,11 @@ class Dlink(SwitchMixin):
             ['DES-3200',  # список паттернов для DES-3200
              r'A: Active',
              r'[0-9.]+[ ]+[A-Z0-9-]+ [A-Z]',
-             r'\w\w A']]
+             r'\w\w A'],
+            ['DES-1028',  # список паттернов для DES-1028
+             r'Port[ ]+Lease',
+             r'[0-9.]+[ ]+[A-Za-z0-9- ]+ive',
+             r'Active']]
 
         for elem in des_binding_patterns:
             if self._find(elem[1], answer):
@@ -70,7 +74,6 @@ class Dlink(SwitchMixin):
                 des_bind_pattern = elem[3]
                 break
         else:  # вообще не найден ответ
-            # print(answer)
             return {'error': True}
 
         raw_bindings = self._findall(des_bind_all, answer)
@@ -207,7 +210,7 @@ class Dlink(SwitchMixin):
         attempt = 0
         # print(answer)
 
-        # пока охват меньше заданных часов, и проходов меньше 200
+        # пока охват меньше заданных часов, и проходов меньше 20
         while log_time_range < hours:
 
             attempt += 1
@@ -376,3 +379,91 @@ class Dlink(SwitchMixin):
 
     # def __del__(self):
     #     print('dlink object deleted')
+
+
+class Dlink1210(Dlink):
+
+    # диагностика кабеля
+    def cable(self, port: int) -> dict:
+        result = {'cable': [], 'ok': True, 'error': False}
+        self.session.read(timeout=0)
+        self.session.push(f' cable diagnostic port {port}\n')
+        answer = self.session.read(timeout=5, string='Success')
+        self.session.push('q\n')
+
+        if self._findall(r'Pair[A-Za-z0-9 ]+M', answer):
+            pairs = self._finded
+            try:
+                pair1 = int(pairs[0].replace('M', '').split()[-1])
+                pair2 = int(pairs[1].replace('M', '').split()[-1])
+                # если разница в парах больше 5ти, или кабель длиннее 90м
+                result['ok'] = (abs(pair1 - pair2) < 5) and (pair1 < 90)
+            except IndexError:
+                result['ok'] = False
+            result['cable'] = pairs
+            return result
+
+        other_cable_patterns = [
+            [r'No Cable', False],
+            [r'Shutdown', False],
+            [r'Link Down', False],
+            [r'Link Up', True]]
+
+        if not result['cable']:
+            for pattern in other_cable_patterns:
+                if self._find(pattern[0], answer):
+                    result['cable'] = [pattern[0]]
+                    result['ok'] = pattern[1]
+                    return result
+
+        return {'error': True}
+
+    # парсинг лога
+    def log(self, port: int = 0, hours: int = 24) -> dict:
+        result = {'snmp': [], 'log': [],
+                  'ok': True, 'error': False}
+        self.session.read(timeout=0)
+        self.session.push('\nshow log')
+        answer = self.session.read(timeout=2, string='Index')
+        answer = answer.replace('\\n\\r      ', ' ')
+        answer = ' '.join(answer.split())
+
+        # если лог не отобразился
+        if not ('Index' in answer):
+            self.session.push('q')  # прервать команду лога
+            return {'error': True}
+
+        pattern = (  # паттерн любой записи лога
+            r'[0-9]+ +[A-Za-z]+ +[0-9]+ +[0-9A-Za-z: "-]+\\')
+        log = []
+        for elem in self._findall(pattern, answer):
+            log.append(elem.strip('\\'))
+
+        # пока проходов меньше 10
+        for i in range(10):
+
+            self.session.push('nnn')
+            answer = self.session.read()
+            answer = answer.replace('\\n\\r     ', ' +++')
+            answer = ' '.join(answer.split()).replace('+++', '')
+
+            for elem in self._findall(pattern, answer):
+                log.append(elem.strip('\\'))
+
+        self.session.push('q')  # прервать выдачу лога
+
+        if port == 0:
+            result['log'] = log
+            return result
+
+        for elem in log:  # выборка записей о нужном порте
+            if ((f'ort {port} ' in elem) or (f'orts {port} ' in elem) or (f' {port}"' in elem)) and (len(result['log']) < 20):
+                result['log'].append(elem)
+                if ('storm' in elem) or ('loop' in elem):
+                    result['snmp'].append(elem)
+
+        result['log'].append(f'Прочитано {len(result["log"])} записей лога.')
+
+        # 'ок':True будет, если длина лога < 50, и нет штормов/колец
+        result['ok'] = (len(result['log']) < 50) and (not result['snmp'])
+        return result

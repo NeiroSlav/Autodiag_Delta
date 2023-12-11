@@ -66,7 +66,14 @@ def switch_page(switch_type, token):
         if telnet.switch_type != switch_type:  # редирект, если другой свитч
             return redirect(f'/{telnet.switch_type}/{token}')
 
-        switch = switch_class[switch_type](telnet)  # сохраняет в токен объект свитча
+        #  если это медленный свитч, к нему доп параметры
+        if 'DES-1210' in telnet.switch_model:
+            telnet.x_timeout = 2
+            token_set(token, 'telnet', telnet)
+            switch = switch_class['dlink1210'](telnet)
+        else:
+            switch = switch_class[switch_type](telnet)  # сохраняет в токен объект свитча
+
         token_set(token, 'switch', switch)
 
         switch_info = f'{gcdb_data.switch_ip} : {gcdb_data.switch_port}'

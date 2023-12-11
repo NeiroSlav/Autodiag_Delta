@@ -13,6 +13,7 @@ class Telnet:
     _channel = None
     switch_type = ''
     switch_model = ''
+    x_timeout = 1
 
     def __init__(self, gcdb_data):
         self.switch_ip = gcdb_data.switch_ip
@@ -36,6 +37,7 @@ class Telnet:
 
     # чтение данных из канала
     def read(self, timeout: float = 0.1, string: str = '$#@&$') -> str | None:
+        timeout = timeout * self.x_timeout + ((self.x_timeout-1)/10)
         answer_full = ''
         answer = ' '
         # читает, пока не перестанут появляться новые ответы
@@ -47,7 +49,7 @@ class Telnet:
             if string in answer_full:
                 time.sleep(0.1)
                 answer_full += str(self._channel.read_very_eager())
-                return answer_full
+                break
 
         return answer_full
 
@@ -130,11 +132,14 @@ class Telnet:
             return False
 
     def _bdcom_login(self):
-        self.push('admin')
-        self.push('GfhfljrC')
         self.push(self.username)
         self.push(self.password)
-        if not ('-' in self.read(2, '-')):
+        self.push('admin')
+        self.push('GfhfljrC')
+        answer = self.read(2, '-').replace("'b'", "")
+        if not ('-' in answer):
             return False
+        switch_model = re.search(r'BDCOM [A-Z0-9-]+', answer)
+        self.switch_model = switch_model.group().split()[-1]
         self.push('ena')
         return True
