@@ -31,15 +31,12 @@
 
 <div class="topMargin"></div>
 
-<div style="display: flex; flex-direction: row-reverse;">
+<div class="mainFrame">
 
-    <div id="additionPanel" class="additionFrameSub">
-    </div>
+    <div class="sep" style="margin-left: auto;"></div>
 
-    <div class="mainFrameSub">
-
+    <div id="mainPanel" class="mainFrameSub">
         <div class="diagLongBlock">
-
             <div style="margin-bottom: 40px;"></div>
 
             <div class="diagMiniBlock" style="height: 40px;">
@@ -66,31 +63,38 @@
                 ></button>
 
                 <button class="head-button"
-                        id="additionButton"
-                        title='Боковая&#10;Панель'
-                        onclick="showAddition()" style="
-                        background: #384d84 url('{{  url_for('static', filename='img/addition.png') }}');
-                        background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
+                        onclick="" style="
+                        background: #384d84 url('{{  url_for('static', filename='img/settings.png') }}');
+                        background-position: 4px 4px; background-repeat: no-repeat; background-size: 26px;"
                 ></button>
 
                 <button class="head-button"
-                        onclick="" style="margin-right: 0;
-                        background: #384d84 url();
-                        background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
+                        id="additionButton"
+                        title='Боковая&#10;Панель'
+                        onclick="showAddition()" style="margin-right: 0;
+                        background: #384d84 url('{{  url_for('static', filename='img/panel.png') }}');
+                        background-position: 6px 4px; background-repeat: no-repeat; background-size: 26px;"
                 ></button>
 
             </div>
-
             {% block leftrow %}
             {% endblock %}
         </div>
-
             {% block midrow %}
             {% endblock %}
 
             {% block rightrow %}
             {% endblock %}
     </div>
+
+    <div class="sep"></div>
+
+    <div id="additionPanel" class="additionFrameSub">
+    </div>
+
+    <div class="sep" id="sepRight" style="margin-right: auto; width: 0;"></div>
+
+
 
 </div>
 

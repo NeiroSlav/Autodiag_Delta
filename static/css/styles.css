@@ -15,25 +15,34 @@ body {
 	height: calc(100vh);
 }
 
+.mainFrame {
+    display: flex;
+    margin: auto;
+    flex-direction: row;
+}
+
 .mainFrameSub {
     background: #FAFAFA;
-    margin: 0 24px 0 auto;
-    padding: 0 12px 0 12px;
+    padding: 0 48px 0 48px;
     width: auto;
     height: auto;
     display: flex;
     border-radius: 20px;
-
+    transition: 0.2s;
 }
 
 .additionFrameSub {
     background: #EEE;
-    margin: 0 auto 0 0;
     width: 0px;
     height: auto;
     display: flex;
     border-radius: 20px;
-    transition: width 0.5s;
+    transition: 0.5s;
+}
+
+.sep {
+    width: 24px;
+    transition: 0.3s;
 }
 
 .diagLongBlock {
