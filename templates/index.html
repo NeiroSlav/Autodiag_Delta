@@ -28,72 +28,82 @@
 
 <div class="topMargin"></div>
 
-<div class="diagTopFrame">
-    <div class="diagTopFrameSub" style="margin-left: auto;">
+<div style="display: flex; flex-direction: column;">
 
-            <button class="head-button"
-                    onclick="openInNewTab('https://gcdbviewer.matrixhome.net/usersearch.php?anumber=' + '{{ anumber }}');" style="
-                    background: #384d84 url('{{  url_for('static', filename='img/matrix.png') }}');
-                    background-position: 0px 1px; background-repeat: no-repeat; background-size: 33px;"
-            ></button>
+    <div class="diagTopFrame">
+        <div class="diagTopFrameSub" style="margin-left: auto;">
 
-            <button class="head-button"
-                    onclick="copyDiag('all');" style="
-                    background: #384d84 url('{{  url_for('static', filename='img/clipboard.png') }}');
-                    background-position: 2px 0px; background-repeat: no-repeat; background-size: 30px;"
-            ></button>
+                <button class="head-button"
+                        onclick="openInNewTab('https://gcdbviewer.matrixhome.net/usersearch.php?anumber=' + '{{ anumber }}');" style="
+                        background: #384d84 url('{{  url_for('static', filename='img/matrix.png') }}');
+                        background-position: 0px 1px; background-repeat: no-repeat; background-size: 33px;"
+                ></button>
 
-            <button class="head-button"
-                    onclick="location.reload();" style="
-                    background: #384d84 url('{{  url_for('static', filename='img/update.png') }}');
-                    background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
-            ></button>
+                <button class="head-button"
+                        onclick="copyDiag('all');" style="
+                        background: #384d84 url('{{  url_for('static', filename='img/clipboard.png') }}');
+                        background-position: 2px 0px; background-repeat: no-repeat; background-size: 30px;"
+                ></button>
 
-            <button class="head-button"
-                    onclick="" style="
-                    background: #384d84 url();
-                    background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
-            ></button>
+                <button class="head-button"
+                        onclick="location.reload();" style="
+                        background: #384d84 url('{{  url_for('static', filename='img/update.png') }}');
+                        background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
+                ></button>
 
-            <button class="head-button"
-                    onclick="" style="margin-right: 0;
-                    background: #384d84 url();
-                    background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
-            ></button>
+                <button class="head-button"
+                        onclick="" style="
+                        background: #384d84 url();
+                        background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
+                ></button>
 
+                <button class="head-button"
+                        onclick="" style="margin-right: 0;
+                        background: #384d84 url();
+                        background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
+                ></button>
+
+        </div>
+
+
+        <div class="diagTopFrameSub">
+            <button class="diagButton"
+                    style="width: 236px; height: 40px; margin-top: 0; font-size: 18px;">
+                {{ topinfo }}
+            </button>
+
+        </div>
+
+        <div class="diagTopFrameSub">
+            <button class="diagButton"
+                    style="width: 236px; height: 40px; margin-top: 0; font-size: 18px;">
+                {{ rightinfo }}
+            </button>
+        </div>
     </div>
 
+    <div class="topMargin"></div>
 
-    <div class="diagTopFrameSub">
-        <button class="diagButton"
-                style="width: 236px; height: 40px; margin-top: 0; font-size: 18px;">
-            {{ topinfo }}
-        </button>
+    <div class="mainFrameSub"
+         style="
+            min-width: 800px;
+            max-width: 900px;
+            margin: 0 auto 0 auto;
+            width: calc(100vw - 150px);
+            padding: 28px 0 0 0;
+            ">
 
-    </div>
+            {% block leftrow %}
+            {% endblock %}
 
-    <div class="diagTopFrameSub">
-        <button class="diagButton"
-                style="width: 236px; height: 40px; margin-top: 0; font-size: 18px;">
-            {{ rightinfo }}
-        </button>
+            {% block midrow %}
+            {% endblock %}
+
+            {% block rightrow %}
+            {% endblock %}
+
     </div>
 </div>
-
-
-<div class="mainFrameSub">
-
-        {% block leftrow %}
-        {% endblock %}
-
-        {% block midrow %}
-        {% endblock %}
-
-        {% block rightrow %}
-        {% endblock %}
-
-</div>
-
 
 </body>
 </html>
