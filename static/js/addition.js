@@ -17,7 +17,7 @@ function showAddition() {
     if (additionShownFlag) { //  если панель показана, то скрыть
         oldDiv.style.width = 0 + "px";
     } else {                 //  если панель скрыта, то показать
-        oldDiv.style.width = 300 + "px";
+        oldDiv.style.width = 272 + "px";
     }
 
     additionShownFlag = !additionShownFlag
