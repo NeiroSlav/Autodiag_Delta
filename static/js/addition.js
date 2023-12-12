@@ -7,21 +7,18 @@ var getAdditionHtml = '' +
                     '</div>' +
             '</div>'
 
+
 var additionShownFlag = false
 
 function showAddition() {
     // console.log(responce);
     var oldDiv = document.getElementById('additionPanel');  // Достаём старый div
-    var newDiv = document.createElement("div");  // Создаём новый div
-    newDiv.setAttribute("id", 'additionPanel');
-    newDiv.setAttribute("style", "margin: 0 auto 0 0;");
 
     if (!additionShownFlag) {
-        newDiv.setAttribute("class", "mainFrameSub");
-        newDiv.innerHTML = getAdditionHtml;
+        oldDiv.style.width = 0 + "px";
+    } else {
+        oldDiv.style.width = 300 + "px";
     }
 
-
     additionShownFlag = !additionShownFlag
-    oldDiv.parentNode.replaceChild(newDiv, oldDiv);  // Заменяем старый div новым
 }

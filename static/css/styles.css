@@ -23,6 +23,17 @@ body {
     height: auto;
     display: flex;
     border-radius: 20px;
+
+}
+
+.additionFrameSub {
+    background: #EEE;
+    margin: 0 auto 0 0;
+    width: 0px;
+    height: auto;
+    display: flex;
+    border-radius: 20px;
+    transition: width 0.5s;
 }
 
 .diagLongBlock {
@@ -61,5 +72,3 @@ body {
     height: auto;
     text-align:justify;
 }
-
-
