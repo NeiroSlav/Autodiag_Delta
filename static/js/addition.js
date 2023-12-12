@@ -14,9 +14,9 @@ function showAddition() {
     // console.log(responce);
     var oldDiv = document.getElementById('additionPanel');  // Достаём старый div
 
-    if (!additionShownFlag) {
+    if (additionShownFlag) { //  если панель показана, то скрыть
         oldDiv.style.width = 0 + "px";
-    } else {
+    } else {                 //  если панель скрыта, то показать
         oldDiv.style.width = 300 + "px";
     }
 
