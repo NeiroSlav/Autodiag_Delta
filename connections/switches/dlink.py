@@ -289,23 +289,22 @@ class Dlink(SwitchMixin):
             return {'error': True}
 
         answer = answer.split('\\n\\r')
-        rx_low = []
-        rx_high = []
+        ports_util, right_row = [], []
         for elem in answer:
-            try:  # пытается взять кол-во пакетов из строки
-                elem = int(elem.split()[1])
-                if elem > 4_000:
-                    rx_high.append(elem)
-                elif elem >= 0:
-                    rx_low.append(elem)
-            except Exception:
-                pass
+            try:  # ищет фреймы левого и правого столбца
+                ports_util.append(int(elem.split()[1]))
+                right_row.append(int(elem.split()[5]))
+            except Exception: pass
 
-        #  если нет большого трафла, или разница в трафике больше 5к
-        if not rx_high or (rx_high[0] - rx_high[-1]) > 5_000:
+        #  выбирает порты с кол-вом фреймов больше 4к (кроме магистральных)
+        ports_util += right_row
+        high_util = list(filter(lambda i: i > 4_000, ports_util[0:-5]))
+
+        #  нагруженных портов меньше трёх, или разница в трафике больше 5к
+        if len(high_util) < 3 or (high_util[0] - high_util[-1]) > 5_000:
             return {'flood': False, 'error': False}
 
-        return {'flood': True, 'flood_rx': rx_high[0], 'error': False}
+        return {'flood': True, 'flood_rx': high_util[0], 'error': False}
 
     # проверка, есть ли подписки
     def igmp(self, port: int) -> dict:
