@@ -164,7 +164,7 @@ def use_token(func):
 @app.route("/still_active/<token>")
 def token_still_active(token):
     if token_exists(token):
-        logging.info(f'{token} activity')
+        # logging.info(f'{token} activity')
         token_set(token, '_last_active', int(time.time()))
     return {'ok': token_exists(token)}
 

@@ -11,6 +11,7 @@
     <script src="{{ url_for('static', filename='js/ajax_patterns.js') }}"></script>
     <script src="{{ url_for('static', filename='js/ip_tools.js') }}"></script>
     <script src="{{ url_for('static', filename='js/diag_buf_copy.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/addition.js') }}"></script>
 
     <link rel="shortcat icon" href="{{  url_for('static', filename='img/gear_icon.png') }}" type="image/x-icon"/>
 
@@ -32,7 +33,7 @@
 
 <div style="display: flex; flex-direction: row;">
 
-    <div class="mainFrameSub" style="margin: 0 auto 0 auto;">
+    <div class="mainFrameSub">
 
         <div class="diagLongBlock">
 
@@ -62,8 +63,10 @@
                 ></button>
 
                 <button class="head-button"
-                        onclick="" style="
-                        background: #384d84 url();
+                        id="additionButton"
+                        title='Боковая&#10;Панель'
+                        onclick="showAddition()" style="
+                        background: #384d84 url('{{  url_for('static', filename='img/addition.png') }}');
                         background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
                 ></button>
 
@@ -86,22 +89,11 @@
             {% endblock %}
     </div>
 
-<!--    <div class="mainFrameSub" style="margin: 0 auto 0 0;">-->
-
-<!--        {% block addition %}-->
-<!--        <div id="addition" style="margin: 0 auto 0 auto;">-->
-<!--            <div class="diagLongBlock">-->
-<!--                <div style="margin-bottom: 40px;"></div>-->
-
-<!--                <div class="diagMiniBlock">-->
-<!--                    <div class="diagLog"></div>-->
-<!--                    <button class="diagButton">ababa</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        {% endblock %}-->
+            <div id="additionPanel" style="margin: 0 auto 0 0;">
+            </div>
 
 </div>
+
 
 </body>
 </html>

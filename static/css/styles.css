@@ -2,7 +2,7 @@
     width: 0px; /* Ширина полоски */
 }
 ::-webkit-scrollbar-track {
-    background: #FAFAFA; /* Цвет фона полоски */
+    background: #EEE; /* Цвет фона полоски */
 }
 
 body {
@@ -16,23 +16,19 @@ body {
 }
 
 .mainFrameSub {
-    background: #FAFAFA;
-    min-width: 800px;
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
-    width: calc(100vw - 150px);
-    height: 550px;
+    background: #EEE;
+    margin: 0 24px 0 auto;
+    padding: 0 12px 0 12px;
+    width: auto;
     height: auto;
-
     display: flex;
-    border-radius: 10px;
+    border-radius: 20px;
 }
 
 .diagLongBlock {
     width: 244px;
     height: auto;
-    margin: 0 auto 0 auto;
+    margin: 0 8px 0 10px;
 }
 
 .diagMiniBlock {
@@ -65,3 +61,5 @@ body {
     height: auto;
     text-align:justify;
 }
+
+

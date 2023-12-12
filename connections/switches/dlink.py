@@ -381,7 +381,11 @@ class Dlink(SwitchMixin):
     #     print('dlink object deleted')
 
 
+#
+
 class Dlink1210(Dlink):
+    """Отдельный класс для работы со свитчами DES-1210 \n
+    переопределены: cable, log"""
 
     # диагностика кабеля
     def cable(self, port: int) -> dict:
