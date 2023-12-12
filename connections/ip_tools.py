@@ -26,4 +26,4 @@ def nmap(ip_address: str) -> dict:
     port = port.group(0).split('/')[0]
     return {'ip': ip_address, 'port': port}
 
-    return {'ip': ip_address, 'port': '9090'}
+    # return {'ip': ip_address, 'port': '9090'}
