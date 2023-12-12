@@ -28,7 +28,7 @@ body {
     height: auto;
     display: flex;
     border-radius: 20px;
-    transition: 0.2s;
+    transition: 0.5s;
 }
 
 .additionFrameSub {
@@ -42,7 +42,7 @@ body {
 
 .sep {
     width: 24px;
-    transition: 0.3s;
+    transition: 0.5s;
 }
 
 .diagLongBlock {
