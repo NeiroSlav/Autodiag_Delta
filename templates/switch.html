@@ -6,6 +6,8 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/head.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/buttons.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/head_buttons.css') }}">
+
     <title>{{title}}</title>
     <script src="{{ url_for('static', filename='js/buttons.js') }}"></script>
     <script src="{{ url_for('static', filename='js/ajax_patterns.js') }}"></script>
@@ -43,37 +45,41 @@
 
                 <button class="head-button"
                         title='Профиль&#10;Абонента'
-                        onclick="openInNewTab('https://gcdbviewer.matrixhome.net/usersearch.php?anumber=' + '{{ anumber }}');" style="
+                        onclick="openInNewTab('https://gcdbviewer.matrixhome.net/usersearch.php?anumber=' + '{{ anumber }}');"
+                        style="
                         background: #384d84 url('{{  url_for('static', filename='img/matrix.png') }}');
-                        background-position: 0px 1px; background-repeat: no-repeat; background-size: 33px;"
+                        background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
                 ></button>
 
                 <button class="head-button"
                         title='Копировать&#10;Диагностику'
-                        onclick="copyDiag('all');" style="
+                        onclick="copyDiag('all');"
+                        style="
                         background: #384d84 url('{{  url_for('static', filename='img/clipboard.png') }}');
-                        background-position: 2px 0px; background-repeat: no-repeat; background-size: 30px;"
+                        background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
                 ></button>
 
                 <button class="head-button"
                         title='Обновить&#10;Данные'
-                        onclick="updateAll();" style="
+                        onclick="updateAll();"
+                        style="
                         background: #384d84 url('{{  url_for('static', filename='img/update.png') }}');
                         background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
                 ></button>
 
                 <button class="head-button"
-                        onclick="" style="
+                        onclick=""
+                        style="
                         background: #384d84 url('{{  url_for('static', filename='img/settings.png') }}');
-                        background-position: 4px 4px; background-repeat: no-repeat; background-size: 26px;"
+                        background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
                 ></button>
 
                 <button class="head-button"
-                        id="additionButton"
                         title='Боковая&#10;Панель'
-                        onclick="showAddition()" style="margin-right: 0;
+                        onclick="showAddition()"
+                        style="margin-right: 0;
                         background: #384d84 url('{{  url_for('static', filename='img/panel.png') }}');
-                        background-position: 6px 4px; background-repeat: no-repeat; background-size: 26px;"
+                        background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
                 ></button>
 
             </div>
