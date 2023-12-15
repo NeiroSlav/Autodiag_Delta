@@ -35,44 +35,45 @@
     <div class="diagTopFrame">
         <div class="diagTopFrameSub" style="margin-left: auto;">
 
-                <button class="head-button"
-                        title='Профиль&#10;Абонента'
-                        onclick="openInNewTab('https://gcdbviewer.matrixhome.net/usersearch.php?anumber=' + '{{ anumber }}');"
-                        style="
-                        background: #384d84 url('{{  url_for('static', filename='img/matrix.png') }}');
-                        background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
-                ></button>
+            <button class="head-button"
+                    title='Профиль&#10;Абонента'
+                    onclick="openInNewTab('https://gcdbviewer.matrixhome.net/usersearch.php?anumber=' + '{{ anumber }}');"
+                    style="
+                    background: #384d84 url('{{  url_for('static', filename='img/matrix.png') }}');
+                    background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
+            ></button>
 
-                <button class="head-button"
-                        title='Копировать&#10;Диагностику'
-                        onclick="copyDiag('all');"
-                        style="
-                        background: #384d84 url('{{  url_for('static', filename='img/clipboard.png') }}');
-                        background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
-                ></button>
+            <button class="head-button"
+                    title='Копировать&#10;Диагностику'
+                    onclick="copyDiag('all');"
+                    style="
+                    background: #384d84 url('{{  url_for('static', filename='img/clipboard.png') }}');
+                    background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
+            ></button>
 
-                <button class="head-button"
-                        title='Обновить&#10;Данные'
-                        onclick="updateAll();"
-                        style="
-                        background: #384d84 url('{{  url_for('static', filename='img/update.png') }}');
-                        background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
-                ></button>
+            <button class="head-button"
+                    title='Обновить&#10;Данные'
+                    onclick="updateAll();"
+                    style="
+                    background: #384d84 url('{{  url_for('static', filename='img/update.png') }}');
+                    background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
+            ></button>
 
-                <button class="head-button"
-                        onclick=""
-                        style="
-                        background: #384d84 url('{{  url_for('static', filename='img/settings.png') }}');
-                        background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
-                ></button>
+            <button class="head-button"
+                    title='Настройки'
+                    onclick=""
+                    style="
+                    background: #384d84 url('{{  url_for('static', filename='img/settings.png') }}');
+                    background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
+            ></button>
 
-                <button class="head-button"
-                        title='Боковая&#10;Панель'
-                        onclick="showAddition()"
-                        style="margin-right: 0;
-                        background: #384d84 url('{{  url_for('static', filename='img/panel.png') }}');
-                        background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
-                ></button>
+            <button class="head-button"
+                    title='Боковая&#10;Панель'
+                    onclick="showAddition()"
+                    style="margin-right: 0;
+                    background: #384d84 url('{{  url_for('static', filename='img/panel.png') }}');
+                    background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
+            ></button>
 
         </div>
 

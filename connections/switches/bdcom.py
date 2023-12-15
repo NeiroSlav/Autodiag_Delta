@@ -1,3 +1,5 @@
+import time
+
 from connections.switches.utils.mixin import SwitchMixin
 from connections.telnet import Telnet
 
@@ -106,8 +108,8 @@ class Bdcom(SwitchMixin):
 
         self.session.read()
         self.session.push(command)
-        self.session.push('     ')
-        answer = self.session.read(timeout=2, string='-----')
+        self.session.push('       ')
+        answer = self.session.read(timeout=5, string='#')
 
         if not ('----' in answer):
             return {'error': True}

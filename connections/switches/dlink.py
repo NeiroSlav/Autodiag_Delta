@@ -235,8 +235,10 @@ class Dlink(SwitchMixin):
             result['log'] = log
             return result
 
+        port_patterns = [f'ort {port} ', f'orts {port} ', f' {port}"', f'ort: {port}']
+
         for elem in log:  # выборка записей о нужном порте
-            if ((f'ort {port} ' in elem+' ') or (f'orts {port} ' in elem+' ')) and (len(result['log']) < 20):
+            if (True in [(i in elem) for i in port_patterns]) and len(result['log']) < 25:
                 result['log'].append(elem)
                 if ('storm' in elem) or ('loop' in elem):
                     result['snmp'].append(elem)
@@ -245,7 +247,7 @@ class Dlink(SwitchMixin):
             result['log'].append('Прочитал лог меньше суток! Вероятно, кто-то ПОСил.')
 
         # 'ок':True будет, если длина лога < 50, и нет штормов/колец
-        result['ok'] = (len(result['log']) < 50) and (not result['snmp'])
+        result['ok'] = (len(result['log']) < 20) and (not result['snmp'])
         return result
 
     # утилизация порта
@@ -459,8 +461,10 @@ class Dlink1210(Dlink):
             result['log'] = log
             return result
 
+        port_patterns = [f'ort {port} ', f'orts {port} ', f' {port}"', f'ort: {port}']
+
         for elem in log:  # выборка записей о нужном порте
-            if (f'ort {port} ' in elem) or (f'orts {port} ' in elem) or f' {port}"' in elem:
+            if True in [(i in elem) for i in port_patterns]:
                 result['log'].append(elem)
                 if ('storm' in elem) or ('loop' in elem):
                     result['snmp'].append(elem)
