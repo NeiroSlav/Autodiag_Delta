@@ -25,14 +25,8 @@ function wait_div(id, text, buttonId="#mainButton") {
 
 
 function replace_div(responce, divId, func) {
-    // console.log(responce);
     var oldDiv = document.getElementById(divId);  // Достаём старый div
-    var newDiv = document.createElement("div");  // Создаём новый div
-    newDiv.setAttribute("id", divId);
-    newDiv.setAttribute("class", "diagMiniBlock");
-    // console.log(newDiv);
-    newDiv.innerHTML = func(responce);  // Дёргаем переданную функцию
-    oldDiv.parentNode.replaceChild(newDiv, oldDiv);  // Заменяем старый div новым
+    oldDiv.innerHTML = func(responce);  // Дёргаем переданную функцию
 }
 
 

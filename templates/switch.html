@@ -7,13 +7,15 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/head.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/buttons.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/head_buttons.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/side_elems.css') }}">
+
 
     <title>{{title}}</title>
     <script src="{{ url_for('static', filename='js/buttons.js') }}"></script>
     <script src="{{ url_for('static', filename='js/ajax_patterns.js') }}"></script>
     <script src="{{ url_for('static', filename='js/ip_tools.js') }}"></script>
     <script src="{{ url_for('static', filename='js/diag_buf_copy.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/addition.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/side_panel.js') }}"></script>
 
     <link rel="shortcat icon" href="{{  url_for('static', filename='img/gear_icon.png') }}" type="image/x-icon"/>
 
@@ -76,7 +78,7 @@
 
                 <button class="head-button"
                         title='Боковая&#10;Панель'
-                        onclick="showAddition()"
+                        onclick="showSidePanel()"
                         style="margin-right: 0;
                         background: #384d84 url('{{  url_for('static', filename='img/panel.png') }}');
                         background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
@@ -95,7 +97,20 @@
 
     <div class="sep"></div>
 
-    <div id="additionPanel" class="additionFrameSub">
+    <div id="sidePanel" class="sideFrameSub">
+
+        <div class="sideLongBlock">
+            <div class="sideMiniBlock" style="margin-bottom: 36px;"></div>
+
+
+            <div class="sideMiniBlock" id="ipList">
+                <button class="diagButton sideElem" id="sideButton"></button>
+                <button class="diagButton sideElem" id="sideButton" style="height: 150px;"></button>
+                <button class="diagButton sideElem" id="sideButton"></button>
+            </div>
+
+        </div>
+
     </div>
 
     <div class="sep" id="sepRight" style="margin-right: auto; width: 0;"></div>
