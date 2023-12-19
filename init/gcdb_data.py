@@ -36,7 +36,7 @@ class GcdbData:
     def update_gcdb_data(self):
         data = get_gcdb_data(self.anumber, self.switch_ip)
 
-        self.group_ticket = data['group_tickets'][0] if data['group_tickets'] else None
+        self.group_ticket = sorted(data['group_tickets'])[-1] if data['group_tickets'] else None
         del data['group_tickets']
         print(self.group_ticket)
 
