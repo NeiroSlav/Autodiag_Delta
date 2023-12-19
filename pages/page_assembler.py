@@ -3,7 +3,7 @@ from connections import Telnet, fping, nmap
 from init import *
 
 
-@app.route("/test/<switch_type>/")
+@app.route("/test/<switch_type>")
 def test_page(switch_type):
     return render_template(  # рендер тестовой страницы
         f'{switch_type}.html',
@@ -11,6 +11,19 @@ def test_page(switch_type):
         switchtype=switch_type.upper(),
         topinfo='192.168.13.54 : 12',
         title=f'D 192.168.13.54')
+
+
+# принимает запрос на создание тикета
+@app.route("/create_ticket")
+def create_ticket():
+    set_gcdb_ticket(
+        request.args.get('anumber'),
+        request.args.get('user'),
+        request.args.get('ticket_id'),
+        request.args.get('comment'),
+    )
+    print('ticket created')
+    return {'ok': True}
 
 
 # вход на свитч, перенаправление на страницу свитча
@@ -22,8 +35,13 @@ def main_redirect():
         switch_ip = gcdb_data.switch_ip
 
         if not fping(switch_ip):  # если свитч не отвечает
-            info = get_decview_status(switch_ip)
-            raise DiagError(info)
+            return render_template(
+                'switch_down.html',
+                topinfo=get_decview_status(switch_ip),
+                anumber=gcdb_data.anumber,
+                user=gcdb_data.username,
+                group_ticket=gcdb_data.group_ticket,
+            )
 
         telnet = Telnet(gcdb_data)  # логин на свитч
         if not telnet.switch_type:  # если тип свитча не определён

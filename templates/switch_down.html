@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/head.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/buttons.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/head_buttons.css') }}">
+
+    <title>Свитч лежит</title>
+    <script src="{{ url_for('static', filename='js/buttons.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/diag_buf_copy.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ajax_patterns.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ticket_create.js') }}"></script>
+
+    <link rel="shortcat icon" href="{{  url_for('static', filename='img/gear_icon.png') }}" type="image/x-icon"/>
+
+    <script>
+        var anumber = '{{anumber}}';
+        var user = '{{user}}';
+        var group_ticket = '{{group_ticket}}';
+    </script>
+
+
+</head>
+<body>
+
+{% block imports %}
+{% endblock %}
+
+<div class="topMargin"></div>
+
+<div class="diagTopFrame">
+    <div class="diagTopFrameSub" style="margin: 33px auto 0 auto; width: 140px;">
+
+        <button class="head-button"
+                title='Профиль&#10;Абонента'
+                onclick="openInNewTab('https://gcdbviewer.matrixhome.net/usersearch.php?anumber=' + '{{ anumber }}');"
+                style="
+                background: #384d84 url('{{  url_for('static', filename='img/matrix.png') }}');
+                background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
+        ></button>
+
+        <button class="head-button"
+                title='Копировать&#10;Текст ошибки'
+                onclick="saveClip('{{ topinfo }}');"
+                style="
+                background: #384d84 url('{{  url_for('static', filename='img/clipboard.png') }}');
+                background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
+        ></button>
+
+        <button class="head-button"
+                title='Обновить&#10;Страницу'
+                onclick="location.reload();"
+                style="
+                margin-right: 0px;
+                background: #384d84 url('{{  url_for('static', filename='img/update.png') }}');
+                background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
+        ></button>
+
+    </div>
+
+
+    <div class="diagTopFrameSub" style="margin: 33px auto 0 0; width: 610px;">
+        <button class="diagButtonRed" onclick="saveClip('{{ topinfo }}');"
+                style="width: 605px; height: 40px; font-size: 18px; margin-top: 0px;">
+            {{ topinfo }}
+        </button>
+    </div>
+
+</div>
+
+
+<div class="diagTopFrame" style="margin-top: 30px" id="ticketField">
+    <div class="diagTopFrameSub" style="margin: 33px auto 0 auto; width: 610px;">
+        <button class="diagButtonRed"
+                style="width: 605px; height: 40px; font-size: 18px; margin-top: 0px;">
+            По этому адресу групповая проблема, создать тикет по ней?
+        </button>
+    </div>
+
+    <div class="diagTopFrameSub" style="margin: 33px auto 0 0; width: 140px;">
+        <button class="diagButtonBlue" onclick="createGroupTicket('{{user}}', '{{anumber}}', '{{group_ticket}}', '{{topinfo}}');"
+                style="width: 136px; height: 40px; font-size: 18px; margin-top: 0px;">
+            Создать!
+        </button>
+    </div>
+</div>
+
+</body>
+</html>

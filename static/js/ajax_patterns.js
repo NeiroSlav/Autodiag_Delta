@@ -24,9 +24,9 @@ function wait_div(id, text, buttonId="#mainButton") {
 }}}
 
 
-function replace_div(responce, divId, func) {
+function replace_div(response, divId, func) {
     var oldDiv = document.getElementById(divId);  // Достаём старый div
-    oldDiv.innerHTML = func(responce);  // Дёргаем переданную функцию
+    oldDiv.innerHTML = func(response);  // Дёргаем переданную функцию
 }
 
 
@@ -43,5 +43,27 @@ function ajax_div(url, divId, func) {
         },
         error: function(error){
             replace_div(error, divId, func);
+        }
+});}
+
+
+function createGroupTicket(user, anumber, ticket_id, comment) {
+    $.ajax({
+        type: 'GET',
+        url : '/create_ticket',
+        dataType: 'json',
+        data: {
+            user: user,
+            anumber: anumber,
+            ticket_id: ticket_id,
+            comment: comment,
+        },
+        success: function(response){
+            close_ticket_menu(response);
+//            replace_div(response, divId, func);
+        },
+        error: function(error){
+            close_ticket_menu({'ok': false});
+//            replace_div(error, divId, func);
         }
 });}

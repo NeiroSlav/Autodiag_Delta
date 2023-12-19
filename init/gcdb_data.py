@@ -24,7 +24,7 @@ class GcdbData:
 
         self.ip_list = [self.abon_ip]
         self.mac_list = []
-        self.group_tickets = []
+        self.group_ticket = []
 
         if not (self.username and self.switch_ip and self.switch_port):
             raise DiagError('Неполный запрос')
@@ -36,8 +36,9 @@ class GcdbData:
     def update_gcdb_data(self):
         data = get_gcdb_data(self.anumber, self.switch_ip)
 
-        self.group_tickets = data['group_tickets']
+        self.group_ticket = data['group_tickets'][0] if data['group_tickets'] else None
         del data['group_tickets']
+        print(self.group_ticket)
 
         for key, elem in data.items():
             if elem['mac'] and not elem['mac'] in self.mac_list:
