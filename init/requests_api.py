@@ -20,6 +20,7 @@ def get_gcdb_data(anumber: str, switch_ip: str = ''):
 
 def set_gcdb_ticket(anumber: str, user: str, ticket_id: str, comment: str):
     url = ['https://gcdbviewer.matrixhome.net/api_autodiag.php?action=add_ticket']
+    url.append('dup=1')
     url.append('hash=' + get_hash())
     url.append('anumber=' + anumber)
     url.append('comment=' + comment)
