@@ -1,5 +1,8 @@
-from connections import switch_class
+import token
+
+from connections import _switch
 from connections import Telnet, fping, nmap
+from flask import request, redirect
 from init import *
 
 
@@ -7,23 +10,23 @@ from init import *
 def test_page(switch_type):
     return render_template(  # рендер тестовой страницы
         f'{switch_type}.html',
-        switchip='192.168.13.54',
+        switchip='192.168.TE.ST',
         switchtype=switch_type.upper(),
-        topinfo='192.168.13.54 : 12',
-        title=f'D 192.168.13.54')
+        topinfo='192.168.TE.ST : XX',
+        title=f'T 192.168.TE.ST')
 
 
 # принимает запрос на создание тикета
 @app.route("/create_ticket")
 def create_ticket():
-    set_gcdb_ticket(
+    status = GcdbApi.set_ticket(
         request.args.get('anumber'),
         request.args.get('user'),
         request.args.get('ticket_id'),
         request.args.get('comment'),
     )
     print('ticket created')
-    return {'ok': True}
+    return {'ok': status}
 
 
 # вход на свитч, перенаправление на страницу свитча
@@ -37,7 +40,7 @@ def main_redirect():
         if not fping(switch_ip):  # если свитч не отвечает
             return render_template(
                 'switch_down.html',
-                topinfo=get_decview_status(switch_ip),
+                topinfo=DecviewApi.get_status(switch_ip),
                 anumber=gcdb_data.anumber,
                 user=gcdb_data.username,
                 group_ticket=gcdb_data.group_ticket,
@@ -57,9 +60,9 @@ def main_redirect():
                 raise DiagError(f'Гигабитный порт, доступ запрещён')
 
         #  создание токена, сохранение данных, запись в сессию
-        token = token_init()
-        token_set(token, 'gcdb_data', gcdb_data)
-        token_set(token, 'telnet', telnet)
+        token = Token()
+        token.gcdb_data = gcdb_data
+        token.telnet = telnet
 
         # если тип свитча определён, открыть его страницу
         return redirect(f'/{telnet.switch_type}/{token}')
@@ -70,12 +73,15 @@ def main_redirect():
 
 
 # рендер главной страницы свитча
-@app.route("/<switch_type>/<token>")
-def switch_page(switch_type, token):
+@app.route("/<switch_type>/<token_number>")
+def switch_page(switch_type, token_number):
     try:
-        # распаковка данных из токена
-        gcdb_data = token_get(token, 'gcdb_data')
-        telnet = token_get(token, 'telnet')
+        token = Token.pull(token_number)
+        if not token:
+            render_error(f'Токен {token_number} удалён')
+        telnet = token.telnet
+        gcdb_data = token.gcdb_data
+        gcdb_data.update_data()
 
         if telnet.switch_type != switch_type:  # редирект, если другой свитч
             return redirect(f'/{telnet.switch_type}/{token}')
@@ -83,12 +89,9 @@ def switch_page(switch_type, token):
         #  если это медленный свитч, к нему доп параметры
         if 'DES-1210' in telnet.switch_model:
             telnet.x_timeout = 2
-            token_set(token, 'telnet', telnet)
-            switch = switch_class['dlink1210'](telnet)
+            token.switch = _switch['dlink1210'](telnet)
         else:
-            switch = switch_class[switch_type](telnet)  # сохраняет в токен объект свитча
-
-        token_set(token, 'switch', switch)
+            token.switch = _switch[switch_type](telnet)  # сохраняет в токен объект свитча
 
         switch_info = f'{gcdb_data.switch_ip} : {gcdb_data.switch_port}'
         if gcdb_data.pon_port:
@@ -98,18 +101,19 @@ def switch_page(switch_type, token):
             f'{switch_type}.html',
             anumber=gcdb_data.anumber,
             switchip=gcdb_data.switch_ip,
-            switchtype=f'{switch_type.upper()} {switch.model}',
+            switchtype=f'{switch_type.upper()} {token.switch.model}',
             topinfo=switch_info,
             title=f'{switch_type.title()[0]} {switch_info}',
-            token=token)
+            token=str(token))
 
     except EOFError:  # если сессия telnet была разорвана
-        token_del(token)
+        token.delete()
         return render_error('Сессия Telnet разорвана')
 
     except KeyError:  # если не нашлось токена
-        return render_error(f'Токен {token} удалён')
+        return render_error(f'Токен {token_number} удалён')
 
     except Exception as ex:
-        token_del(token)
+        if token:
+            token.delete()
         return render_error(ex)

@@ -115,7 +115,7 @@ class Zyxel(SwitchMixin):
 
         self.session.push('\nq\n\n')
 
-        if not ('INFO' in answer):
+        if not (':' in answer):
             return {'error': True}
 
         log_pattern = (  # паттерн записи лога с участием портов

@@ -9,7 +9,7 @@ from .telnet import Telnet
 
 from .personal_data import *
 
-switch_class = {
+_switch = {
     'dlink': Dlink,
     'dlink1210': Dlink1210,
     'zyxel': Zyxel,

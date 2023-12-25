@@ -379,7 +379,7 @@ class Dlink(SwitchMixin):
         return {'ok': True}
 
     # def __del__(self):
-    #     print('dlink object deleted')
+    # print('dlink object deleted')
 
 
 #

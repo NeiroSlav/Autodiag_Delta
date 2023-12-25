@@ -1,16 +1,17 @@
-from .app_init import *
 from connections import nmap
 import requests
+from .app_init import app
+from .token_init import Token, jsonify
 
 
 # обработчик для проверки уд
 @app.route("/get_open_port/<token>")
 def get_open_port(token):
-    if not token_exists(token):  # ошибка, если токена нет
+    token = Token.pull(token)
+    if not token:  # ошибка, если токена нет
         return jsonify({'error': True, 'type': 'TokenNotFound'})
 
-    gcdb_data = token_get(token, 'gcdb_data')
-    answer = nmap(gcdb_data.abon_ip)
+    answer = nmap(token.gcdb_data.abon_ip)
     if not answer['port']:  # если открытый порт не найден
         return jsonify(answer)  # возврат ответа в json
 

@@ -1,14 +1,10 @@
-import gc
+import datetime
+import logging
 import os
-import threading
-import time
-from functools import wraps
-from random import randint
-from flask import Flask, jsonify, render_template, redirect, request
+from flask import Flask, render_template
+
 
 # инициализация лога
-import logging
-import datetime
 date_time = str(datetime.datetime.now()).split('.')[0]
 date_time = date_time.replace(' ', '-').replace(':', '-')
 log_file_path = os.path.join('log', f'LOG-{date_time}.log')
@@ -16,17 +12,15 @@ log_file_path = os.path.join('log', f'LOG-{date_time}.log')
 logging.basicConfig(level=logging.INFO, filename=log_file_path, filemode="w",
                     format="%(asctime)s %(levelname)s | %(message)s")
 
+
 # инициализация приложения flask
 static_dir = os.path.abspath('static/')
 template_dir = os.path.abspath('templates/')
 app = Flask(__name__, static_folder=static_dir, template_folder=template_dir)
 app.secret_key = os.urandom(12)  # назначение секретного ключа (чтобы работали сессии)
 
-_token_dict = {}  # инициализация словаря токенов
-changes_list = []  # лог-список выключения/включения портов
-
-log = logging.getLogger('werkzeug')  # перенаправление лога flask
-log.disabled = True  # и выключение его, чтобы не видеть get-запросы
+flask_log = logging.getLogger('werkzeug')  # перенаправление лога flask
+flask_log.disabled = True  # и выключение его, чтобы не видеть get-запросы
 
 
 # собственный класс исключений
@@ -41,180 +35,3 @@ def render_error(err_text):
     return render_template(
         'error.html',
         title='Ошибка', topinfo=err_text)
-
-
-#
-
-
-# функция создания токена
-def token_init():
-    while True:  # пока токен не будет уникальным
-        token = str(randint(a=10000, b=99999))
-        if not token_exists(token):
-            break
-
-    _token_dict[token] = {  # начальные значения:
-        '_busy_query': [],  # очередь занятости токена,
-        '_last_active': int(time.time()),  # время последней активности
-        '_changes': [],
-        'first_time_flag': True,
-        'default_bind_state': 'loose',
-    }
-    logging.info(f'{token} token created')
-    return token
-
-
-# проверка наличия токена
-def token_exists(token: str) -> bool:
-    return token in _token_dict
-
-
-# запись объекта в токен
-def token_set(token: str, name: str, obj):
-    _token_dict[token][name] = obj
-
-
-# получение объекта из токена
-def token_get(token: str, name: str):
-    return _token_dict[token][name]
-
-
-# изменение в списке токена
-def token_changes(token: str, change: str, remove: bool = False):
-    if remove and (change in _token_dict[token]['_changes']):
-        _token_dict[token]['_changes'].remove(change)
-    elif not remove:
-        _token_dict[token]['_changes'].append(change)
-
-
-# удаление токена
-def token_del(token: str):
-    if token_exists(token):
-
-        _changes = _token_dict[token]['_changes']
-        gcdb_data = _token_dict[token]['gcdb_data']
-        if _changes:
-            switch = _token_dict[token]['switch']
-            if 'set_port_down' in _changes:
-                switch.set_port(gcdb_data.switch_port, True)
-                logging.info('port enabled automatically')
-            if 'set_bind_loose' in _changes:
-                switch.set_bind(gcdb_data.switch_port, loose=False)
-                logging.warning(f'token {token} set strict on {switch.ip}')
-
-        try:
-            _token_dict[token]['telnet'].close()
-        except Exception as ex:
-            logging.error(f'cant close telnet connection {token}: \n{ex}')
-
-        del _token_dict[token]
-
-
-# копирование данных словаря токенов
-def token_dict_image_get() -> dict:
-    return _token_dict
-
-
-#
-
-
-# функция ожидания очереди токена, и её занятия
-def token_wait_busy(token: str, func_name: str):
-    func_name += '_' + str(time.time())
-
-    _token_dict[token]['_busy_query'].append(func_name)
-
-    while _token_dict[token]['_busy_query'][0] != func_name:
-        time.sleep(0.1)
-
-
-# освобождение очереди токена
-def token_set_free(token):
-    _token_dict[token]['_busy_query'].pop(0)
-
-
-# декоратор для синхронной работы с токеном
-def use_token(func):
-    @wraps(func)
-    def wrapper(token):
-        if not token_exists(token):  # если токена не существует
-            return jsonify({'error': True, 'type': 'TokenNotFound'})
-
-        token_wait_busy(token, func.__name__)  # ждёт очередь, и занимает
-        # logging.info(f'token {token} runs {func.__name__}')
-        try:
-            func_answer = func(
-                token,  # извлекает данные по токену, передаёт в функцию
-                gcdb_data=token_get(token, 'gcdb_data'),
-                telnet=token_get(token, 'telnet'),
-                switch=token_get(token, 'switch'))
-        except Exception as e:
-            func_answer = {'error': True, 'type': f'PythonError: {e}'}
-
-        token_set_free(token)  # освобождает очередь
-        return jsonify(func_answer)  # возвращает ответ функции в формате json
-
-    return wrapper
-
-
-#
-
-
-# обновление времени последней активности токена
-@app.route("/still_active/<token>")
-def token_still_active(token):
-    if token_exists(token):
-        # logging.info(f'{token} activity')
-        token_set(token, '_last_active', int(time.time()))
-    return {'ok': token_exists(token)}
-
-
-# раз в минуту проверяет активность токенов, удерживает telnet
-def token_watch_activity():
-    logging.critical('Token watcher started')
-
-    while True:
-        time.sleep(60)
-        current_time = int(time.time())
-        tokens_to_del = []
-        log_string = ''
-
-        try:
-            for token, t_data in _token_dict.items():
-                time_range = current_time - t_data['_last_active']
-
-                log_string += (
-                    f'\ntoken: {token}  '
-                    f'user: {t_data["gcdb_data"].username}{" "*(12-len(t_data["gcdb_data"].username))}'
-                    f'time: {"%02d:%02d" % ((time_range // 60), (time_range % 60))}  ')
-
-                # если активность старше 3ёх минут
-                if time_range > 180:
-                    tokens_to_del.append(token)
-                    log_string += ' del'
-
-                # если токен занят
-                elif t_data['_busy_query']:
-                    log_string += 'busy'
-
-                else:  # не даёт закрыться сессии telnet
-                    token_wait_busy(token, 'watcher')
-                    t_data['telnet'].push('\n', read=True)
-                    token_set_free(token)
-                    log_string += 'hold'
-
-            if log_string:
-                logging.info(log_string)
-
-            # удаление просроченных токенов
-            for token in tokens_to_del:
-                token_del(token)
-
-            # сборка мусора
-            gc.collect()
-
-        except Exception as ex:
-            logging.critical(f'error while token dict checking:\n{ex}')
-
-
-token_thread = threading.Thread(target=token_watch_activity)
