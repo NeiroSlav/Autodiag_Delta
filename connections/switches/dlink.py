@@ -367,11 +367,12 @@ class Dlink(SwitchMixin):
         if loose:  # если просят луз
             self.session.push(command + ' arp_inspection loose \n', read=True)
             self.session.push(command + ' state enable loose \n', read=True)
-            return {'ok': True, 'error': False}
 
         else:  # если просят в стрикт
             self.session.push(command + ' arp_inspection strict \n', read=True)
             self.session.push(command + ' state enable strict \n', read=True)
+
+        return {'ok': True, 'error': False}
 
     # очистить ошибки
     def clear(self, port: int):

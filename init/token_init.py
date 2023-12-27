@@ -45,10 +45,10 @@ class Token:
         return Token._dict[token]
 
     # работа со списком изменений
-    def change(self, name: str, remove: bool):
-        if remove:
-            return self.changes.remove(name)
-        self.changes.append(name)
+    def change(self, name: str, add: bool):
+        if add:
+            return self.changes.append(name)
+        self.changes.remove(name)
 
     # ожидание очереди токена, и её занятия
     def wait_busy(self, func_name: str):

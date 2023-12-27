@@ -99,7 +99,7 @@ def dlink_set_bind(token):
     log_string = f'{username} {"set loose" if loose_flag else "set strict"} {ip}:{port}'
     logging.warning(log_string)
     Token.changes_list.append(log_string)
-    token.change('set_bind_loose', bool(loose_flag))
+    token.change('set_bind_loose', loose_flag)
 
     return token.switch.set_bind(port, loose=loose_flag)
 
