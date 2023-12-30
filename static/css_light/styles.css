@@ -1,0 +1,83 @@
+::-webkit-scrollbar {
+    width: 0px; /* Ширина полоски */
+}
+::-webkit-scrollbar-track {
+    background: #EEE; /* Цвет фона полоски */
+}
+
+body {
+	background:#AAA;
+	color:#000;
+	margin:0;
+	padding:0;
+	font-family:Arial;
+	font-size:13px;
+	height: calc(100vh);
+}
+
+.mainFrame {
+    display: flex;
+    margin: auto;
+    flex-direction: row;
+}
+
+.mainFrameSub {
+    background: #FAFAFA;
+    padding: 0 48px 0 48px;
+    width: auto;
+    height: auto;
+    display: flex;
+    border-radius: 20px;
+    transition: 0.5s;
+}
+
+.sideFrameSub {
+    background: #EEE;
+    width: 0px;
+    height: auto;
+    display: flex;
+    border-radius: 20px;
+    transition: 0.5s;
+}
+
+.sep {
+    width: 24px;
+    transition: 0.5s;
+}
+
+.diagLongBlock {
+    width: 244px;
+    height: auto;
+    margin: 0 8px 0 10px;
+}
+
+.diagMiniBlock {
+    margin-bottom: 32px;
+    background-color: #0000FF
+    width: 236px;
+    height: auto;
+}
+
+.diagLog {
+    margin-top: 4px;
+    margin-right: 2px;
+    margin-left: 2px;
+    height: 184px;
+    width: 230px;
+    border: 3px solid #CCC;
+    background-color: #CCC;
+    border-radius: 5px;
+    overflow-y: auto;
+
+}
+
+.diagLogBlock {
+    font-size: 13px;
+    font-weight: bold;
+    margin: 8px 10px 8px 13px;
+    background: #777777
+    font-size: 10px;
+    width: auto;
+    height: auto;
+    text-align:justify;
+}
