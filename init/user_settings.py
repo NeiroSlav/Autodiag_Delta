@@ -60,10 +60,11 @@ class UserSettings:
 # тесты
 if __name__ == '__main__':
     us = UserSettings()
-
-    us.set('jjake', 'panel', 'shown')
-    us.set('bogdan', 'style', 'dark')
-    print()
+    #
+    # us.set('jjake', 'panel', 'shown')
+    # us.set('bogdan', 'style', 'dark')
+    # print()
     print(us.get('asdfa', 'panel'))
-    us.set('asdfa', 'style', 'dark')
+    print(us.get('jjake', 'panel'))
+    # us.set('asdfa', 'style', 'dark')
     print(us.get('1231', 'style'))
