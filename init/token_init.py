@@ -90,6 +90,7 @@ def use_token(func):
         try:
             func_answer = func(_token)
         except Exception as e:
+            print(e)
             func_answer = {'error': True, 'type': f'PythonError: {e}'}
 
         _token.set_free()  # освобождает очередь
@@ -102,12 +103,13 @@ def use_token(func):
 # обновление времени последней активности токена
 @app.route("/still_active/<token>")
 def token_still_active(token):
-    token = Token.pull(token)
-    if token:
+    try:
+        token = Token.pull(token)
         # logging.info(f'{token} activity')
         token._last_active = int(time.time())
-    return {'ok': bool(token)}
-
+        return {'ok': bool(token)}
+    except KeyError:
+        pass
 
 # раз в минуту проверяет активность токенов, удерживает telnet
 def token_watch_activity():

@@ -75,8 +75,9 @@ def main_redirect():
 # рендер главной страницы свитча
 @app.route("/<switch_type>/<token_number>")
 def switch_page(switch_type, token_number):
+    token = Token.pull(token_number)
+
     try:
-        token = Token.pull(token_number)
         if not token:
             render_error(f'Токен {token_number} удалён')
         telnet = token.telnet

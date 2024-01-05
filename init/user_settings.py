@@ -27,7 +27,7 @@ class UserSettings:
     # возвращает дефолтные значения
     @staticmethod
     def _default() -> dict:
-        return {'style': 'light',
+        return {'theme': 'light',
                 'panel': 'hidden'}
 
     # сохраняет настройки в файл user_settings.txt

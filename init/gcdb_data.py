@@ -17,7 +17,7 @@ class GcdbData:
 
         self.ip_list = [self.abon_ip]
         self.mac_list = []
-        self.group_ticket = []
+        self.group_ticket = None
 
         if not (self.username and self.switch_ip and self.switch_port):
             raise DiagError('Неполный запрос')

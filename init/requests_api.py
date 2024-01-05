@@ -21,12 +21,12 @@ class GcdbApi:
                'action=get_by_anumber',
                'anumber='+anumber,
                'switch='+switch_ip]
-        print('&'.join(url))
+        # print('&'.join(url))
         response = requests.get('&'.join(url))
         if response.status_code != 200:
             return None
 
-        print(response)
+        # print(response)
         return response.json()
 
     # запрос создаёт тикет
@@ -61,3 +61,8 @@ class DecviewApi:
         time = response['dev']['timestamp']
         state = 'поднят' if state else 'лежит'
         return f'Свитч {switch_ip} {state} с {time}'
+
+
+if __name__ == '__main__':
+    ls, ip = '0203134133', '192.168.35.43'
+    print(GcdbApi.get_data(ls, ip))

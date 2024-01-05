@@ -37,6 +37,7 @@ class Telnet:
 
     # чтение данных из канала
     def read(self, timeout: float = 0.1, string: str = '$#@&$') -> str | None:
+        # если x_timeout стандартный, то ничего не поменяется
         timeout = timeout * self.x_timeout + ((self.x_timeout-1)/10)
         answer_full = ''
         answer = ' '
