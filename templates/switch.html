@@ -3,11 +3,12 @@
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/head.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/buttons.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/head_buttons.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/side_elems.css') }}">
+    <link rel="stylesheet" type="text/css" href="/static/css/_{{theme}}_colors.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/buttons.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/head_buttons.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/side_elems.css">
 
 
     <title>{{title}}</title>
@@ -23,6 +24,7 @@
         var token = "{{ token }}";
         var still_active_url = "/still_active/";
         var get_open_port_url = "/get_open_port/";
+        var change_theme_url = "/change_theme/";
     </script>
 
 
@@ -70,7 +72,8 @@
                 ></button>
 
                 <button class="head-button"
-                        onclick=""
+                        title='Сменить&#10;тему'
+                        onclick="changeTheme()"
                         style="
                         background: #384d84 url('{{  url_for('static', filename='img/settings.png') }}');
                         background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"

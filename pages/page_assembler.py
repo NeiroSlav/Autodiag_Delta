@@ -13,7 +13,20 @@ def test_page(switch_type):
         switchip='192.168.TE.ST',
         switchtype=switch_type.upper(),
         topinfo='192.168.TE.ST : XX',
-        title=f'T 192.168.TE.ST')
+        title=f'T 192.168.TE.ST',
+        theme='dark'
+        )
+
+
+# меняет тему оформления для юзера
+@app.route("/change_theme/<token>")
+def change_theme(token):
+    username = Token.pull(token).gcdb_data.username
+    current_theme = user_sets.get(username, 'theme')
+    new_theme = 'dark' if current_theme == 'light' else 'light'
+    user_sets.set(username, 'theme', new_theme)
+    session['theme'] = new_theme
+    return {'ok': True}
 
 
 # принимает запрос на создание тикета
@@ -32,11 +45,13 @@ def create_ticket():
 # вход на свитч, перенаправление на страницу свитча
 @app.route("/", methods=["GET"])
 def main_redirect():
-    try:
-        #  инициализация данных из GET запроса
-        gcdb_data = GcdbData(request)  # парсинг GET запроса
-        switch_ip = gcdb_data.switch_ip
+    #  инициализация данных из GET запроса
+    gcdb_data = GcdbData(request)  # парсинг GET запроса
+    switch_ip = gcdb_data.switch_ip
 
+    session['theme'] = user_sets.get(gcdb_data.username, 'theme')
+
+    try:
         if not fping(switch_ip):  # если свитч не отвечает
             return render_template(
                 'switch_down.html',
@@ -44,6 +59,7 @@ def main_redirect():
                 anumber=gcdb_data.anumber,
                 user=gcdb_data.username,
                 group_ticket=gcdb_data.group_ticket,
+                theme=session['theme']
             )
 
         telnet = Telnet(gcdb_data)  # логин на свитч
@@ -69,7 +85,7 @@ def main_redirect():
 
     # рендер страницы с ошибкой
     except Exception as ex:
-        return render_error(ex)
+        return render_error(ex, gcdb_data.username)
 
 
 # рендер главной страницы свитча
@@ -105,7 +121,9 @@ def switch_page(switch_type, token_number):
             switchtype=f'{switch_type.upper()} {token.switch.model}',
             topinfo=switch_info,
             title=f'{switch_type.title()[0]} {switch_info}',
-            token=str(token))
+            token=str(token),
+            theme=user_sets.get(gcdb_data.username, 'theme')
+        )
 
     except EOFError:  # если сессия telnet была разорвана
         token.delete()

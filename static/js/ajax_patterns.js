@@ -10,6 +10,18 @@ function still_active() {
 });}
 
 
+function changeTheme() {
+    $.ajax({
+        type: 'GET',
+        url : change_theme_url + token,
+        dataType: 'json',
+        data: {
+        },
+});
+    location.reload();
+}
+
+
 // принимает на вход название блока и текст, меняет текст кнопки mainButton в блоке
 function wait_div(id, text, buttonId="#mainButton") {
     var block = document.getElementById(id);

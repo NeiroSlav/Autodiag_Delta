@@ -14,12 +14,13 @@
 
 }
 .diagButton:hover {
-    background-color: #FFF;
+    color: var(--button-text-hover-color);
+    background-color: var(--button-back-hover-color);
     transition: 0.1s;
 }
 .diagButton:active {
-    background-color: #FFF;
-    border: 3px solid #333;
+    background-color: var(--button-back-hover-color);
+    border: 3px solid var(--button-border-active-color);
     border-radius: 10px;
     transition: 0.1s;
 }
@@ -39,12 +40,14 @@
     transition: 0.3s;
 }
 .diagButtonRed:hover {
-    background-color: #FFF;
+    color: var(--button-text-hover-color);
+    background-color: var(--button-back-hover-color);
     transition: 0.1s;
 }
 .diagButtonRed:active {
-    background-color: #FFF;
-    border: 3px solid #333;
+    color: var(--button-text-hover-color);
+    background-color: var(--button-back-hover-color);
+    border: 3px solid var(--button-border-active-color);
     border-radius: 10px;
     transition: 0.1s;
 }
@@ -64,12 +67,14 @@
     transition: 0.3s;
 }
 .diagButtonGreen:hover {
-    background-color: #FFF;
+    color: var(--button-text-hover-color);
+    background-color: var(--button-back-hover-color);
     transition: 0.1s;
 }
 .diagButtonGreen:active {
-    background-color: #FFF;
-    border: 3px solid #333;
+    color: var(--button-text-hover-color);
+    background-color: var(--button-back-hover-color);
+    border: 3px solid var(--button-border-active-color);
     border-radius: 10px;
     transition: 0.1s;
 }
@@ -89,12 +94,12 @@
     transition: 0.3s;
 }
 .diagButtonBlue:hover {
-    color: #000;
-    background-color: #FFF;
+    color: var(--button-text-hover-color-2);
+    background-color: var(--button-back-hover-color);
     transition: 0.1s;
 }
 .diagButtonBlue:active {
-    background-color: #FFF;
+    background-color: var(--button-back-hover-color);
     border: 3px solid #CCC;
     border-radius: 10px;
     transition: 0.1s;

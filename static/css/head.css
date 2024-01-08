@@ -5,7 +5,7 @@
 
 .diagTopFrame {
     height: 102px;
-    background: #FAFAFA;
+    background: var(--face-background-color);
     min-width: 800px;
     max-width: 900px;
     margin-left: auto;

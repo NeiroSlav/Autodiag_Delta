@@ -16,7 +16,7 @@ class UserSettings:
 
     # забирает данные из файла user_settings.txt
     def _fetch(self):
-        with open("user_settings.txt") as file:
+        with open("init/user_settings.txt") as file:
             for line in file:
                 key, *value = line.split()
                 self.data[key] = {}
@@ -27,12 +27,12 @@ class UserSettings:
     # возвращает дефолтные значения
     @staticmethod
     def _default() -> dict:
-        return {'theme': 'light',
+        return {'theme': 'dark',
                 'panel': 'hidden'}
 
     # сохраняет настройки в файл user_settings.txt
     def _save(self) -> None:
-        with open('user_settings.txt', 'w') as file:
+        with open('init/user_settings.txt', 'w') as file:
             _to_write = ''
             for key, value in self.data.items():
                 res = ''

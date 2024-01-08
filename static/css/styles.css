@@ -6,7 +6,7 @@
 }
 
 body {
-	background:#AAA;
+	background: var(--body-background-color);
 	color:#000;
 	margin:0;
 	padding:0;
@@ -22,7 +22,7 @@ body {
 }
 
 .mainFrameSub {
-    background: #FAFAFA;
+    background: var(--face-background-color);
     padding: 0 48px 0 48px;
     width: auto;
     height: auto;
@@ -32,7 +32,7 @@ body {
 }
 
 .sideFrameSub {
-    background: #EEE;
+    background: var(--face-background-color);
     width: 0px;
     height: auto;
     display: flex;

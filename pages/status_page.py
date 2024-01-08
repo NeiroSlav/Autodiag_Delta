@@ -20,5 +20,6 @@ def status_page():
         changes_list=reversed(Token.changes_list),
         title='Статус',
         topinfo='Активные токены:',
-        rightinfo='Кто там что дёргал:'
+        rightinfo='Кто там что дёргал:',
+        theme=session['theme']
     )
