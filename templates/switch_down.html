@@ -3,6 +3,7 @@
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
     <link rel="stylesheet" type="text/css" href="/static/css/_{{theme}}_colors.css">
     <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
     <link rel="stylesheet" type="text/css" href="/static/css/head.css">
@@ -10,83 +11,139 @@
     <link rel="stylesheet" type="text/css" href="/static/css/head_buttons.css">
 
     <title>Свитч лежит</title>
-    <script src="{{ url_for('static', filename='js/buttons.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/diag_buf_copy.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/ajax_patterns.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/ticket_create.js') }}"></script>
+    <link rel="static/img/gear_icon.png" type="image/x-icon"/>
 
-    <link rel="shortcat icon" href="{{  url_for('static', filename='img/gear_icon.png') }}" type="image/x-icon"/>
+    <script src="/static/js/buttons.js"></script>
+    <script src="/static/js/diag_buf_copy.js"></script>
+    <script src="/static/js/ajax_patterns.js"></script>
+    <script src="/static/js/switch_down.js"></script>
 
     <script>
         var anumber = '{{anumber}}';
         var user = '{{user}}';
-        var group_ticket = '{{group_ticket}}';
+        var group_tickets = '{{group_tickets}}';
     </script>
-
-
 </head>
 <body>
 
-{% block imports %}
-{% endblock %}
-
 <div class="topMargin"></div>
 
-<div class="diagTopFrame">
-    <div class="diagTopFrameSub" style="margin: 33px auto 0 auto; width: 140px;">
+<div style="display: flex; flex-direction: column;">
 
-        <button class="head-button"
-                title='Профиль&#10;Абонента'
-                onclick="openInNewTab('https://gcdbviewer.matrixhome.net/usersearch.php?anumber=' + '{{ anumber }}');"
-                style="
-                background: #384d84 url('{{  url_for('static', filename='img/matrix.png') }}');
-                background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
-        ></button>
+    <div class="diagTopFrame" style="width: 900px;"
+>
+        <div class="diagTopFrameSub" style="margin: 33px auto 0 auto; width: 140px;">
 
-        <button class="head-button"
-                title='Копировать&#10;Текст ошибки'
-                onclick="saveClip('{{ topinfo }}');"
-                style="
-                background: #384d84 url('{{  url_for('static', filename='img/clipboard.png') }}');
-                background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
-        ></button>
+            <button class="head-button"
+                    title='Профиль&#10;Абонента'
+                    onclick="openInNewTab('https://gcdbviewer.matrixhome.net/usersearch.php?anumber=' + '{{ anumber }}');"
+                    style="
+                    background: #384d84 url('{{  url_for('static', filename='img/matrix.png') }}');
+                    background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
+            ></button>
 
-        <button class="head-button"
-                title='Обновить&#10;Страницу'
-                onclick="location.reload();"
-                style="
-                margin-right: 0px;
-                background: #384d84 url('{{  url_for('static', filename='img/update.png') }}');
-                background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
-        ></button>
+            <button class="head-button"
+                    title='Копировать&#10;Текст ошибки'
+                    onclick="saveClip('{{ topinfo }}');"
+                    style="
+                    background: #384d84 url('{{  url_for('static', filename='img/clipboard.png') }}');
+                    background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
+            ></button>
+
+            <button class="head-button"
+                    title='Обновить&#10;Страницу'
+                    onclick="location.reload();"
+                    style="
+                    margin-right: 0px;
+                    background: #384d84 url('{{  url_for('static', filename='img/update.png') }}');
+                    background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
+            ></button>
+
+        </div>
+
+        <div class="diagTopFrameSub" style="margin: 33px auto 0 0; width: 614px;">
+            <button class="diagButtonRed" onclick="saveClip('{{ topinfo }}');"
+                    style="width: 609px; height: 40px; font-size: 18px; margin-top: 0px;">
+                {{ topinfo }}
+            </button>
+        </div>
+    </div>
+
+    <div class="topMargin"></div>
+
+
+    <div style="display: flex;">
+
+        <div class="mainFrameSub"
+             style="
+                min-width: 430px;
+                max-width: 430px;
+                margin: 0 32px 0 auto;
+                padding: 28px 4px 0 0;
+                ">
+
+                <div class="diagLongBlock" style="margin: 0 auto 0 auto; width: 333px">
+                    <div class="diagMiniBlock">
+                        <button class="diagButtonRed" style="width: 333px;">
+                            Лог доступности этого свитча:
+                        </button>
+
+                        <div class="diagLog" style="height: 265px; width: 291px; padding-left: 37px;">
+                            {% for l in switch_log %}
+                            <div class="diagLogBlock" style="font-size:15px;">
+                                {{l}}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="diagMiniBlock"></div>
+                </div>
+
+        </div>
+
+
+        <div class="mainFrameSub"
+             style="
+                min-width: 430px;
+                max-width: 430px;
+                margin: 0 auto 0 0;
+                padding: 28px 0 0 2px;
+                height: 160px;
+                ">
+
+            <div class="diagLongBlock" style="margin: 0 auto 0 44px; width: 338px;">
+                <div class="diagMiniBlock" style="font-size:18px; margin-bottom:16px;" id="ticketField">
+
+                    {% if group_tickets %}
+                        <button class="diagButtonRed" style="width: 335px;">
+                            Можете создать тикет по групповой:
+                        </button>
+
+                        {% for g in group_tickets %}
+                        <button class="diagButton" style="width: 250px; margin-right: 0;">
+                            {{ group_tickets[g] }}
+                        </button>
+                        <button class="diagButtonBlue"
+                                style="width: 80px; margin: 0 0 0 0;"
+                                onclick="createGroupTicket('{{ g }}', '');">
+                            Создать
+                        </button>
+                        {% endfor %}
+
+                        <button class="diagButtonGreen" style="width: 335px; margin-right: 0;"
+                                onclick="ticket_menu_init();">
+                            Или собрать тикет самому
+                        </button>
+                    {% endif %}
+
+                </div>
+                <div class="diagMiniBlock"></div>
+
+            </div>
+    </div>
 
     </div>
 
-
-    <div class="diagTopFrameSub" style="margin: 33px auto 0 0; width: 610px;">
-        <button class="diagButtonRed" onclick="saveClip('{{ topinfo }}');"
-                style="width: 605px; height: 40px; font-size: 18px; margin-top: 0px;">
-            {{ topinfo }}
-        </button>
-    </div>
-
-</div>
-
-
-<div class="diagTopFrame" style="margin-top: 30px" id="ticketField">
-    <div class="diagTopFrameSub" style="margin: 33px auto 0 auto; width: 610px;">
-        <button class="diagButtonRed"
-                style="width: 605px; height: 40px; font-size: 18px; margin-top: 0px;">
-            По этому адресу групповая проблема, создать тикет по ней?
-        </button>
-    </div>
-
-    <div class="diagTopFrameSub" style="margin: 33px auto 0 0; width: 140px;">
-        <button class="diagButtonBlue" onclick="createGroupTicket('{{user}}', '{{anumber}}', '{{group_ticket}}', '{{topinfo}}');"
-                style="width: 136px; height: 40px; font-size: 18px; margin-top: 0px;">
-            Создать!
-        </button>
-    </div>
 </div>
 
 </body>

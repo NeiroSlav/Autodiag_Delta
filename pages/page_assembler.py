@@ -6,7 +6,34 @@ from flask import request, redirect
 from init import *
 
 
-@app.route("/test/<switch_type>")
+@app.route("/down_test/<group>")
+def test_down(group):
+    group_name = 'Листопрокатчиков ул. 3А'
+    group_dict = {}
+    for i in range(int(group)):
+        group_dict[f'000000{i+1}'] = f'{group_name} {i+1}'
+
+    return render_template(
+        'switch_down.html',
+        topinfo='Свитч такой-то-там лежит с того-то того-то',
+        switch_log=['2024-01-11 19:05:14 поднялся',
+                    '2023-12-27 20:02:26 работает',
+                    '2023-12-27 17:46:35 упал',
+                    '2023-12-27 17:42:27 поднялся',
+                    '2023-11-16 20:03:51 работает',
+                    '2023-11-16 07:39:18 упал',
+                    '2023-11-16 07:09:31 поднялся',
+                    '2023-11-15 01:59:28 упал',
+                    '2023-11-12 13:35:03 поднялся',
+                    '2023-08-13 20:10:51 работает'],
+        anumber='0000000000',
+        user='bibus_bobus',
+        group_tickets=group_dict,
+        theme='dark'
+    )
+
+
+@app.route("/<switch_type>/test")
 def test_page(switch_type):
     return render_template(  # рендер тестовой страницы
         f'{switch_type}.html',
@@ -24,8 +51,8 @@ def change_theme(token):
     username = Token.pull(token).gcdb_data.username
     current_theme = user_sets.get(username, 'theme')
     new_theme = 'dark' if current_theme == 'light' else 'light'
-    user_sets.set(username, 'theme', new_theme)
     session['theme'] = new_theme
+    user_sets.set(username, 'theme', new_theme)
     return {'ok': True}
 
 
@@ -53,12 +80,15 @@ def main_redirect():
 
     try:
         if not fping(switch_ip):  # если свитч не отвечает
+            decview_info = DecviewApi.get_status(switch_ip)
+
             return render_template(
                 'switch_down.html',
-                topinfo=DecviewApi.get_status(switch_ip),
+                topinfo=decview_info['state'],
+                switch_log=decview_info['log'],
                 anumber=gcdb_data.anumber,
                 user=gcdb_data.username,
-                group_ticket=gcdb_data.group_ticket,
+                group_tickets=gcdb_data.group_tickets,
                 theme=session['theme']
             )
 

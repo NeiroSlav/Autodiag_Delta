@@ -59,7 +59,11 @@ function ajax_div(url, divId, func) {
 });}
 
 
-function createGroupTicket(user, anumber, ticket_id, comment) {
+function createGroupTicket(ticket_id, comment) {
+    console.log(ticket_id)
+    console.log(user)
+    console.log(anumber)
+
     $.ajax({
         type: 'GET',
         url : '/create_ticket',
@@ -78,4 +82,5 @@ function createGroupTicket(user, anumber, ticket_id, comment) {
             close_ticket_menu({'ok': false});
 //            replace_div(error, divId, func);
         }
-});}
+});
+}

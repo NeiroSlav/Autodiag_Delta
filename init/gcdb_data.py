@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from .app_init import DiagError, logging
 from .requests_api import GcdbApi
 
@@ -17,7 +19,7 @@ class GcdbData:
 
         self.ip_list = [self.abon_ip]
         self.mac_list = []
-        self.group_ticket = None
+        self.group_tickets = {}
 
         if not (self.username and self.switch_ip and self.switch_port):
             raise DiagError('Неполный запрос')
@@ -31,12 +33,16 @@ class GcdbData:
         if not data:
             return
 
-        if data['group_tickets']:
-            self.group_ticket = sorted(data['group_tickets'])[-1]
-        del data['group_tickets']
+        self.group_tickets = data['group_tickets']
+        if isinstance(self.group_tickets, list):
+            self.group_tickets = {}
 
-        # print(self.group_ticket)
-        for key, elem in data.items():
+        for key, elem in self.group_tickets.items():
+            if len(elem) > 25:
+                self.group_tickets[key] = elem[0:25]
+
+        # print(self.group_tickets)
+        for elem in data['accounts']:
             if elem['mac'] and not elem['mac'] in self.mac_list:
                 self.mac_list.append(elem['mac'])
 
