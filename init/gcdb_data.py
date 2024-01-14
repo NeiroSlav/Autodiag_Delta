@@ -33,13 +33,10 @@ class GcdbData:
         if not data:
             return
 
-        self.group_tickets = data['group_tickets']
-        if isinstance(self.group_tickets, list):
-            self.group_tickets = {}
-
-        for key, elem in self.group_tickets.items():
-            if len(elem) > 25:
-                self.group_tickets[key] = elem[0:25]
+        if data['group_tickets']:
+            for key, elem in data['group_tickets'].items():
+                if len(elem) > 25:
+                    self.group_tickets[key] = elem[0:25]
 
         # print(self.group_tickets)
         for elem in data['accounts']:
