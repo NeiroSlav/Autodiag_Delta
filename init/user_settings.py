@@ -37,7 +37,7 @@ class UserSettings:
             for username, value in self.data.items():
                 res = ''
                 for k, v in value.items():
-                    res += f' {k}:{v}'
+                    res += f' {k}:{v: <10}'
                 _to_write += f'\n{username: <20} {res}'
             file.write(_to_write.strip('\n'))
 
