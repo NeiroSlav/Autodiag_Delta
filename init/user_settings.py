@@ -4,7 +4,7 @@ class UserSettings:
     Вытягивает данные из файла user_settings.txt в виде словаря
 
     Пример синтаксиса элемента настроек в файле:
-        username param:arg param2:arg2
+        username             param:arg param2:arg2
 
     Его же ключ-значение в словаре self.data:
         'username': {'param': 'arg', 'param2': 'arg2'}
@@ -18,11 +18,11 @@ class UserSettings:
     def _fetch(self):
         with open("init/user_settings.txt") as file:
             for line in file:
-                key, *value = line.split()
-                self.data[key] = {}
+                username, *value = line.split()
+                self.data[username] = {}
                 for elem in value:
                     _key, _value = elem.split(':')
-                    self.data[key][_key] = _value
+                    self.data[username][_key] = _value
 
     # возвращает дефолтные значения
     @staticmethod
@@ -34,11 +34,11 @@ class UserSettings:
     def _save(self) -> None:
         with open('init/user_settings.txt', 'w') as file:
             _to_write = ''
-            for key, value in self.data.items():
+            for username, value in self.data.items():
                 res = ''
                 for k, v in value.items():
                     res += f' {k}:{v}'
-                _to_write += '\n'+key+res
+                _to_write += f'\n{username: <20} {res}'
             file.write(_to_write.strip('\n'))
 
     # достаёт параметр, а если юзера/параметра нет, установит дефолт, и вернёт
