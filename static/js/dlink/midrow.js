@@ -178,8 +178,12 @@ function get_util_business(response) {
     b3['style'] = 'width: 116px;'
 
     var b4 = setB()
-    b4['style'] = 'width: 236px;'
-    b4['text'] = 'Флуд не обнаружен'
+    b4['style'] = 'width: 116px;'
+    b4['text'] = 'Флуда нет'
+
+    var bVlan = setB()
+    bVlan['style'] = 'width: 116px;'
+    bVlan['text'] = 'Vid: ' + response.vlan
 
     var b5 = setB()
 
@@ -187,7 +191,7 @@ function get_util_business(response) {
         b1['color'] = b2['color'] = b3['color'] = b4['color'] = 'Red'
         b1['text'] = 'Ошибка проверки'
         b2['text'] = b3['text'] = b4['text'] = 'Ошибка'
-        return getB(b1) + getB(b2) + getB(b3) + getB(b4)
+        return getB(b1) + getB(b2) + getB(b3) + getB(bVlan) + getB(b4)
     } else {
 
         b2['text'] = 'in ' + response.tx
@@ -198,11 +202,11 @@ function get_util_business(response) {
         if (response.flood) {
             b3['color'] = b4['color'] = 'Red'
             b3['style'] = b4['style'] = 'width: 116px;'
-            b3['text'] = 'Есть флуд:'
+            b3['text'] = 'Флуд в ' + response.vlan + ':'
             b4['text'] = response.flood_rx + ' frame'
             return util_buttons + getB(b3) + getB(b4);
         } else {
-            return util_buttons + getB(b4);
+            return util_buttons + getB(bVlan) + getB(b4);
         }
 
     }

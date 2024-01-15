@@ -12,6 +12,7 @@ class GcdbData:
         self.switch_ip = request.args.get('switch_ip')
         self.switch_port = request.args.get('switch_port')
         self.pon_port = request.args.get('pon_port')
+        self.vlan = ''
 
         self.abon_ip = request.args.get('real_ip')
         if not self.abon_ip:

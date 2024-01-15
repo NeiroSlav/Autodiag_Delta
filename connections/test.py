@@ -30,5 +30,22 @@ def get_gcdb_data(anumber: str, switch: str = ''):
     return r
 
 
+class GcdbData:
+    def __init__(self, ip):
+        self.username = 'aboba'
+        self.switch_ip = ip
+        self.switch_port = 1
+        self.pon_port = 0
+        self.switch_login = switch_login
+        self.switch_password = switch_password
 
-pprint(get_gcdb_data('0432174026'))
+
+def switch_test():
+    for elem in dlink_ip:
+        gcdb_data = GcdbData(elem)
+        telnet_session = Telnet(gcdb_data)
+        switch = Dlink(telnet_session)
+        print(switch.get_vlan(1))
+
+
+switch_test()

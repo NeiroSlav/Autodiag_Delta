@@ -352,8 +352,20 @@ class Dlink(SwitchMixin):
             strict = bool(self._find('[ ]' + str(port) + '[ ]+Strict', answer))
             return {'state': 'Strict' if strict else 'Loose', 'error': False}
 
+    # проверка, в каком vlan абонент
+    def vlan(self, port: int) -> dict:
+        self.session.read()
+        self.session.push(f'\nshow vlan ports {port}')
+        answer = self.session.read(string=' - ')
+
+        if not (' - ' in answer):
+            return {'error': True}
+
+        vlan = self._find('[0-9]+ +[X-]', answer).split()[0]
+        return {'vlan': vlan, 'ok': True, 'error': False}
+
     # включение/выключение порта
-    def set_port(self, port: int, enable: bool):
+    def set_port(self, port: int, enable: bool) -> dict:
         if enable:
             self.session.push(f'config ports {port} state enable', read=True)
         else:

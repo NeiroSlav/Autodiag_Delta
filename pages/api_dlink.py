@@ -124,4 +124,7 @@ def dlink_get_full_log(token):
 @use_token
 def dlink_get_util(token):
     port = token.gcdb_data.switch_port
-    return token.switch.util(port) | token.switch.flood()
+    if not token.gcdb_data.vlan:
+        token.gcdb_data.vlan = token.switch.vlan(port)
+
+    return token.switch.util(port) | token.switch.flood() | token.gcdb_data.vlan
