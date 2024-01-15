@@ -59,8 +59,8 @@ class DecviewApi:
     @staticmethod
     def get_status(switch_ip: str) -> dict:
         result = {'state': '', 'log': []}
-        status_map = {'40': 'упал',
-                      '30': 'поднялся',
+        status_map = {'30': 'упал',
+                      '40': 'поднялся',
                       '1': 'работает'}
 
         # обращается к api, забирает данные
