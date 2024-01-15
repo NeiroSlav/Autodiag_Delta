@@ -84,7 +84,12 @@
 
                 <div class="diagLongBlock" style="margin: 0 auto 0 auto; width: 333px">
                     <div class="diagMiniBlock">
-                        <button class="diagButtonRed" style="width: 333px;">
+                        <button class="diagButtonRed" style="width: 333px;"
+                                onclick="saveClip(
+                                {% for s in switch_log %}
+                                    '{{ s }}\n' +
+                                {% endfor %}
+                                '');">
                             Лог доступности этого свитча:
                         </button>
 
