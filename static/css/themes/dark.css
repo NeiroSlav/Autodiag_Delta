@@ -1,0 +1,38 @@
+:root {
+
+    --button-text-color:#CCC;
+    --button-text-color-2:#CCC;
+
+    --button-back-hover-color:#333;
+    --button-text-hover-color:#CCC;
+    --button-text-hover-color-2:#FFF;
+    --button-border-active-color:#CCC;
+
+    --body-background-color:#222;
+    --back-background-color:#999;
+    --face-background-color:#333;
+
+    --basic-color:#444444;
+    --ok-color:#297733;
+    --error-color:#AA7700;
+    --act-color:#384d84;
+
+}
+
+
+
+.old-dark {
+    --button-back-hover-color:#333;
+    --button-text-hover-color:#CCC;
+    --button-text-hover-color-2:#FFF;
+    --button-border-active-color:#CCC;
+
+    --body-background-color:#222;
+    --back-background-color:#999;
+    --face-background-color:#333;
+
+    --basic-color:#999;
+    --ok-color:#44CC44;
+    --error-color:#DDAA00;
+    --act-color:#384d84;
+}

@@ -1,5 +1,8 @@
 :root {
 
+    --button-text-color:#000;
+    --button-text-color-2:#FFF;
+
     --button-back-hover-color:#FFF;
     --button-text-hover-color:#000;
     --button-text-hover-color-2:#FFF;
@@ -9,5 +12,9 @@
     --back-background-color:#444;
     --face-background-color:#FAFAFA;
 
+    --basic-color:#CCC;
+    --ok-color:#66DD66;
+    --error-color:#FFDD00;
+    --act-color:#384d84;
 
 }

@@ -4,7 +4,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-    <link rel="stylesheet" type="text/css" href="/static/css/_{{theme}}_colors.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/themes/{{theme}}.css">
     <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
     <link rel="stylesheet" type="text/css" href="/static/css/head.css">
     <link rel="stylesheet" type="text/css" href="/static/css/buttons.css">
@@ -39,44 +39,30 @@
     <div class="diagTopFrame">
         <div class="diagTopFrameSub" style="margin-left: auto;">
 
-            <button class="head-button"
+            <button class="head-button matrix-img"
                     title='Профиль&#10;Абонента'
                     onclick="openInNewTab('https://gcdbviewer.matrixhome.net/usersearch.php?anumber=' + '{{ anumber }}');"
-                    style="
-                    background: #384d84 url('static/img/matrix.png');
-                    background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
             ></button>
 
-            <button class="head-button"
+            <button class="head-button clipboard-img"
                     title='Копировать&#10;Диагностику'
                     onclick="copyDiag('all');"
-                    style="
-                    background: #384d84 url('static/img/clipboard.png');
-                    background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
             ></button>
 
-            <button class="head-button"
+            <button class="update-img head-button"
                     title='Обновить&#10;Данные'
-                    onclick="updateAll();"
-                    style="
-                    background: #384d84 url('static/img/update.png');
-                    background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
+                    onclick="location.reload();"
             ></button>
 
-            <button class="head-button"
+            <button class="head-button settings-img"
                     title='Сменить&#10;тему'
                     onclick="changeTheme()"
-                    style="
-                    background: #384d84 url('static/img/settings.png');
-                    background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
             ></button>
 
-            <button class="head-button"
+            <button class="head-button panel-img"
                     title='Боковая&#10;Панель'
-                    onclick="showAddition()"
-                    style="margin-right: 0;
-                    background: #384d84 url('static/img/panel.png');
-                    background-position: 1px 1px; background-repeat: no-repeat; background-size: 32px;"
+                    onclick="showSidePanel()"
+                    style="margin-right: 0;"
             ></button>
 
         </div>

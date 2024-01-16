@@ -29,8 +29,8 @@ function wait_div(id, text, buttonId="#mainButton") {
         var button = block.querySelector(buttonId);
         if (button) {
             button.innerText = text;
-            button.style.border = "3px solid #384d84";
-            button.style.background = "#384d84";
+            button.style.border = "3px solid var(--act-color)";
+            button.style.background = "var(--act-color)";
             button.style.color = "#FFF";
 
 }}}

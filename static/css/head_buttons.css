@@ -4,24 +4,52 @@
     width: 40px;
     height: 40px;
     border-radius: 10px;
-    border: 3px solid #384d84;
+    border: 3px solid var(--act-color);
     transition: 0.1s;
     float: left;
     font-size: 20px;
     color: #FFF;
-    background: #384d84 url('{{  url_for('static', filename='img/clipboard.png') }}');
-    background-position: 1px 1px;
-    background-repeat: no-repeat;
-    background-size: 32px;
 
 }
 .head-button:hover {
-    background-color: #000;
-    border: 3px solid #CCC;
+    border: 3px solid var(--basic-color);
 }
 .head-button:active {
-    background-color: #FFF;
-    border: 3px solid #CCC;
+    border: 3px solid var(--basic-color);
     border-radius: 15px;
 }
 
+.matrix-img {
+    background: var(--act-color) url('/static/img/matrix.png');
+    background-position: 1px 1px;
+    background-repeat: no-repeat;
+    background-size: 32px;
+}
+
+.clipboard-img {
+    background: var(--act-color) url('/static/img/clipboard.png');
+    background-position: 1px 1px;
+    background-repeat: no-repeat;
+    background-size: 32px;
+}
+
+.update-img {
+    background: var(--act-color) url('/static/img/update.png');
+    background-position: 1px 1px;
+    background-repeat: no-repeat;
+    background-size: 32px;
+}
+
+.settings-img {
+    background: var(--act-color) url('/static/img/settings.png');
+    background-position: 1px 1px;
+    background-repeat: no-repeat;
+    background-size: 32px;
+}
+
+.panel-img {
+    background: var(--act-color) url('/static/img/panel.png');
+    background-position: 1px 1px;
+    background-repeat: no-repeat;
+    background-size: 32px;
+}
