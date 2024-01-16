@@ -1,72 +1,9 @@
-import token
+# import token
 
 from connections import _switch
 from connections import Telnet, fping, nmap
 from flask import request, redirect
 from init import *
-
-
-@app.route("/down_test/<group>")
-def test_down(group):
-    group_name = 'Листопрокатчиков ул. 3А'
-    group_dict = {}
-    for i in range(int(group)):
-        group_dict[f'000000{i+1}'] = f'{group_name} {i+1}'
-
-    return render_template(
-        'switch_down.html',
-        topinfo='Свитч такой-то-там лежит с того-то того-то',
-        switch_log=['2024-01-11 19:05:14 поднялся',
-                    '2023-12-27 20:02:26 работает',
-                    '2023-12-27 17:46:35 упал',
-                    '2023-12-27 17:42:27 поднялся',
-                    '2023-11-16 20:03:51 работает',
-                    '2023-11-16 07:39:18 упал',
-                    '2023-11-16 07:09:31 поднялся',
-                    '2023-11-15 01:59:28 упал',
-                    '2023-11-12 13:35:03 поднялся',
-                    '2023-08-13 20:10:51 работает'],
-        anumber='0000000000',
-        user='bibus_bobus',
-        group_tickets=group_dict,
-        theme='dark'
-    )
-
-
-@app.route("/<switch_type>/test")
-def test_page(switch_type):
-    return render_template(  # рендер тестовой страницы
-        f'{switch_type}.html',
-        switchip='192.168.TE.ST',
-        switchtype=switch_type.upper(),
-        topinfo='192.168.TE.ST : XX',
-        title=f'T 192.168.TE.ST',
-        theme='dark'
-        )
-
-
-# меняет тему оформления для юзера
-@app.route("/change_theme/<token>")
-def change_theme(token):
-    username = Token.pull(token).gcdb_data.username
-    current_theme = user_sets.get(username, 'theme')
-    new_theme = 'dark' if current_theme == 'light' else 'light'
-    session['theme'] = new_theme
-    user_sets.set(username, 'theme', new_theme)
-    return {'ok': True}
-
-
-# принимает запрос на создание тикета
-@app.route("/create_ticket")
-def create_ticket():
-    status = GcdbApi.set_ticket(
-        request.args.get('anumber'),
-        request.args.get('user'),
-        request.args.get('ticket_id'),
-        request.args.get('comment'),
-    )
-    print('ticket created')
-    return {'ok': status}
 
 
 # вход на свитч, перенаправление на страницу свитча
@@ -145,7 +82,7 @@ def switch_page(switch_type, token_number):
             switch_info += f' : {gcdb_data.pon_port}'
 
         return render_template(  # рендер страницы диагностики
-            f'{switch_type}.html',
+            f'/switch/{switch_type}.html',
             anumber=gcdb_data.anumber,
             switchip=gcdb_data.switch_ip,
             switchtype=f'{switch_type.upper()} {token.switch.model}',
@@ -166,3 +103,27 @@ def switch_page(switch_type, token_number):
         if token:
             token.delete()
         return render_error(ex)
+
+
+# меняет тему оформления для юзера
+@app.route("/change_theme/<token>")
+def change_theme(token):
+    username = Token.pull(token).gcdb_data.username
+    current_theme = user_sets.get(username, 'theme')
+    new_theme = 'dark' if current_theme == 'light' else 'light'
+    session['theme'] = new_theme
+    user_sets.set(username, 'theme', new_theme)
+    return {'ok': True}
+
+
+# принимает запрос на создание тикета
+@app.route("/create_ticket")
+def create_ticket():
+    status = GcdbApi.set_ticket(
+        request.args.get('anumber'),
+        request.args.get('user'),
+        request.args.get('ticket_id'),
+        request.args.get('comment'),
+    )
+    print('ticket created')
+    return {'ok': status}
