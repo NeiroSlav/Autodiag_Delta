@@ -19,7 +19,7 @@ function get_log_business (response) {
 
     var diagLog = ['<div class="diagLog">','</div>']
     var diagLogLong = ['<div class="diagLog" style="height: 278px;">','</div>']
-    var diagLogRed = ['<div class="diagLog" style="border-color: #FFDD00 ; height: 280px; background-color: #FFDD00;">','</div>']
+    var diagLogRed = ['<div class="diagLog" style="border-color: var(--error-color); height: 280px; background-color: var(--error-color)">','</div>']
 
     var diagSnmp = ['<div class="diagLog" style="height: 86px;">','</div>']
     var diagLogBlock = ['<div class="diagLogBlock">','</div>']
@@ -85,7 +85,7 @@ function get_full_log_business (response) {
 
     var diagLogLong = ['<div class="diagLog" style="height: 310px;">','</div>']
     var diagLogBlock = ['<div class="diagLogBlock">','</div>']
-    var diagLogRed = ['<div class="diagLog" style="border-color: #FFDD00 ; height: 312px; background-color: #FFDD00;">','</div>']
+    var diagLogRed = ['<div class="diagLog" style="border-color: var(--error-color); height: 312px; background-color: var(--error-color)">','</div>']
 
 
     if (response.error) {  // если вернулась ошибка

@@ -1,31 +1,18 @@
-var getSideHtml = '' +
-                '<div class="diagLongBlock">' +
-                    '<div style="margin-bottom: 40px;"></div>' +
-                    '<div class="diagMiniBlock">' +
-                        '<div class="diagLog"></div>' +
-                        '<button class="diagButtonRed">obabok</button>' +
-                    '</div>' +
-            '</div>'
+sidePingLogHtml = '<div class="diagLog sideElem" id="sidePingLogInner" style="width: 216px;"> </div>'
 
 function hide (elements) {
-  elements = elements.length ? elements : [elements];
-  for (var index = 0; index < elements.length; index++) {
-    elements[index].style.transition = '0.4s';
-    elements[index].style.width = '0';
-    elements[index].style.opacity = '0';
-    elements[index].style.width = '';
-
-    elements[index].textContent = '';
+//  elements = elements.length ? elements : [elements];
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].style.width = '0px';
+    elements[i].style.opacity = '0';
+    elements[i].textContent = '';
   }
 }
 
 function show (elements) {
-  elements = elements.length ? elements : [elements];
-  for (var index = 0; index < elements.length; index++) {
-    elements[index].style.transition = '';
-    elements[index].style.width = '222px';
-    elements[index].style.opacity = '1';
-
+//  elements = elements.length ? elements : [elements];
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].style.opacity = '1';
   }
 }
 
@@ -36,15 +23,23 @@ function showSidePanel() {
     var sepRight = document.getElementById('sepRight');
     var mainPanel = document.getElementById('mainPanel');
 
-    var button1 = document.getElementById('sideButton');
-
-
     if (sidePanelShownFlag) { //  если панель показана, то скрыть
         sidePanel.style.width = 0;
         sepRight.style.width = 0;
         mainPanel.style.padding = "0 48px 0 48px";
 
-        hide(document.querySelectorAll('.sideElem'));
+        var sideElems = document.querySelectorAll('.sideElem')
+        hide(sideElems);
+
+        var sidePingButtons = document.getElementById('sidePingButtons');
+        var sidePingLog = document.getElementById('sidePingLog');
+        var sidePingResult = document.getElementById('sidePingResult');
+
+        setTimeout(function() {sidePingButtons.innerHTML = ''}, 500);
+        setTimeout(function() {sidePingLog.innerHTML = ''}, 500);
+        setTimeout(function() {sidePingResult.innerHTML = ''}, 500);
+
+
 
 
     } else {                 //  если панель скрыта, то показать
@@ -52,7 +47,16 @@ function showSidePanel() {
         sepRight.style.width = 24 + "px";
         mainPanel.style.padding = "0 12px 0 12px";
 
-        show(document.querySelectorAll('.sideElem'));
+        setTimeout(function() {
+            renderPingButtons('');
+//            var sidePingLog = document.getElementById('sidePingLog');
+//            sidePingLog.innerHTML = sidePingLogHtml
+//            var sidePingResult = document.getElementById('sidePingResult');
+//            sidePingResult.innerHTML = ''
+        }, 500);
+        setTimeout(function() {show(document.querySelectorAll('.sideElem'));}, 550);
+
+        startPingProcess();
 
     }
 

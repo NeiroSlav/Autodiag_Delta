@@ -1,4 +1,5 @@
 from init import *
+from flask import request
 
 
 @app.route("/test/theme/<theme>")
@@ -7,6 +8,24 @@ def test_theme(theme):
         'test.html',
         theme=theme,
         topinfo='TEST TEST TEST',
+    )
+
+
+@app.route("/test/ping")
+def test_ping():
+    print('pinged')
+    time.sleep(0.1)
+    return jsonify({'ok': randint(0, 1000)})
+
+
+@app.route("/iter_ping")
+def iter_ping():
+    ping_status = request.args.get('abonPingStatus')
+    # print(ping_status)
+    print('pinged')
+    time.sleep(2)
+    return jsonify(
+        {'ok': f'lost: 0% avg: 30ms max: {randint(0, 1000)}ms'}
     )
 
 
@@ -46,7 +65,7 @@ def test_switch(switch_type):
         topinfo='192.168.TE.ST : XX',
         title=f'T 192.168.TE.ST',
         theme='dark'
-        )
+    )
 
 
 # меняет тему оформления для юзера

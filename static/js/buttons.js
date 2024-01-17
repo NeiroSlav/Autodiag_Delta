@@ -1,10 +1,10 @@
 function setB () {
-    return {'color': '', 'id': '', 'style': '', 'onclick': '', 'text': ''};
+    return {'color': '', 'extra': '', 'id': '', 'style': '', 'onclick': '', 'text': ''};
 }
 
 function getB (button) {
     text = '<button '+
-           'class="diagButton'+button['color']+
+           'class="diagButton'+button['color'] + ' ' + button['extra']+
            '" id="'+button['id']+
            '" style="'+button['style']+
            '" onclick="'+button['onclick']+

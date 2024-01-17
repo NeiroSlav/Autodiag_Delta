@@ -14,7 +14,7 @@ function get_log_business (response) {
 
     var diagLog = ['<div class="diagLog">','</div>']
     var diagLogLong = ['<div class="diagLog" style="height: 280px;">','</div>']
-    var diagLogRed = ['<div class="diagLog" style="border-color: #FFDD00 ; height: 200px; background-color: #FFDD00;">','</div>']
+    var diagLogRed = ['<div class="diagLog" style="border-color: var(--error-color); height: 200px; background-color: var(--error-color);">','</div>']
 
     var diagLogBlock = ['<div class="diagLogBlock">','</div>']
 
@@ -59,7 +59,7 @@ function get_full_log_business (response) {
 
     var diagLog = ['<div class="diagLog">','</div>']
     var diagLogLong = ['<div class="diagLog" style="height: 280px;">','</div>']
-    var diagLogRed = ['<div class="diagLog" style="border-color: #FFDD00 ; height: 200px; background-color: #FFDD00;">','</div>']
+    var diagLogRed = ['<div class="diagLog" style="border-color: var(--error-color); height: 200px; background-color: var(--error-color);">','</div>']
 
     var diagLogBlock = ['<div class="diagLogBlock">','</div>']
 

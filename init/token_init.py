@@ -111,6 +111,7 @@ def token_still_active(token):
     except KeyError:
         pass
 
+
 # раз в минуту проверяет активность токенов, удерживает telnet
 def token_watch_activity():
     logging.critical('Token watcher started')

@@ -1,5 +1,5 @@
 .sideLongBlock {
-    width: 224px;
+    width: 229px;
     background-color: #0000FF
     height: auto;
     margin: 0 22px 0 24px;
@@ -8,13 +8,21 @@
 .sideMiniBlock {
     margin-bottom: 32px;
     background-color: #FF00FF
-    width: 236px;
+    width: 240px;
     height: auto;
 }
 
-.diagButton.sideElem {
-    transition: 0.5s;
+button.sideElem {
     opacity: 0;
-    width: 0;
+    transition: opacity 0.2s, width 0.4s;
 }
 
+.diagLog.sideElem {
+    opacity: 0;
+    transition: opacity 0.2s, width 0.4s;
+}
+
+.diagLogBlock.sideElem {
+    opacity: 0;
+    transition: opacity 0.2s, width 0.4s;
+}
