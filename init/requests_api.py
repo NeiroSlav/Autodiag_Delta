@@ -61,6 +61,7 @@ class DecviewApi:
         result = {'state': '', 'log': []}
         status_map = {'30': 'упал',
                       '40': 'поднялся',
+                      # '50': 'не в эксп.',
                       '1': 'работает'}
 
         # обращается к api, забирает данные
@@ -79,10 +80,13 @@ class DecviewApi:
 
         # создаёт лог падений свитча
         for elem in response['log']:
-            status = status_map[elem['status']]
-            time = elem['timestamp']
-            elem = f'{time} {status}'
-            result['log'].append(elem)
+            try:
+                status = status_map[elem['status']]
+                time = elem['timestamp']
+                elem = f'{time} {status}'
+                result['log'].append(elem)
+            except KeyError:
+                result['log'].append('неизвестный статус')
 
         return result
 

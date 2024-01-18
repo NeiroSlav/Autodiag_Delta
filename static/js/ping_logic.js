@@ -1,3 +1,7 @@
+var pingResultCache = {}
+var pingResultDivCache = ' '
+var pingResultTextCache = {}
+
 // цикличный аякс, который вызывает сам себя каждую секунду
 // пока флаг открытой панели не станет false
 function startPingProcess() {
@@ -12,6 +16,7 @@ function startPingProcess() {
             if (sidePanelShownFlag) {
                 console.log(response)
                 renderPingLog(response)
+                renderPingResult(response)
                 setTimeout( function() {startPingProcess()}, 1000);
             }
         },
@@ -23,62 +28,121 @@ function startPingProcess() {
         }
 });}
 
-// генерация, и рендеринг html текста кнопок для блока ип в пинге
+// рендеринг html текста кнопок для блока ип в пинге
 function renderPingButtons(addStyle = 'opacity: 1') {
 
     bTitle = setB()
     bTitle['style'] = 'width: 220px;' + addStyle
     bTitle['text'] = 'Пинг абонентских IP:'
     bTitle['extra'] = 'sideElem'
-    htmlText = getB(bTitle)
+    var htmlText = getB(bTitle)
 
-    for (const [key, value] of Object.entries(abonPingStatus)) {
+    for (const [ip, status] of Object.entries(abonPingStatus)) {
         bIp = setB()
         bIp['style'] = 'width: 162px;' + addStyle
-        bIp['text'] = key
+        bIp['text'] = ip
         bIp['extra'] = 'sideElem'
+        bIp['onclick'] = "saveClip('" + ip + "');"
 
         bMod = setB()
         bMod['style'] = 'width: 54px;' + addStyle
         bMod['extra'] = 'sideElem'
 
-        if (value == 'not started') {
+        if (status == 'not started') {
             bMod['text'] = 'старт'
             bMod['color'] = 'Blue'
-            bMod['onclick'] = "abonPingStatus['" + key +
+            bMod['onclick'] = "abonPingStatus['" + ip +
                               "'] = 'ping'; renderPingButtons();"
         }
-        if (value == 'ping') {
+        if (status == 'ping') {
             bMod['text'] = 'стоп'
             bMod['color'] = 'Red'
-            bMod['onclick'] = "abonPingStatus['" + key +
+            bMod['onclick'] = "abonPingStatus['" + ip +
                               "'] = 'finish'; renderPingButtons();"
         }
-        if (value == 'finish') {
+        if (status == 'finish') {
             bMod['text'] = 'ещё'
             bMod['color'] = 'Green'
-            bMod['onclick'] = "abonPingStatus['" + key +
+            bMod['onclick'] = "abonPingStatus['" + ip +
                               "'] = 'ping'; renderPingButtons();"
         }
 
         htmlText += getB(bIp) + getB(bMod)
     }
 
-    console.log(abonPingStatus)
-
     var sidePingButtons = document.getElementById('sidePingButtons');
     sidePingButtons.innerHTML = htmlText
 }
 
-
+// обновление лога пинга
 function renderPingLog(response) {
-    var diagLogBlock = ['<div class="diagLogBlock">','</div>']
-    var sidePingLogInnerDiv = document.getElementById('sidePingLogInner');
+    console.log(response)
 
-//    for (var elem in response.ok) {
-    log_elem = diagLogBlock[0] + response.ok + diagLogBlock[1]
-    sidePingLogInnerDiv.innerHTML += log_elem
-    sidePingLogInnerDiv.scrollTop = sidePingLogInnerDiv.scrollHeight;
+    var sepBlock = '<div class="diagLogBlock"></div>'
+    var okBlock = ['<div class="diagLogBlock" style="margin: 0 10px 0 10px;">','</div>']
+    var lostBlock = ['<div class="diagLogBlock" style="color: red; margin: 0 10px 0 10px;">','</div>']
 
-//    }
+    var new_log_data = ''
+    for (const [ip, data] of Object.entries(response.ping_data)) {
+        if (data.ok) {
+            console.log('ok')
+            var diagLogBlock = okBlock
+            var pingString = '+ ' + ip + ' время: ' + data.answer + 'ms'
+        } else {
+            var diagLogBlock = lostBlock
+            var pingString = '- ' + ip + ' ответа нет'
+        }
+        new_log_data += diagLogBlock[0] + pingString + diagLogBlock[1]
+    }
+    if (new_log_data) {
+        var sidePingLogInnerDiv = document.getElementById('sidePingLogInner');
+        sidePingLogInnerDiv.innerHTML += sepBlock + new_log_data + sepBlock
+        sidePingLogInnerDiv.scrollTop = sidePingLogInnerDiv.scrollHeight
+    }
+}
+
+
+
+// генерация, и рендеринг html текста кнопок для блока ип в пинге
+function renderPingResult(response) {
+
+    for (const [ip, data] of Object.entries(response.ping_results)) {
+        var bRes = setB()
+        bRes['style'] = 'width: 220px; height: 45px; opacity: 1'
+        bRes['extra'] = 'sideElem'
+
+        if (data.ok) {
+            bRes['color'] = 'Green'
+            bRes['text'] = 'пинг '+ ip + ' (' + data.sent + ')\n'
+            bRes['text'] += 'lost:' + data.lost + '% &nbsp;avg:' + data.stats.avg + ' &nbsp;max:' + data.stats.max
+
+        } else if(data.lost == 100) {
+            bRes['color'] = 'Red'
+            bRes['text'] = 'пинг адреса '+ ip + '\n'
+            bRes['text'] += 'не прошёл (пакетов: ' + data.sent + ')'
+
+        } else {
+            bRes['color'] = 'Red'
+            bRes['text'] = 'пинг '+ ip + ' (' + data.sent + ')\n'
+            bRes['text'] += 'lost:' + data.lost + '% &nbsp;avg:' + data.stats.avg + ' &nbsp;max:' + data.stats.max
+        }
+
+        pingResultTextCache[ip] = bRes['text']
+        bRes['onclick'] = "saveClip(pingResultTextCache['" + ip + "']);"
+
+        pingResultCache[ip] = getB(bRes)
+
+    }
+
+    var htmlText = ''
+    for (const [ip, buttonHtml] of Object.entries(pingResultCache)) {
+        htmlText += buttonHtml
+    }
+
+    var sidePingResult = document.getElementById('sidePingResult');
+
+    if (pingResultDivCache != htmlText) {
+        sidePingResult.innerHTML = htmlText
+        pingResultDivCache = htmlText;
+    }
 }

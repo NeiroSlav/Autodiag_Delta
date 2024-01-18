@@ -37,7 +37,12 @@ function showSidePanel() {
         setTimeout(function() {sidePingLog.innerHTML = ''}, 500);
         setTimeout(function() {sidePingResult.innerHTML = ''}, 500);
 
-
+        for (key in abonPingStatus) {
+            abonPingStatus[key] = 'not started'
+        }
+        pingResultCache = {}
+        pingResultDivCache = ' '
+        pingResultTextCache = {}
 
 
     } else {                 //  если панель скрыта, то показать
@@ -49,12 +54,8 @@ function showSidePanel() {
             renderPingButtons('');
             var sidePingLog = document.getElementById('sidePingLog');
             sidePingLog.innerHTML = '<div class="diagLog sideElem" id="sidePingLogInner" style="width: 216px;"> </div>'
-//            var sidePingResult = document.getElementById('sidePingResult');
-//            sidePingResult.innerHTML = ''
         }, 500);
         setTimeout(function() {show(document.querySelectorAll('.sideElem'));}, 550);
-
-
         setTimeout(function() {startPingProcess();}, 600);
     }
 

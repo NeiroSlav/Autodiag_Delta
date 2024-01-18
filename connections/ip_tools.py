@@ -10,7 +10,7 @@ class IterPing:
     def __init__(self, ip_address):
         self.ping_dict = {'lost': 0, 'pkg': []}
         self.command = ['fping', '-c1', '-t500', ip_address]
-        self.result = {'sent': 0, 'lost': 0.0, 'stats': {}}
+        self.result = {'sent': 0, 'lost': 0, 'stats': {}}
 
     #  пинг утилитой ping по одному пакету
     def ping(self) -> dict:
@@ -20,7 +20,7 @@ class IterPing:
             print(answer)
             answer = str(answer).split('ms')[0].split()[-1]
             self.ping_dict['pkg'].append(float(answer))
-            return {'ok': True, 'answer': answer}
+            return {'ok': True, 'answer': int(float(answer))}
         #  если пинг не прошёл
         except Exception as ex:
             print(ex)
@@ -32,15 +32,16 @@ class IterPing:
         res, pd = self.result, self.ping_dict
 
         if not pd['pkg']:
-            res['lost'] = 100.0
+            res['lost'] = 100
+            res['ok'] = False
             return res
 
-        res['stats']['min'] = round(min(pd['pkg']), 2)
-        res['stats']['avg'] = round(sum(pd['pkg']) / (len(pd['pkg'])), 2)
-        res['stats']['max'] = round(max(pd['pkg']), 2)
+        res['stats']['min'] = int(min(pd['pkg']))
+        res['stats']['avg'] = int(sum(pd['pkg']) / (len(pd['pkg'])))
+        res['stats']['max'] = int(max(pd['pkg']))
 
         res['ok'] = not pd['lost']
-        res['lost'] = pd['lost']/res['sent'] * 100
+        res['lost'] = int(pd['lost']/res['sent'] * 100)
 
         return res
 

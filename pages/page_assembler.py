@@ -51,8 +51,8 @@ def main_redirect():
         return redirect(f'/{telnet.switch_type}/{token}')
 
     # рендер страницы с ошибкой
-    except Exception as ex:
-        return render_error(ex, gcdb_data.username)
+    except TypeError as ex:
+        return render_error(ex)
 
 
 # рендер главной страницы свитча

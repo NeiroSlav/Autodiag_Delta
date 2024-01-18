@@ -35,28 +35,30 @@ def iter_ping(token):
         'ping_data': {},
         'ping_results': {},
     }
-    token = Token.pull(token)
-    ping_status = request.args.get('abonPingStatus')
-    ping_status = json.loads(ping_status)
 
-    if not ping_status:
+    try:
+        token = Token.pull(token)
+        ping_status = request.args.get('abonPingStatus')
+        ping_status = json.loads(ping_status)
+
+        if not ping_status:
+            return jsonify(answer)
+
+        # перебирает словарь со статусами
+        for ip, status in ping_status.items():
+            print(ip, status)
+
+            if status == 'ping':  # отправит пинг на объект
+                if ip not in token.abon_ping_dict:
+                    token.abon_ping_dict[ip] = IterPing(ip)
+                answer['ping_data'][ip] = token.abon_ping_dict[ip].ping()
+
+            if status == 'finish':  # заберёт данные пинга
+                if ip in token.abon_ping_dict:
+                    answer['ping_results'][ip] = token.abon_ping_dict[ip].get_result()
+                    del token.abon_ping_dict[ip]
+
         return jsonify(answer)
 
-    # перебирает словарь со статусами
-    for ip, status in ping_status.items():
-        print(ip, status)
-
-        if status == 'ping':  # отправит пинг на объект
-            if ip not in token.abon_ping_dict:
-                token.abon_ping_dict[ip] = IterPing(ip)
-            answer['ping_data'][ip] = token.abon_ping_dict[ip].ping()
-
-        if status == 'finish':  # заберёт данные пинга
-            if ip in token.abon_ping_dict:
-                answer['ping_results'][ip] = token.abon_ping_dict[ip].get_result()
-                del token.abon_ping_dict[ip]
-
-    print()
-    pprint(answer)
-    print()
-    return jsonify(answer)
+    except Exception as ex:
+        return jsonify(answer | {'error': ex})
