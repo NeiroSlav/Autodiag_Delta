@@ -85,11 +85,12 @@ def switch_page(switch_type, token_number):
             f'/switch/{switch_type}.html',
             anumber=gcdb_data.anumber,
             switchip=gcdb_data.switch_ip,
+            ip_list=gcdb_data.ip_list,
             switchtype=f'{switch_type.upper()} {token.switch.model}',
             topinfo=switch_info,
             title=f'{switch_type.title()[0]} {switch_info}',
             token=str(token),
-            theme=user_sets.get(gcdb_data.username, 'theme')
+            theme=user_sets.get(gcdb_data.username, 'theme'),
         )
 
     except EOFError:  # если сессия telnet была разорвана

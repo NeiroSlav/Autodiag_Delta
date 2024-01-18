@@ -6,38 +6,41 @@ from random import randint
 
 
 class IterPing:
-    stat_keys = ['min', 'avg', 'max']
 
     def __init__(self, ip_address):
-        self.ping_dict = {'lost': 0, 'min': [], 'avg': [], 'max': []}
-        self.command = ['ping', '-c1', ip_address]
-        self.result = {'sent': 0, 'loss': 0.0, 'stats': {}}
+        self.ping_dict = {'lost': 0, 'pkg': []}
+        self.command = ['fping', '-c1', '-t500', ip_address]
+        self.result = {'sent': 0, 'lost': 0.0, 'stats': {}}
 
     #  пинг утилитой ping по одному пакету
     def ping(self) -> dict:
         self.result['sent'] += 1
         try:
             answer = subprocess.check_output(self.command)
-            answer = str(answer).split()[-2].split('/')
-            answer = {self.stat_keys[j]: float(answer[j]) for j in range(3)}
-            for key in self.stat_keys:
-                self.ping_dict[key].append(answer[key])
-            return answer | {'ok': True}
+            print(answer)
+            answer = str(answer).split('ms')[0].split()[-1]
+            self.ping_dict['pkg'].append(float(answer))
+            return {'ok': True, 'answer': answer}
         #  если пинг не прошёл
-        except subprocess.CalledProcessError:
-            self.ping_dict['loss'] += 1
+        except Exception as ex:
+            print(ex)
+            self.ping_dict['lost'] += 1
             return {'ok': False}
 
     #  вычисляет финальные показатели пинга
     def get_result(self) -> dict:
         res, pd = self.result, self.ping_dict
 
-        res['stats']['min'] = round(min(pd['min']), 2)
-        res['stats']['avg'] = round(sum(pd['avg']) / (len(pd['avg'])), 2)
-        res['stats']['max'] = round(max(pd['max']), 2)
+        if not pd['pkg']:
+            res['lost'] = 100.0
+            return res
+
+        res['stats']['min'] = round(min(pd['pkg']), 2)
+        res['stats']['avg'] = round(sum(pd['pkg']) / (len(pd['pkg'])), 2)
+        res['stats']['max'] = round(max(pd['pkg']), 2)
 
         res['ok'] = not pd['lost']
-        res['loss'] = pd['lost']/res['sent'] * 100
+        res['lost'] = pd['lost']/res['sent'] * 100
 
         return res
 
@@ -70,7 +73,8 @@ def nmap(ip_address: str) -> dict:
 
 
 if __name__ == '__main__':
-    ping = IterPing('google.com')
+    ping = IterPing('109.254.80.74')  # не пингается
+    # ping = IterPing('109.254.80.41')  # пингается
     print('='*50)
 
     for i in range(10):
@@ -78,4 +82,3 @@ if __name__ == '__main__':
 
     print('='*50)
     print(ping.get_result())
-    print(ping.result)

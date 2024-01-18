@@ -27,6 +27,10 @@
         var still_active_url = "/still_active/";
         var get_open_port_url = "/get_open_port/";
         var change_theme_url = "/change_theme/";
+        var abonPingStatus = {}
+        {% for ip in ip_list %}
+            abonPingStatus['{{ip}}'] = 'not started';
+        {% endfor %}
     </script>
 
 

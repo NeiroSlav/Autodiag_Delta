@@ -1,5 +1,4 @@
 from init import *
-from flask import request
 
 
 @app.route("/test/theme/<theme>")
@@ -16,17 +15,6 @@ def test_ping():
     print('pinged')
     time.sleep(0.1)
     return jsonify({'ok': randint(0, 1000)})
-
-
-@app.route("/iter_ping")
-def iter_ping():
-    ping_status = request.args.get('abonPingStatus')
-    # print(ping_status)
-    print('pinged')
-    time.sleep(2)
-    return jsonify(
-        {'ok': f'lost: 0% avg: 30ms max: {randint(0, 1000)}ms'}
-    )
 
 
 @app.route("/test/down/<group>")

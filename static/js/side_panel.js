@@ -1,5 +1,3 @@
-sidePingLogHtml = '<div class="diagLog sideElem" id="sidePingLogInner" style="width: 216px;"> </div>'
-
 function hide (elements) {
 //  elements = elements.length ? elements : [elements];
   for (var i = 0; i < elements.length; i++) {
@@ -49,15 +47,15 @@ function showSidePanel() {
 
         setTimeout(function() {
             renderPingButtons('');
-//            var sidePingLog = document.getElementById('sidePingLog');
-//            sidePingLog.innerHTML = sidePingLogHtml
+            var sidePingLog = document.getElementById('sidePingLog');
+            sidePingLog.innerHTML = '<div class="diagLog sideElem" id="sidePingLogInner" style="width: 216px;"> </div>'
 //            var sidePingResult = document.getElementById('sidePingResult');
 //            sidePingResult.innerHTML = ''
         }, 500);
         setTimeout(function() {show(document.querySelectorAll('.sideElem'));}, 550);
 
-        startPingProcess();
 
+        setTimeout(function() {startPingProcess();}, 600);
     }
 
     sidePanelShownFlag = !sidePanelShownFlag

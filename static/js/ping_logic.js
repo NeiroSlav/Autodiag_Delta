@@ -1,16 +1,9 @@
-
-var abonPingStatus = {
-    '192.168.0.1': 'start',
-    '124.123.12.1': 'start',
-    '63.51.1.5': 'start',
-    }
-
 // цикличный аякс, который вызывает сам себя каждую секунду
 // пока флаг открытой панели не станет false
 function startPingProcess() {
     $.ajax({
         type: 'GET',
-        url : '/iter_ping',
+        url : '/iter_ping/' + token,
         dataType: 'json',
         data: {
             abonPingStatus : JSON.stringify(abonPingStatus)
@@ -18,14 +11,14 @@ function startPingProcess() {
         success: function(response){
             if (sidePanelShownFlag) {
                 console.log(response)
-//                renderPingLog(response)
-                setTimeout( function() {startPingProcess()}, 100);
+                renderPingLog(response)
+                setTimeout( function() {startPingProcess()}, 1000);
             }
         },
         error: function(error){
             if (sidePanelShownFlag) {
                 console.log('ping_response has not came')
-                setTimeout( function() {startPingProcess()}, 100);
+                setTimeout( function() {startPingProcess()}, 1000);
             }
         }
 });}
@@ -49,7 +42,7 @@ function renderPingButtons(addStyle = 'opacity: 1') {
         bMod['style'] = 'width: 54px;' + addStyle
         bMod['extra'] = 'sideElem'
 
-        if (value == 'start') {
+        if (value == 'not started') {
             bMod['text'] = 'старт'
             bMod['color'] = 'Blue'
             bMod['onclick'] = "abonPingStatus['" + key +
@@ -78,12 +71,14 @@ function renderPingButtons(addStyle = 'opacity: 1') {
 }
 
 
-//function renderPingLog(response) {
-//    var diagLogBlock = ['<div class="diagLogBlock">','</div>']
-//    var sidePingLogInnerDiv = document.getElementById('sidePingLogInner');
-//
-////    for (var elem in response.ok) {
-//    log_elem = diagLogBlock[0] + response.ok + diagLogBlock[1]
-//    sidePingLogInnerDiv.innerHTML += log_elem
-////    }
-//}
+function renderPingLog(response) {
+    var diagLogBlock = ['<div class="diagLogBlock">','</div>']
+    var sidePingLogInnerDiv = document.getElementById('sidePingLogInner');
+
+//    for (var elem in response.ok) {
+    log_elem = diagLogBlock[0] + response.ok + diagLogBlock[1]
+    sidePingLogInnerDiv.innerHTML += log_elem
+    sidePingLogInnerDiv.scrollTop = sidePingLogInnerDiv.scrollHeight;
+
+//    }
+}

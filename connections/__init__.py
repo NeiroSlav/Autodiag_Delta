@@ -4,7 +4,7 @@ from .switches.bdcom import *
 from .switches.foxgate import *
 from .switches.raisecom import *
 
-from .ip_tools import fping, nmap
+from .ip_tools import fping, nmap, IterPing
 from .telnet import Telnet
 
 from .personal_data import *

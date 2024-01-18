@@ -28,6 +28,7 @@ class Token:
         self.changes = []
         self.first_time_flag = True
         self.default_bind_state = 'loose'
+        self.abon_ping_dict = {}
 
         self.gcdb_data = None
         self.telnet = None
