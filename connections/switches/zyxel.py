@@ -4,7 +4,7 @@ from connections.telnet import Telnet
 
 class Zyxel(SwitchMixin):
     """Класс для работы со свитчами Zyxel \n
-    проверки:\n port, mac, cable, log
+    проверки:\n port, enabled, mac, cable, log
     действия:\n set_port"""
 
     def __init__(self, session: Telnet):
@@ -18,7 +18,7 @@ class Zyxel(SwitchMixin):
 
     # диагностика порта, ошибок, и аптайма
     def port(self, port: int) -> dict:
-        result = {'enabled': 'Enabled', 'port': 'Down', 'uptime': '0:00:00', 'errors': '0',
+        result = {'port': 'Down', 'uptime': '0:00:00', 'errors': '0',
                   'ok': True, 'error': False}
         self.session.read(timeout=0)
         self.session.push('q\n\n\n', read=True)
@@ -47,15 +47,30 @@ class Zyxel(SwitchMixin):
                 result['ok'] = False
             result['errors'] = port_errors
 
-        # включен ли порт
-        if not (':FORWARDING' in answer):
-            result['enabled'] = 'Disabled'
-
         for elem in port_patterns:  # перебор списка с поиском в ответе
             if self._find(elem[0], answer):
                 result['port'] = self._finded
                 result['ok'] = bool(result['ok'] and elem[1])
                 return result
+
+    # включен ли порт
+    def enabled(self, port: int) -> dict:
+        result = {'enabled': 'Disabled', 'ok': False, 'error': False}
+        self.session.read(timeout=0)
+        self.session.push(f'\nsh int config {port}')
+
+        # ждёт ответ свитча
+        answer = self.session.read(timeout=2, string='Active')
+        answer = answer.replace("'b'", '').replace('\\t', '')
+
+        if not ('Active' in answer):
+            return {'error': True}
+
+        if self._find('Active +:Yes', answer):
+            result['enabled'] = 'Enabled'
+            result['ok'] = True
+
+        return result
 
     # поиск мака
     def mac(self, port: int, macs: list) -> dict:

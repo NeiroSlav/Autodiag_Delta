@@ -197,9 +197,10 @@ class Dlink(SwitchMixin):
             self.session.push('q')  # прервать команду лога
             return {'error': True}
 
-        pattern = (  # паттерн любой записи лога
-            r'[0-9]+ +[0-9-]+ +[0-9:]+ +[0-9:A-Za-z()., -"+]+\\')
         log = []
+        pattern = (  # паттерн любой записи лога
+            r'[0-9]+ +[0-9-]+ +[0-9:]+ +[0-9:A-Za-z()., \-"+<>]+\\'
+        )
         for elem in self._findall(pattern, answer):
             log.append(elem.strip('\\').replace('  ', ' '))
 
@@ -230,6 +231,9 @@ class Dlink(SwitchMixin):
                 log_time_range = log_last_time - self._time_to_hours(log_bottom_time)
 
         self.session.push('q')  # прервать выдачу лога
+
+        # убирает из лога записи со словом Telnet
+        log = list(filter(lambda a: 'Telnet' not in a, log))
 
         if port == 0:
             result['log'] = log

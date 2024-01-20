@@ -45,8 +45,7 @@ class GcdbData:
                 self.mac_list.append(elem['mac'])
 
             ip = elem['r_ip'] if elem['r_ip'] else elem['l_ip']
-            if not (ip in self.ip_list):
+            if ip and not (ip in self.ip_list):
                 self.ip_list.append(ip)
-
     # def __del__(self):
     #     print('gcdb_data object deleted')

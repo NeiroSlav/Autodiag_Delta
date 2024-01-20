@@ -6,7 +6,7 @@ from .page_assembler import *
 @use_token
 def zyxel_get_port(token):
     port = token.gcdb_data.switch_port
-    return token.switch.port(port)
+    return token.switch.port(port) | token.switch.enabled(port)
 
 
 # обработчик для выключения/включения порта
