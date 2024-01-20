@@ -42,7 +42,7 @@ class GcdbApi:
 
         if ticket_id:
             url.append('group_ticket_id=' + ticket_id)
-            comment = '+'
+            comment = 'групповая ' + ticket_id
 
         url.append('comment='+comment)
 
