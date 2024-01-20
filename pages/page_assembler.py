@@ -51,7 +51,7 @@ def main_redirect():
         return redirect(f'/{telnet.switch_type}/{token}')
 
     # рендер страницы с ошибкой
-    except TypeError as ex:
+    except Exception as ex:
         return render_error(ex)
 
 
