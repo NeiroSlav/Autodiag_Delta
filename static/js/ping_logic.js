@@ -53,19 +53,20 @@ function startPingProcess() {
             },
         success: function(response) {
             if (sidePanelShownFlag && (pingNeed || lastPingFlag)) {
+                if (lastPingFlag) {lastPingFlag = false}
 //                console.log(response)
                 renderPingLog(response)
                 renderPingResult(response)
                 setTimeout( function() {startPingProcess()}, 200);
             }
-            if (lastPingFlag) {lastPingFlag = false}
+
         },
         error: function(error){
             if (sidePanelShownFlag && (pingNeed || lastPingFlag)) {
+                if (lastPingFlag) {lastPingFlag = false}
                 console.log('ping response has not came')
                 setTimeout( function() {startPingProcess()}, 200);
             }
-            if (lastPingFlag) {lastPingFlag = false}
         }
 });}
 
