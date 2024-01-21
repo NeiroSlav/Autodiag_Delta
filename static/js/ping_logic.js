@@ -79,18 +79,18 @@ function renderPingLog(response) {
     console.log(response)
 
     var sepBlock = '<div class="diagLogBlock"></div>'
-    var okBlock = ['<div class="diagLogBlock" style="margin: 0 10px 0 10px;">','</div>']
-    var lostBlock = ['<div class="diagLogBlock" style="color: red; margin: 0 10px 0 10px;">','</div>']
+    var okBlock = ['<div class="diagLogBlock" style="color: margin: 0 10px 0 10px;">','</div>']
+    var lostBlock = ['<div class="diagLogBlock" style="color: margin: 0 10px 0 10px;">','</div>']
 
     var new_log_data = ''
     for (const [ip, data] of Object.entries(response.ping_data)) {
         if (data.ok) {
             console.log('ok')
             var diagLogBlock = okBlock
-            var pingString = '+ ' + ip + ' время: ' + data.answer + 'ms'
+            var pingString = '&#9989;' + ip + ' пинг ' + data.answer + 'ms'
         } else {
             var diagLogBlock = lostBlock
-            var pingString = '- ' + ip + ' ответа нет'
+            var pingString = '&#9940;' + ip + ' ответа нет'
         }
         new_log_data += diagLogBlock[0] + pingString + diagLogBlock[1]
     }
@@ -127,7 +127,7 @@ function renderPingResult(response) {
             bRes['text'] += 'lost:' + data.lost + '% &nbsp;avg:' + data.stats.avg + ' &nbsp;max:' + data.stats.max
         }
 
-        pingResultTextCache[ip] = bRes['text']
+        pingResultTextCache[ip] = bRes['text'].replace('&nbsp;', '').replace('&nbsp;', '')
         bRes['onclick'] = "saveClip(pingResultTextCache['" + ip + "']);"
 
         pingResultCache[ip] = getB(bRes)
