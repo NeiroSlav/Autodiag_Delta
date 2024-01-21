@@ -153,7 +153,7 @@ function renderPingResult(response) {
         if (data.ok) { // если пинг прошёл без потерь
             bRes['color'] = 'Green'
             bRes['text'] = 'пинг '+ ip + ' (' + data.sent + ')\n'
-            bRes['text'] += 'lost:' + data.lost + '% &nbsp;avg:' + data.stats.avg + ' &nbsp;max:' + data.stats.max
+            bRes['text'] += 'lost:' + data.lost_percent + '% &nbsp;avg:' + data.stats.avg + ' &nbsp;max:' + data.stats.max
 
         } else if(data.lost == 100) { // если 100% потерь
             bRes['color'] = 'Red'
@@ -163,10 +163,10 @@ function renderPingResult(response) {
         } else { // если пинг прошёл, но были потери
             bRes['color'] = 'Red'
             bRes['text'] = 'пинг '+ ip + ' (' + data.sent + ')\n'
-            bRes['text'] += 'lost:' + data.lost + '% &nbsp;avg:' + data.stats.avg + ' &nbsp;max:' + data.stats.max
+            bRes['text'] += 'lost:' + data.lost_percent + '% &nbsp;avg:' + data.stats.avg + ' &nbsp;max:' + data.stats.max
         }
 
-        pingResultTextCache[ip] = bRes['text'].replace('&nbsp;', '').replace('&nbsp;', '')
+        pingResultTextCache[ip] = bRes['text'].replace('&nbsp;', '(' + data.lost + '/' + data.sent + ') ').replace('&nbsp;', '')
         bRes['onclick'] = "saveClip(pingResultTextCache['" + ip + "']);"
 
         pingResultCache[ip] = getB(bRes)
