@@ -42,7 +42,7 @@ function updatePingProcess() {
 }
 
 // цикличный аякс, который вызывает сам себя каждые 0.2 секунды
-// пока флаг открытой панели не станет false
+// пока (панель открыта и (пинг кому-то нужен или это последний пакет))
 function startPingProcess() {
     $.ajax({
         type: 'GET',
@@ -56,14 +56,14 @@ function startPingProcess() {
 //                console.log(response)
                 renderPingLog(response)
                 renderPingResult(response)
-                setTimeout( function() {pingProcess()}, 200);
+                setTimeout( function() {startPingProcess()}, 200);
             }
             if (lastPingFlag) {lastPingFlag = false}
         },
         error: function(error){
             if (sidePanelShownFlag && (pingNeed || lastPingFlag)) {
                 console.log('ping response has not came')
-                setTimeout( function() {pingProcess()}, 200);
+                setTimeout( function() {startPingProcess()}, 200);
             }
             if (lastPingFlag) {lastPingFlag = false}
         }
