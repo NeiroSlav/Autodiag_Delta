@@ -53,7 +53,7 @@ function startPingProcess() {
             },
         success: function(response) {
             if (sidePanelShownFlag && (pingNeed || lastPingFlag)) {
-                if (lastPingFlag) {lastPingFlag = false}
+                setTimeout( function() {lastPingFlag = false}, 1000);
 //                console.log(response)
                 renderPingLog(response)
                 renderPingResult(response)
@@ -63,12 +63,13 @@ function startPingProcess() {
         },
         error: function(error){
             if (sidePanelShownFlag && (pingNeed || lastPingFlag)) {
-                if (lastPingFlag) {lastPingFlag = false}
+                setTimeout( function() {lastPingFlag = false}, 1000);
                 console.log('ping response has not came')
                 setTimeout( function() {startPingProcess()}, 200);
             }
         }
 });}
+
 
 
 // рендеринг html текста кнопок для блока ип в пинге
