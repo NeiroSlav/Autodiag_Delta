@@ -33,9 +33,9 @@ function showSidePanel() {
         var sidePingLog = document.getElementById('sidePingLog');
         var sidePingResult = document.getElementById('sidePingResult');
 
-        setTimeout(function() {sidePingButtons.innerHTML = ''}, 500);
-        setTimeout(function() {sidePingLog.innerHTML = ''}, 500);
-        setTimeout(function() {sidePingResult.innerHTML = ''}, 500);
+        setTimeout(function() {sidePingButtons.innerHTML = ''}, 150);
+        setTimeout(function() {sidePingLog.innerHTML = ''}, 150);
+        setTimeout(function() {sidePingResult.innerHTML = ''}, 150);
 
         for (key in abonPingStatus) {
             abonPingStatus[key] = 'not started'
