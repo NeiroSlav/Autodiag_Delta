@@ -1,8 +1,47 @@
+function setPingsDefault() {
+    for (key in abonPingStatus) {
+        abonPingStatus[key] = 'not started'
+    }
+    pingResultCache = {}
+    pingResultDivCache = ' '
+    pingResultTextCache = {}
+    pingStarted = false
+    pingNeed = false
+}
+
+var pingStarted = false
+var pingNeed = false
 var pingResultCache = {}
 var pingResultDivCache = ' '
 var pingResultTextCache = {}
+var lastPingFlag = false
 
-// цикличный аякс, который вызывает сам себя каждую секунду
+
+function updatePingProcess() {
+
+    var need = false // проверяем, нужен ли кому-то пинг
+    for (key in abonPingStatus) {
+        if (abonPingStatus[key] == 'ping') {
+            need = true
+        }
+    }
+
+    if (need && !pingStarted) { // если пинг нужен, и не начат - начинаем
+        console.log('starting ping')
+        pingNeed = true
+        pingStarted = true
+        startPingProcess()
+    }
+
+    if (!need && pingStarted) { // если пинг идёт, но никому не нужен
+        console.log('stopping ping')
+        pingNeed = false
+        lastPingFlag = true
+        pingStarted = false
+    }
+}
+
+// цикличный аякс, который вызывает сам себя каждые 0.2 секунды
 // пока флаг открытой панели не станет false
 function startPingProcess() {
     $.ajax({
@@ -12,21 +51,24 @@ function startPingProcess() {
         data: {
             abonPingStatus : JSON.stringify(abonPingStatus)
             },
-        success: function(response){
-            if (sidePanelShownFlag) {
-                console.log(response)
+        success: function(response) {
+            if (sidePanelShownFlag && (pingNeed || lastPingFlag)) {
+//                console.log(response)
                 renderPingLog(response)
                 renderPingResult(response)
-                setTimeout( function() {startPingProcess()}, 1000);
+                setTimeout( function() {pingProcess()}, 200);
             }
+            if (lastPingFlag) {lastPingFlag = false}
         },
         error: function(error){
-            if (sidePanelShownFlag) {
-                console.log('ping_response has not came')
-                setTimeout( function() {startPingProcess()}, 1000);
+            if (sidePanelShownFlag && (pingNeed || lastPingFlag)) {
+                console.log('ping response has not came')
+                setTimeout( function() {pingProcess()}, 200);
             }
+            if (lastPingFlag) {lastPingFlag = false}
         }
 });}
+
 
 // рендеринг html текста кнопок для блока ип в пинге
 function renderPingButtons(addStyle = 'opacity: 1') {
@@ -51,32 +93,30 @@ function renderPingButtons(addStyle = 'opacity: 1') {
         if (status == 'not started') {
             bMod['text'] = 'старт'
             bMod['color'] = 'Blue'
-            bMod['onclick'] = "abonPingStatus['" + ip +
-                              "'] = 'ping'; renderPingButtons();"
+            bMod['onclick'] = "abonPingStatus['" + ip + "'] = 'ping'; renderPingButtons();" +
+                              "pingNeed = true; updatePingProcess();"
         }
         if (status == 'ping') {
             bMod['text'] = 'стоп'
             bMod['color'] = 'Red'
-            bMod['onclick'] = "abonPingStatus['" + ip +
-                              "'] = 'finish'; renderPingButtons();"
+            bMod['onclick'] = "abonPingStatus['" + ip + "'] = 'finish'; renderPingButtons();" +
+                              "updatePingProcess();"
         }
         if (status == 'finish') {
             bMod['text'] = 'ещё'
             bMod['color'] = 'Green'
-            bMod['onclick'] = "abonPingStatus['" + ip +
-                              "'] = 'ping'; renderPingButtons();"
+            bMod['onclick'] = "abonPingStatus['" + ip + "'] = 'ping'; renderPingButtons();" +
+                              "pingNeed = true; updatePingProcess();"
         }
-
         htmlText += getB(bIp) + getB(bMod)
     }
-
     var sidePingButtons = document.getElementById('sidePingButtons');
     sidePingButtons.innerHTML = htmlText
 }
 
+
 // обновление лога пинга
 function renderPingLog(response) {
-    console.log(response)
 
     var sepBlock = '<div class="diagLogBlock"></div>'
     var okBlock = ['<div class="diagLogBlock" style="color: margin: 0 10px 0 10px;">','</div>']
@@ -102,7 +142,6 @@ function renderPingLog(response) {
 }
 
 
-
 // генерация, и рендеринг html текста кнопок для блока ип в пинге
 function renderPingResult(response) {
 
@@ -111,17 +150,17 @@ function renderPingResult(response) {
         bRes['style'] = 'width: 220px; height: 45px; opacity: 1'
         bRes['extra'] = 'sideElem'
 
-        if (data.ok) {
+        if (data.ok) { // если пинг прошёл без потерь
             bRes['color'] = 'Green'
             bRes['text'] = 'пинг '+ ip + ' (' + data.sent + ')\n'
             bRes['text'] += 'lost:' + data.lost + '% &nbsp;avg:' + data.stats.avg + ' &nbsp;max:' + data.stats.max
 
-        } else if(data.lost == 100) {
+        } else if(data.lost == 100) { // если 100% потерь
             bRes['color'] = 'Red'
             bRes['text'] = 'пинг адреса '+ ip + '\n'
             bRes['text'] += 'не прошёл (пакетов: ' + data.sent + ')'
 
-        } else {
+        } else { // если пинг прошёл, но были потери
             bRes['color'] = 'Red'
             bRes['text'] = 'пинг '+ ip + ' (' + data.sent + ')\n'
             bRes['text'] += 'lost:' + data.lost + '% &nbsp;avg:' + data.stats.avg + ' &nbsp;max:' + data.stats.max
