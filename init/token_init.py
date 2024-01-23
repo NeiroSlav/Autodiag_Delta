@@ -82,19 +82,19 @@ class Token:
 # декоратор для синхронной работы с токеном
 def use_token(func):
     @wraps(func)
-    def wrapper(token_number):
-        token = Token.pull(token_number)
-        if not token:  # если токена не существует
+    def wrapper(token):
+        _token = Token.pull(token)
+        if not _token:  # если токена не существует
             return jsonify({'error': True, 'type': 'Token Not Found'})
 
-        token.wait_busy(func.__name__)  # ждёт очередь, и занимает
+        _token.wait_busy(func.__name__)  # ждёт очередь, и занимает
         try:
-            func_answer = func(token)
+            func_answer = func(_token)
         except Exception as e:
             print(e)
             func_answer = {'error': True, 'type': f'PythonError: {e}'}
 
-        token.set_free()  # освобождает очередь
+        _token.set_free()  # освобождает очередь
         # print(func_answer)
         return jsonify(func_answer)  # возвращает ответ функции в формате json
 
