@@ -53,19 +53,23 @@ function startPingProcess() {
             },
         success: function(response) {
             if (sidePanelShownFlag && (pingNeed || lastPingFlag)) {
-                setTimeout( function() {lastPingFlag = false}, 1000);
 //                console.log(response)
                 renderPingLog(response)
                 renderPingResult(response)
                 setTimeout( function() {startPingProcess()}, 200);
+                if (lastPingFlag) {
+                    setTimeout( function() {lastPingFlag = false}, 1000);
+                }
             }
 
         },
         error: function(error){
             if (sidePanelShownFlag && (pingNeed || lastPingFlag)) {
-                setTimeout( function() {lastPingFlag = false}, 1000);
                 console.log('ping response has not came')
                 setTimeout( function() {startPingProcess()}, 200);
+                if (lastPingFlag) {
+                    setTimeout( function() {lastPingFlag = false}, 1000);
+                }
             }
         }
 });}
@@ -154,21 +158,21 @@ function renderPingResult(response) {
 
         if (data.ok) { // если пинг прошёл без потерь
             bRes['color'] = 'Green'
-            bRes['text'] = 'пинг '+ ip + ' (' + data.sent + ')\n'
+            bRes['text'] = 'пинг '+ ip + ' (' + data.sent + ')<br>'
             bRes['text'] += 'lost:' + data.lost_percent + '% &nbsp;avg:' + data.stats.avg + ' &nbsp;max:' + data.stats.max
 
         } else if(data.lost == 100) { // если 100% потерь
             bRes['color'] = 'Red'
-            bRes['text'] = 'пинг адреса '+ ip + '\n'
+            bRes['text'] = 'пинг адреса '+ ip + '<br>'
             bRes['text'] += 'не прошёл (пакетов: ' + data.sent + ')'
 
         } else { // если пинг прошёл, но были потери
             bRes['color'] = 'Red'
-            bRes['text'] = 'пинг '+ ip + ' (' + data.sent + ')\n'
+            bRes['text'] = 'пинг '+ ip + ' (' + data.sent + ')<br>'
             bRes['text'] += 'lost:' + data.lost_percent + '% &nbsp;avg:' + data.stats.avg + ' &nbsp;max:' + data.stats.max
         }
 
-        pingResultTextCache[ip] = bRes['text'].replace('&nbsp;', '(' + data.lost + '/' + data.sent + ') ').replace('&nbsp;', '')
+        pingResultTextCache[ip] = bRes['text'].replace('&nbsp;', '(' + data.lost + '/' + data.sent + ') ').replace('&nbsp;', '').replace('<br>', '\n')
         bRes['onclick'] = "saveClip(pingResultTextCache['" + ip + "']);"
 
         pingResultCache[ip] = getB(bRes)
