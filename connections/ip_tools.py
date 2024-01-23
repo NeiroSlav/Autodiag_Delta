@@ -9,7 +9,7 @@ class IterPing:
 
     def __init__(self, ip_address):
         self.ping_dict = {'lost': 0, 'pkg': []}
-        self.command = ['fping', '-c1', '-t500', ip_address]
+        self.command = ['fping', '--count=1', '--timeout=150', '--size=1450', ip_address]
         self.result = {'sent': 0, 'lost': 0, 'stats': {}}
 
     #  пинг утилитой ping по одному пакету
@@ -41,7 +41,7 @@ class IterPing:
         res['stats']['max'] = int(max(pd['pkg']))
 
         res['ok'] = not pd['lost']
-        res['lost'] = int(pd['lost']/res['sent'] * 100)
+        res['lost_percent'] = int(pd['lost']/res['sent'] * 100)
 
         return res
 
