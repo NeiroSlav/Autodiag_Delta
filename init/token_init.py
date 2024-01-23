@@ -43,7 +43,7 @@ class Token:
     # по номеру токена вернёт объект
     @staticmethod
     def pull(token: str) -> Token:
-        return Token._dict[token]
+        return Token._dict.get(token)
 
     # работа со списком изменений
     def change(self, name: str, add: bool):
@@ -82,19 +82,19 @@ class Token:
 # декоратор для синхронной работы с токеном
 def use_token(func):
     @wraps(func)
-    def wrapper(token):
-        _token = Token.pull(token)
-        if not _token:  # если токена не существует
-            return jsonify({'error': True, 'type': 'TokenNotFound'})
+    def wrapper(token_number):
+        token = Token.pull(token_number)
+        if not token:  # если токена не существует
+            return jsonify({'error': True, 'type': 'Token Not Found'})
 
-        _token.wait_busy(func.__name__)  # ждёт очередь, и занимает
+        token.wait_busy(func.__name__)  # ждёт очередь, и занимает
         try:
-            func_answer = func(_token)
+            func_answer = func(token)
         except Exception as e:
             print(e)
             func_answer = {'error': True, 'type': f'PythonError: {e}'}
 
-        _token.set_free()  # освобождает очередь
+        token.set_free()  # освобождает очередь
         # print(func_answer)
         return jsonify(func_answer)  # возвращает ответ функции в формате json
 
@@ -104,13 +104,13 @@ def use_token(func):
 # обновление времени последней активности токена
 @app.route("/still_active/<token>")
 def token_still_active(token):
-    try:
-        token = Token.pull(token)
-        # logging.info(f'{token} activity')
-        token._last_active = int(time.time())
-        return {'ok': bool(token)}
-    except KeyError:
-        pass
+    token = Token.pull(token)
+    if not token:
+        return {'ok': False}
+
+    # logging.info(f'{token} activity')
+    token._last_active = int(time.time())
+    return {'ok': True}
 
 
 # раз в минуту проверяет активность токенов, удерживает telnet

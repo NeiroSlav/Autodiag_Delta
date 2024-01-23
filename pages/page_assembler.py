@@ -113,7 +113,11 @@ def switch_page(switch_type, token_number):
 # меняет тему оформления для юзера
 @app.route("/change_theme/<token>")
 def change_theme(token):
-    username = Token.pull(token).gcdb_data.username
+    token = Token.pull(token)
+    if not token:
+        return {'ok': False}
+
+    username = token.gcdb_data.username
     current_theme = user_sets.get(username, 'theme')
     new_theme = 'dark' if current_theme == 'light' else 'light'
     session['theme'] = new_theme
