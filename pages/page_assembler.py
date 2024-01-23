@@ -23,6 +23,7 @@ def main_redirect():
                 'switch_down.html',
                 topinfo=decview_info['state'],
                 switch_log=decview_info['log'],
+                abon_login=gcdb_data.abon_login,
                 anumber=gcdb_data.anumber,
                 user=gcdb_data.username,
                 group_tickets=gcdb_data.group_tickets,
@@ -129,5 +130,4 @@ def create_ticket():
         request.args.get('ticket_id'),
         request.args.get('comment'),
     )
-    print('ticket created')
-    return {'ok': status}
+    return status

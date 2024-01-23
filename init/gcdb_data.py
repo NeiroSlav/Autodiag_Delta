@@ -9,6 +9,7 @@ class GcdbData:
     def __init__(self, request):
         self.username = request.args.get('username')
         self.anumber = request.args.get('anumber')
+        self.abon_login = request.args.get('abon_login')
         self.switch_ip = request.args.get('switch_ip')
         self.switch_port = request.args.get('switch_port')
         self.pon_port = request.args.get('pon_port')

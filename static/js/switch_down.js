@@ -77,7 +77,7 @@ function get_submit_block() {
     submitB['style'] = 'width: 334px;'
     submitB['text'] = 'Создать тикет'
     submitB['color'] = 'Blue'
-    submitB['onclick'] = "createGroupTicket('', '" + comment + "');"
+    submitB['onclick'] = "createTicket('', '" + comment + "');"
 
     return getB(submitB)
 }

@@ -38,17 +38,12 @@ class GcdbApi:
                'hash=' + GcdbApi._get_hash(),
                'anumber='+anumber,
                'username='+user,
+               'comment='+comment,
                'dup=1']
 
         if ticket_id:
             url.append('group_ticket_id=' + ticket_id)
-            comment = 'групповая ' + ticket_id
 
-        url.append('comment='+comment)
-
-        # pprint(url)
-        # print('&'.join(url))
-        # return {'ok': True}
         status = bool(requests.get('&'.join(url)))
         return {'ok': status}
 
@@ -94,4 +89,4 @@ class DecviewApi:
 if __name__ == '__main__':
     ls, ip = '0104003018', '192.168.44.160'
     pprint(GcdbApi.get_data(ls, ip))
-    pprint(DecviewApi.get_status(ip))
+    # pprint(DecviewApi.get_status(ip))

@@ -59,7 +59,7 @@ function ajax_div(url, divId, func) {
 });}
 
 
-function createGroupTicket(ticket_id, comment) {
+function createTicket(ticket_id, comment) {
     console.log(ticket_id)
     console.log(user)
     console.log(anumber)
@@ -72,7 +72,7 @@ function createGroupTicket(ticket_id, comment) {
             user: user,
             anumber: anumber,
             ticket_id: ticket_id,
-            comment: comment,
+            comment: abon_login + ', ' + comment,
         },
         success: function(response){
             close_ticket_menu(response);
