@@ -142,5 +142,7 @@ class Telnet:
             return False
         switch_model = re.search(r'BDCOM [A-Z0-9-]+', answer)
         self.switch_model = switch_model.group().split()[-1]
+        if self.switch_model.startswith('S'):
+            self.switch_type = 'bdcom_fe'
         self.push('ena')
         return True

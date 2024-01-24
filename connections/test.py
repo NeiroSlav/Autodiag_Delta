@@ -4,11 +4,12 @@ from switches.utils.switches_ip import dlink_ip
 from ip_tools import fping
 from connections.telnet import Telnet
 from connections.switches.dlink import Dlink
+from connections.switches.bdcom_fe import BdcomFE
 from personal_data import switch_login, switch_password
 from datetime import datetime
 import hashlib
 
-#
+
 #
 def get_gcdb_data(anumber: str, switch: str = ''):
     url = ['https://gcdbviewer.matrixhome.net/api_autodiag.php?action=get_by_anumber']
@@ -41,11 +42,13 @@ class GcdbData:
 
 
 def switch_test():
-    for elem in dlink_ip:
-        gcdb_data = GcdbData(elem)
-        telnet_session = Telnet(gcdb_data)
-        switch = Dlink(telnet_session)
-        print(switch.get_vlan(1))
+    # for elem in dlink_ip:
+    
+    gcdb_data = GcdbData('192.168.50.220')
+    telnet_session = Telnet(gcdb_data)
+    switch = BdcomFE(telnet_session)
+    print(switch.port(7))
+    print(switch.mac(5, ['ac:84:c6:e7:72:6d']))
 
 
 switch_test()

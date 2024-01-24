@@ -4,8 +4,8 @@ from connections.switches.utils.mixin import SwitchMixin
 from connections.telnet import Telnet
 
 
-class Bdcom(SwitchMixin):
-    """Класс для работы с Bdcom ePON \n
+class BdcomFE(SwitchMixin):
+    """Класс для работы с Bdcom на Fast Ethernet \n
     проверки:
     port, mac, signal, active"""
 
@@ -17,15 +17,14 @@ class Bdcom(SwitchMixin):
         self.session.push('\nena')
         self.session.read(2, '#')
         self.test_methods = [  # методы для тестов
-            self.port, self.mac,
-            self.signal, self.active]
+            self.port, self.mac]
 
     # диагностика порта, ошибок, и аптайма
-    def port(self, port: int, pon: int) -> dict:
+    def port(self, port: int) -> dict:
         result = {'port': 'Down', 'errors': '0',
                   'ok': True, 'error': False}
 
-        command = f'\nsh interface epon 0/{port}:{pon}'
+        command = f'\nsh int fastEthernet 0/{port}'
         self.session.read()
         self.session.push(command)
         self.session.push('\nn')
@@ -53,9 +52,9 @@ class Bdcom(SwitchMixin):
         return result
 
     # поиск мака
-    def mac(self, port: int, pon: int, macs: list) -> dict:
+    def mac(self, port: int, macs: list) -> dict:
         result = {'mac': {}, 'ok': False, 'error': False}
-        command = f'show mac address-table interface ePON 0/{port}:{pon}\n'
+        command = f'\nsh mac address-table interface f0/{port}'
 
         self.session.read()
         self.session.push(command)
@@ -77,47 +76,5 @@ class Bdcom(SwitchMixin):
 
         return result
 
-    # проверка сигнала
-    def signal(self, port: int, pon: int) -> dict:
-        result = {'signal': '', 'ok': False, 'error': False}
-        command = (f'show epon interface epon 0/{port}:{pon} ' +
-                   'onu ctc optical-transceive\n\n')
-
-        self.session.read()
-        self.session.push(command)
-        answer = self.session.read(timeout=1, string='DBm')
-
-        # если не нашёл ответ
-        if not ('#' in answer):
-            return {'error': True}
-
-        # проверка качества сигнала
-        if not self._find(r'received power\(DBm\): -[0-9.]+', answer):
-            return {'error': False, 'ok': False, 'signal': '0'}
-
-        signal = self._finded.split('-')
-        result['signal'] = f'-{signal[-1]}'
-        signal = float(signal[-1])
-        result['ok'] = signal < 30
-        return result
-
-    # проверка неактивных ONU
-    def active(self, port: int, pon: int) -> dict:
-        result = {'ok': True, 'error': False}
-        command = f'sh epon inactive-onu interface ePON 0/{port}\n'
-
-        self.session.read()
-        self.session.push(command)
-        self.session.push('       ')
-        answer = self.session.read(timeout=5, string='#')
-
-        if not ('----' in answer):
-            return {'error': True}
-
-        if self._find(r'EPON0/' + f'{port}:{pon} ', answer):
-            result['ok'] = False
-
-        return result
-
     # def __del__(self):
-    #     print('bdcom object deleted')
+    #     print('bdcom_fe object deleted')

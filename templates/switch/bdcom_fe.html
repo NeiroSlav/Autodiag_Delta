@@ -1,0 +1,43 @@
+{% extends 'switch.html' %}
+
+{% block imports %}
+
+    <script src="{{ url_for('static', filename='js/bdcom_fe/ajax_init.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bdcom_fe/leftrow.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bdcom_fe/rightrow.js') }}"></script>
+
+{% endblock %}
+
+{% block leftrow %}
+        <div class="diagMiniBlock" id="portInfo">
+            <button class="diagButton" style="width: 236px; height: 60px;"></button>
+        </div>
+        <div class="diagMiniBlock"></div>
+{% endblock %}
+
+{% block rightrow %}
+    <div class="diagLongBlock" style="margin: 0 auto 0 0;">
+
+        <div style="margin-bottom: 40px;"></div>
+
+        <div class="diagMiniBlock">
+            <button class="diagButton"
+                    style="width: 236px; height: 34px; margin-top: 0; font-size: 18px; margin-bottom: 4px;">
+                {{ switchtype }}
+            </button>
+            <button class="diagButton"
+                    style="width: 236px; height: 34px; margin-top: 0; font-size: 18px;"
+                    onclick="saveClip('{{ switchip }}')">
+                {{ topinfo }}
+            </button>
+        </div>
+
+        <div class="diagMiniBlock" id="macInfo">
+            <button class="diagButton" style="width: 236px;"></button>
+        </div>
+        <div class="diagMiniBlock" id="openPortInfo">
+            <button class="diagButton" style="width: 236px;"></button>
+        </div>
+        <div class="diagMiniBlock"></div>
+    </div>
+{% endblock %}

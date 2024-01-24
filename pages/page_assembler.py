@@ -43,9 +43,6 @@ def main_redirect():
             if int(gcdb_data.switch_port) > allowed_ports:
                 raise DiagError(f'Гигабитный порт, доступ запрещён')
 
-        if telnet.switch_type == 'bdcom' and telnet.switch_model.startswith('S'):
-            raise DiagError('BDCOM с подключениями FastEthernet ещё в разработке')
-
         #  создание токена, сохранение данных, запись в сессию
         token = Token()
         token.gcdb_data = gcdb_data

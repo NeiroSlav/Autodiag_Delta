@@ -3,6 +3,7 @@ from .switches.zyxel import *
 from .switches.bdcom import *
 from .switches.foxgate import *
 from .switches.raisecom import *
+from .switches.bdcom_fe import *
 
 from .ip_tools import fping, nmap, IterPing
 from .telnet import Telnet
@@ -14,5 +15,6 @@ _switch = {
     'dlink1210': Dlink1210,
     'zyxel': Zyxel,
     'bdcom': Bdcom,
+    'bdcom_fe': BdcomFE,
     'foxgate': Foxgate,
     'raisecom': Raisecom}
