@@ -20,7 +20,7 @@ def raisecom_disable_port(token):
 
     log_string = f'{username} {"enabled" if set_flag else "disabled"} {ip}:{port}'
     logging.warning(log_string)
-    changes_list.append(log_string)
+    Token.changes_list.append(log_string)
 
     return token.switch.set_port(port, enable=set_flag)
 
