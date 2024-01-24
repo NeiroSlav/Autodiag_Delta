@@ -326,17 +326,13 @@ class Dlink(SwitchMixin):
         if not subscribes:
             return result
 
-        port_igmp = 0  # поиск подписок нужного порта
+        # поиск подписок нужного порта
         for elem in subscribes:
             if int(elem.split()[2]) == port:
-                port_igmp += 1
+                result['port'] += 1
 
-        if port_igmp:  # если есть подписки порта
-            result['port'] = port_igmp
-            return result
-
-        #  если нет подписок нужного порта, укажет подписки других
-        result['other'] = len(subscribes) - port_igmp
+        # подписки других
+        result['other'] = len(subscribes) - result['port']
         return result
 
     # проверка, в лузе ли порт

@@ -11,7 +11,7 @@ class GcdbData:
         self.anumber = request.args.get('anumber')
         self.abon_login = request.args.get('abon_login')
         self.switch_ip = request.args.get('switch_ip')
-        self.switch_port = request.args.get('switch_port')
+        self.switch_port = int(request.args.get('switch_port'))
         self.pon_port = request.args.get('pon_port')
         self.vlan = ''
 
