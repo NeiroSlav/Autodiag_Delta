@@ -165,49 +165,60 @@ function get_util_business(response) {
 
     console.log(response)
 
-    var b1 = setB()
-    b1['text'] = 'Трафик на порту:'
-    b1['onclick'] = 'get_util();'
-    b1['style'] = 'width: 236px;'
-    b1['id'] = 'mainButton'
+    var bTraffic = setB()
+    bTraffic['text'] = 'Трафик на порту:'
+    bTraffic['onclick'] = 'get_util();'
+    bTraffic['style'] = 'width: 236px;'
+    bTraffic['id'] = 'mainButton'
 
-    var b2 = setB()
-    b2['style'] = 'width: 116px;'
 
-    var b3 = setB()
-    b3['style'] = 'width: 116px;'
+    var bTx = setB()
+    bTx['style'] = 'width: 116px;'
+    var bRx = setB()
+    bRx['style'] = 'width: 116px;'
 
-    var b4 = setB()
-    b4['style'] = 'width: 116px;'
-    b4['text'] = 'Флуда нет'
+    if (response.util.error) {
+        bTx['color'] = bRx['color'] = 'Red'
+        bTx['text'] = bRx['text'] = 'Ошибка'
+    } else {
+        bTx['text'] = 'in ' + response.util.tx
+        bRx['text'] = 'out ' + response.util.rx
+    }
+
+
+    var bIgmp = setB()
+    bIgmp['style'] = 'width: 236px;'
+
+    if (response.igmp.error) {
+        bIgmp['color'] = 'Red'
+        bIgmp['text'] = 'Ошибка'
+    } else {
+        bIgmp['text'] = 'igmp порта: ' + response.igmp.port
+        bIgmp['text'] += ' &nbsp;&nbsp; другие: ' + response.igmp.other
+    }
+
+
 
     var bVlan = setB()
     bVlan['style'] = 'width: 116px;'
-    bVlan['text'] = 'Vid: ' + response.vlan
+    var bFlood = setB()
+    bFlood['style'] = 'width: 116px;'
 
-    var b5 = setB()
-
-    if (response.error) {
-        b1['color'] = b2['color'] = b3['color'] = b4['color'] = 'Red'
-        b1['text'] = 'Ошибка проверки'
-        b2['text'] = b3['text'] = b4['text'] = 'Ошибка'
-        return getB(b1) + getB(b2) + getB(b3) + getB(bVlan) + getB(b4)
+    if (response.flood.error) {
+        bVlan['color'] = bFlood['color'] = 'Red'
+        bVlan['text'] = bFlood['text'] = 'Ошибка'
+    } else if (response.flood_status) {
+        bVlan['color'] = bFlood['color'] = 'Red'
+        bVlan['text'] = 'флуд в ' + response.vlan + ':'
+        bFlood['text'] = response.flood_rx + ' frame'
     } else {
-
-        b2['text'] = 'in ' + response.tx
-        b3['text'] = 'out ' + response.rx
-
-        var util_buttons = getB(b1) + getB(b2) + getB(b3);
-
-        if (response.flood) {
-            b3['color'] = b4['color'] = 'Red'
-            b3['style'] = b4['style'] = 'width: 116px;'
-            b3['text'] = 'Флуд в ' + response.vlan + ':'
-            b4['text'] = response.flood_rx + ' frame'
-            return util_buttons + getB(b3) + getB(b4);
-        } else {
-            return util_buttons + getB(bVlan) + getB(b4);
-        }
-
+        bVlan['text'] = 'Vid: ' + response.vlan
+        bFlood['text'] = 'флуда нет'
     }
+
+    return getB(bTraffic) +
+           getB(bTx) + getB(bRx) +
+           getB(bVlan) + getB(bFlood) +
+           getB(bIgmp)
+
 }

@@ -300,7 +300,8 @@ class Dlink(SwitchMixin):
             try:  # ищет фреймы левого и правого столбца
                 ports_util.append(int(elem.split()[1]))
                 right_row.append(int(elem.split()[5]))
-            except Exception: pass
+            except Exception:
+                pass
 
         #  выбирает порты с кол-вом фреймов больше 4к (кроме магистральных)
         ports_util += right_row
@@ -308,13 +309,13 @@ class Dlink(SwitchMixin):
 
         #  нагруженных портов меньше трёх, или разница в трафике больше 5к
         if len(high_util) < 3 or (high_util[0] - high_util[-1]) > 5_000:
-            return {'flood': False, 'error': False}
+            return {'flood_status': False, 'error': False}
 
-        return {'flood': True, 'flood_rx': high_util[0], 'error': False}
+        return {'flood_status': True, 'flood_rx': high_util[0], 'error': False}
 
     # проверка, есть ли подписки
     def igmp(self, port: int) -> dict:
-        result = {'port': False, 'other': False, 'error': False}
+        result = {'port': 0, 'other': 0, 'error': False}
         self.session.read(timeout=0)
         self.session.push('\nshow igmp_snooping host')
         answer = self.session.read(string='Entries')
@@ -357,16 +358,16 @@ class Dlink(SwitchMixin):
             return {'state': 'Strict' if strict else 'Loose', 'error': False}
 
     # проверка, в каком vlan абонент
-    def vlan(self, port: int) -> dict:
+    def vlan(self, port: int) -> int:
         self.session.read()
         self.session.push(f'\nshow vlan ports {port}')
         answer = self.session.read(string=' - ')
 
         if not (' - ' in answer):
-            return {'error': True}
+            return 0
 
         vlan = self._find('[0-9]+ +[X-]', answer).split()[0]
-        return {'vlan': vlan, 'ok': True, 'error': False}
+        return int(vlan)
 
     # включение/выключение порта
     def set_port(self, port: int, enable: bool) -> dict:

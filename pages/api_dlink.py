@@ -127,4 +127,11 @@ def dlink_get_util(token):
     if not token.gcdb_data.vlan:
         token.gcdb_data.vlan = token.switch.vlan(port)
 
-    return token.switch.util(port) | token.switch.flood() | token.gcdb_data.vlan
+    answer = {
+        'util': token.switch.util(port),
+        'igmp': token.switch.igmp(port),
+        'flood': token.switch.flood(),
+        'vlan': token.gcdb_data.vlan,
+    }
+
+    return answer
