@@ -38,7 +38,8 @@ class GcdbData:
         if data['group_tickets']:
             for key, elem in data['group_tickets'].items():
                 if len(elem) > 25:
-                    self.group_tickets[key] = elem[0:25]
+                    elem = elem[0:25]
+                self.group_tickets[key] = elem[0:25]
 
         # print(self.group_tickets)
         for elem in data['accounts']:
