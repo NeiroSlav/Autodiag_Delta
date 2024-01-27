@@ -27,9 +27,9 @@ function get_port_business(response) {
     } else {
 
 
-        var diagData = '! Порт с проблемой:\n'
+        var diagData = '! Состояние порта:\n'
         if (response.ok) {
-            diagData = '+ Порт в порядке:\n'
+            diagData = '+ Состояние порта:\n'
         }
 
         diagData += gap + response.enabled + '\n' + gap + response.port + '\n';
@@ -85,9 +85,9 @@ function get_cable_business(response) {
 
     } else {
 
-        var diagData = '! Проблемный кт:\n'
+        var diagData = '! Состояние кабеля:\n'
         if (response.ok) {
-            diagData = '+ Кабель в порядке:\n'
+            diagData = '+ Состояние кабеля:\n'
         }
 
         for (var n in response.cable) {

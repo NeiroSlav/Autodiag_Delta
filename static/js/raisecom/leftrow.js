@@ -25,9 +25,9 @@ function get_port_business(response) {
     } else {
 
 
-        var diagData = '! Порт с проблемой:\n'
+        var diagData = '! Состояние порта:\n'
         if (response.ok) {
-            diagData = '+ Порт в порядке:\n'
+            diagData = '+ Состояние порта:\n'
         }
 
         diagData += gap + response.enabled + '\n' + gap + response.port + '\n';
