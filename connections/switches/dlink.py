@@ -289,7 +289,7 @@ class Dlink(SwitchMixin):
     def flood(self) -> dict:
         self.session.read(timeout=0)
         self.session.push('\nshow util ports')
-        answer = self.session.read(string='RX')
+        answer = self.session.read(string='RX', timeout=0.3)
         self.session.push('q')
         if not ('RX' in answer):
             return {'error': True}
@@ -340,8 +340,7 @@ class Dlink(SwitchMixin):
         self.session.read()
         self.session.push('\nshow address_binding ports')
         self.session.push('nnnn')
-        answer = self.session.read(string='ARP')
-
+        answer = self.session.read(string='ARP', timeout=0.3)
         if not ('ARP' in answer):
             return {'error': True}
 

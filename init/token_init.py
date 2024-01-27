@@ -6,7 +6,7 @@ from functools import wraps
 from random import randint
 from flask import jsonify
 from .app_init import app, logging
-
+import traceback
 
 class Token:
     """Класс для работы с токенами, хранит в себе словарь токенов
@@ -91,7 +91,7 @@ def use_token(func):
         try:
             func_answer = func(_token)
         except Exception as e:
-            print(e)
+            traceback.print_tb(e.__traceback__)
             func_answer = {'error': True, 'type': f'PythonError: {e}'}
 
         _token.set_free()  # освобождает очередь
