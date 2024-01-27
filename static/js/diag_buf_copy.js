@@ -30,7 +30,7 @@ function saveClip (text) {
 
 // Функция копирования данных из словаря в буфер обмена по ключу
 function copyDiag(key) {
-    let copyString = '';
+    let copyString = switch_info + '\nРезультаты диагностики:\n\n';
 
     // Проверяем, существует ли ключ в словаре
     if (key in diagDict) {
