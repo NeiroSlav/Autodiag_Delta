@@ -30,19 +30,20 @@ function saveClip (text) {
 
 // Функция копирования данных из словаря в буфер обмена по ключу
 function copyDiag(key) {
-    let copyString = switch_info + '\nРезультаты диагностики:\n\n';
 
     // Проверяем, существует ли ключ в словаре
     if (key in diagDict) {
 
         // строка для копирования
+        var copyString = ''
         copyString += diagDict[key] + '\n';
         let rows = copyString.split('\n');
         rows = rows.slice(1);
         copyString = rows.join('\n');
 
     } else {
-
+        // строка для копирования
+        var copyString = switch_info + '\nРезультаты диагностики:\n\n';
          // Перебираем все ключи и значения в словаре
         for (const key in diagDict) {
             if (diagDict.hasOwnProperty(key)) {
