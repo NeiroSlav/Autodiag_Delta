@@ -25,6 +25,7 @@ def main_redirect():
                 switch_log=decview_info['log'],
                 abon_login=gcdb_data.abon_login,
                 anumber=gcdb_data.anumber,
+                phone=gcdb_data.phone,
                 user=gcdb_data.username,
                 group_tickets=gcdb_data.group_tickets,
                 theme=session['theme']

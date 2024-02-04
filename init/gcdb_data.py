@@ -19,6 +19,10 @@ class GcdbData:
         if not self.abon_ip:
             self.abon_ip = request.args.get('local_ip')
 
+        self.phone = request.args.get('phone')
+        if not self.phone:
+            self.phone = 'телефон не указан'
+
         self.ip_list = [self.abon_ip]
         self.mac_list = []
         self.group_tickets = {}

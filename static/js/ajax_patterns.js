@@ -72,7 +72,7 @@ function createTicket(ticket_id, comment) {
             user: user,
             anumber: anumber,
             ticket_id: ticket_id,
-            comment: abon_login + ', ' + comment,
+            comment: abon_login+ ', ' + phone + ', ' + comment ,
         },
         success: function(response){
             close_ticket_menu(response);
