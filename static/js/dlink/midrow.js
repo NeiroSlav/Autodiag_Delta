@@ -181,8 +181,11 @@ function get_util_business(response) {
         bTx['color'] = bRx['color'] = 'Red'
         bTx['text'] = bRx['text'] = 'Ошибка'
     } else {
+        let util_text = 'Трафик на порту   tx: ' + response.util.tx + ' / rx: ' + response.util.tx
+
         bTx['text'] = 'in ' + response.util.tx
         bRx['text'] = 'out ' + response.util.rx
+        bTx['onclick'] = bRx['onclick'] = "saveClip('" + util_text + "');"
     }
 
 
