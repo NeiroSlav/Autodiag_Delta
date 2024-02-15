@@ -2,6 +2,7 @@ import os
 import re
 import subprocess
 import time
+import requests
 from random import randint
 
 
@@ -59,27 +60,44 @@ def fping(ip_address: str) -> bool:
 
 #  ищет открытые порты
 def nmap(ip_address: str) -> dict:
-    command = f"nmap -PN -p 80,8080,90,9090,1080,8000,9000,666,8888,9091,4978 {ip_address}"
+    result = {'ip': ip_address, 'port': None, 'protocol': None}
+    command = f"nmap -Pn --max-retries 1 --min-rate 30 --max-parallelism 20 -T4 " \
+              f"-p 80,8080,90,9090,1080,8000,9000,666,8888,9091,4978 {ip_address}"
+
     answer = subprocess.check_output(command, shell=True)
     answer = str(answer).replace('\\n', '\n')
+    answer = re.search(r'[0-9]+/tcp +open +[a-z]+', answer)  # ищет открытый порт
+    if not answer:  # если порт не найден
+        return result
 
-    port = re.search(r'[0-9]+/tcp +open', answer)  # ищет открытый порт
-    if not port:  # если порт не найден
-        return {'ip': ip_address, 'port': None}
+    result['port'] = answer.group(0).split('/')[0]
 
-    port = port.group(0).split('/')[0]
-    return {'ip': ip_address, 'port': port}
+    try:  # попытка запроса на http, если не удалось - https
+        requests.get(f'https://{ip_address}:{result["port"]}/', timeout=1)
+        result['protocol'] = 'https'
+    except Exception:
+        result['protocol'] = 'http'
+    return result
 
-    # return {'ip': ip_address, 'port': '9090'}
+
+#
 
 
 if __name__ == '__main__':
-    ping = IterPing('109.254.80.74')  # не пингается
-    # ping = IterPing('109.254.80.41')  # пингается
-    print('='*50)
+    pass
+    # result = nmap('192.168.0.1')
+    # print()
+    #
+    # start_time = time.time()
+    # nmap('192.168.0.1')
+    # print("--- %s секунд ---" % (time.time() - start_time))
 
-    for i in range(10):
-        print(ping.ping())
-
-    print('='*50)
-    print(ping.get_result())
+    # ping = IterPing('109.254.80.74')  # не пингается
+    # # ping = IterPing('109.254.80.41')  # пингается
+    # print('='*50)
+    #
+    # for i in range(10):
+    #     print(ping.ping())
+    #
+    # print('='*50)
+    # print(ping.get_result())
