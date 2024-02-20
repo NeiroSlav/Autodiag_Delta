@@ -2,6 +2,7 @@ import os
 import re
 import subprocess
 import time
+from sys import platform
 import requests
 from random import randint
 
@@ -13,7 +14,7 @@ class IterPing:
         self.command = ['fping', '--count=1', '--timeout=150', '--size=1450', ip_address]
         self.result = {'sent': 0, 'lost': 0, 'stats': {}}
 
-    #  пинг утилитой ping по одному пакету
+    #  пинг утилитой fping по одному пакету
     def ping(self) -> dict:
         self.result['sent'] += 1
         try:
@@ -47,8 +48,11 @@ class IterPing:
         return res
 
 
-#  пинг утилитой fping (очень быстрый)
+#  пинг свитча, проверка на доступность
 def fping(ip_address: str) -> bool:
+    if platform == "win32":  # для тестов с винды
+        return True
+
     res = os.system(f"fping -c1 -t500 {ip_address}")
     print('res =', res)
     if res != 0:  # если один пакет не прошёл, пробует ещё два с таймаутом 1сек
@@ -60,6 +64,9 @@ def fping(ip_address: str) -> bool:
 
 #  ищет открытые порты
 def nmap(ip_address: str) -> dict:
+    if platform == "win32":  # для тестов с винды
+        return {'ip': ip_address, 'port': '228', 'protocol': 'http'}
+
     result = {'ip': ip_address, 'port': None, 'protocol': None}
     command = f"nmap -Pn --max-retries 1 --min-rate 30 --max-parallelism 20 -T4 " \
               f"-p 80,8080,90,9090,1080,8000,9000,666,8888,9091,4978 {ip_address}"
