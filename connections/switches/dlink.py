@@ -318,7 +318,7 @@ class Dlink(SwitchMixin):
         result = {'port': 0, 'other': 0, 'error': False}
         self.session.read(timeout=0)
         self.session.push('\nshow igmp_snooping host')
-        answer = self.session.read(string='Entries')
+        answer = self.session.read(string='Entries', timeout=1)
         if not ('Entries' in answer):
             return {'error': True}
 
@@ -356,7 +356,7 @@ class Dlink(SwitchMixin):
     def vlan(self, port: int) -> int:
         self.session.read()
         self.session.push(f'\nshow vlan ports {port}')
-        answer = self.session.read(string=' - ')
+        answer = self.session.read(string=' - ', timeout=0.5)
 
         if not (' - ' in answer):
             return 0
