@@ -7,16 +7,21 @@ from .personal_data import switch_login, switch_password
 
 
 class Telnet:
-    """Отвечает за сессию Telnet;
-       Хранит информацию о типе свитча"""
+    """
+    Отвечает за сессию Telnet
+    При инициализации подключается к ip-адресу
+    Автоматически определяет тип свитча
+    Логинится на свитч, исходя из типа
+    После инициализации можно увеличивать таймаут, если свитч медленный
+    """
 
     _channel = None
     switch_type = ''
     switch_model = ''
     x_timeout = 1
 
-    def __init__(self, gcdb_data):
-        self.switch_ip = gcdb_data.switch_ip
+    def __init__(self, switch_ip):
+        self.switch_ip = switch_ip
         self.username = switch_login
         self.password = switch_password
         self._connect(self.switch_ip)

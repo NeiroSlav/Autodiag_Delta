@@ -31,7 +31,7 @@ def main_redirect():
                 theme=session['theme']
             )
 
-        telnet = Telnet(gcdb_data)  # логин на свитч
+        telnet = Telnet(gcdb_data.switch_ip)  # логин на свитч
         if not telnet.switch_type:  # если тип свитча не определён
             raise DiagError(f'Тип {switch_ip} не определён')
 
