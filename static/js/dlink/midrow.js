@@ -210,10 +210,10 @@ function get_util_business(response) {
     if (response.flood.error) {
         bVlan['color'] = bFlood['color'] = 'Red'
         bVlan['text'] = bFlood['text'] = 'Ошибка'
-    } else if (response.flood_status) {
+    } else if (response.flood.flood_status) {
         bVlan['color'] = bFlood['color'] = 'Red'
         bVlan['text'] = 'флуд в ' + response.vlan + ':'
-        bFlood['text'] = response.flood_rx + ' frame'
+        bFlood['text'] = response.flood.flood_rx + ' frame'
     } else {
         bVlan['text'] = 'Vid: ' + response.vlan
         bFlood['text'] = 'флуда нет'
