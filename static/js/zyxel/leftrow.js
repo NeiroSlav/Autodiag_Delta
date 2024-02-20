@@ -33,7 +33,7 @@ function get_port_business(response) {
         }
 
         diagData += gap + response.enabled + '\n' + gap + response.port + '\n';
-        diagData += gap + response.uptime + '\n' + gap + '' + response.errors + '\n';
+        diagData += gap + 'Аптайм: ' + response.uptime + '\n' + gap + 'Ошибки: ' + response.errors + '\n';
         updateDiagDict('port', diagData)
 
 
