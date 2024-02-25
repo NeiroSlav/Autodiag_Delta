@@ -64,7 +64,7 @@ def main_redirect():
         # except:
         #     pass
         # # если тип свитча определён, открыть его страницу
-        # return redirect(f'/{telnet.switch_type}/{token}')
+        return redirect(f'/{telnet.switch_type}/{token}')
 
     # рендер страницы с ошибкой
     except Exception as ex:
