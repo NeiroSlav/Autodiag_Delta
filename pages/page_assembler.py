@@ -7,6 +7,7 @@ from init import *
 
 dhcp_unity = DhcpUnity()
 
+
 # вход на свитч, перенаправление на страницу свитча
 @app.route("/", methods=["GET"])
 def main_redirect():

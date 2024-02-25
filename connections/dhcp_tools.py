@@ -59,7 +59,7 @@ class DhcpUnity:
         try:
             last_signs = sorted(last_signs, key=lambda x: self.get_sign_t(x))
             latest_sign = last_signs[-1]
-        except KeyError:
+        except IndexError:
             return ''
 
         if 'Not equal port' in latest_sign:
@@ -83,5 +83,5 @@ if __name__ == '__main__':
 
     dhcp_unity = DhcpUnity()
     while True:
-        print('\n', dhcp_unity.check_wrong_flat('9c:a2:f4:37:67:33'))
+        print('\n', dhcp_unity.check_wrong_flat('30:b5:c2:2c:63:f9'))
         input()
