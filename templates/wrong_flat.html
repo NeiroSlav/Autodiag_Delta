@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="/static/css/themes/{{theme}}.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/buttons.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/head_buttons.css">
+
+    <title>Проверьте флаты!</title>
+    <script src="/static/js/buttons.js"></script>
+    <script src="/static/js/diag_buf_copy.js"></script>
+
+    <link rel="shortcat icon" href="/static/img/gear_icon.png" type="image/x-icon"/>
+
+    <script>
+        var token = "{{ token }}";
+        var still_active_url = "/still_active/";
+        var get_open_port_url = "/get_open_port/";
+    </script>
+
+
+</head>
+<body>
+
+{% block imports %}
+{% endblock %}
+
+<div class="topMargin"></div>
+<div class="topMargin"></div>
+<div class="topMargin"></div>
+
+
+<div class="mainFrameSub"
+     style="
+        min-width: 430px;
+        max-width: 430px;
+        margin: 0 auto 0 auto;
+        padding: 28px 4px 0 0;
+        ">
+
+        <div class="diagLongBlock" style="margin: 0 auto 0 auto; width: 333px; display: flex;">
+            <div class="diagMiniBlock">
+                <button class="diagButtonRed" style="width: 333px; height: 40px; font-size: 18px;"
+                        onclick="">
+                    Внимание, проверьте флаты!
+                </button>
+
+                <button class="diagButton" style="width: 333px; height: 40px; font-size: 18px;"
+                        onclick="">
+                    {{flat_info}}
+                </button>
+
+                <button class="diagButtonGreen" style="width: 164px; height: 60px; font-size: 18px; margin-right: 0"
+                        onclick="location.href='https://gcdbviewer.matrixhome.net/usersearch.php?anumber=' + '{{ anumber }}';">
+                    В профиль абонента
+                </button>
+
+                <button class="diagButtonBlue" style="width: 164px; height: 60px; font-size: 18px; margin-left: 1px;"
+                        onclick="location.href='{{ continue_link }}';">
+                    Всё равно продолжить
+                </button>
+
+            </div>
+            <div class="diagMiniBlock"></div>
+        </div>
+
+</div>
+
+<div class="topMargin"></div>
+
+
+</body>
+</html>

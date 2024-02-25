@@ -59,13 +59,15 @@ class DhcpUnity:
         try:
             last_signs = sorted(last_signs, key=lambda x: self.get_sign_t(x))
             latest_sign = last_signs[-1]
-        except:
+        except KeyError:
             return ''
 
-        # ищет паттерны несовпадения свитча/порта в ответе
-        for info in ('Not equal port', 'Not equal switch'):
-            if info in latest_sign:
-                return info
+        if 'Not equal port' in latest_sign:
+            return 'Указан неправильный порт'
+
+        if 'Not equal switch' in latest_sign:
+            return 'Указан неправильный свитч'
+
         return ''
 
     # сжимает время из записи (04:15:13.141 -> 041513141)

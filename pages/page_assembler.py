@@ -1,10 +1,11 @@
 # import token
 
-from connections import _switch
+from connections import _switch, DhcpUnity
 from connections import Telnet, fping, nmap
 from flask import request, redirect
 from init import *
 
+dhcp_unity = DhcpUnity()
 
 # вход на свитч, перенаправление на страницу свитча
 @app.route("/", methods=["GET"])
@@ -49,6 +50,18 @@ def main_redirect():
         token.gcdb_data = gcdb_data
         token.telnet = telnet
 
+        try:  # проверяет, есть ли неправильные флаты
+            wrong_flats = dhcp_unity.check_wrong_flat(gcdb_data.mac_list[0])
+            if wrong_flats:
+                return render_template(
+                    'wrong_flat.html',
+                    continue_link=f'/{telnet.switch_type}/{token}',
+                    flat_info=wrong_flats,
+                    anumber=gcdb_data.anumber,
+                    theme='dark',
+                )
+        except:
+            pass
         # если тип свитча определён, открыть его страницу
         return redirect(f'/{telnet.switch_type}/{token}')
 
