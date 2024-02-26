@@ -2,6 +2,7 @@ from pprint import pprint
 
 from paramiko import SSHClient, AutoAddPolicy
 import time
+import re
 
 
 class DhcpServer:
@@ -23,21 +24,19 @@ class DhcpServer:
         except:
             return False
         self.channel = client.invoke_shell()
-        time.sleep(0.3)
+        time.sleep(1)
         self.channel.recv(10000)
         return True
 
     # отправляет запрос на поиск мака в логах
     def start_mac_search(self, mac: str):
-        self.channel.send(f'm {mac}\n'.encode())
+        self.channel.send(f'm {mac} | tail -1\n'.encode())
         self.channel.recv(1000)
 
     # если записи есть, берёт последнюю
     def get_answer(self) -> str:
         answer = self.channel.recv(100000).decode('ascii')
-        answer = answer.split('\r')
-        if len(answer) > 3:
-            return answer[-2]
+        return answer
 
 
 class DhcpUnity:
@@ -46,17 +45,18 @@ class DhcpUnity:
         self.siplyj = DhcpServer('siplyj.dec.net.ua')
         self.smash = DhcpServer('smash.dec.net.ua')
 
+    # проверка самой поздней записи о маке на серверах
     def check_wrong_flat(self, mac) -> str:
         for server in (self.syava, self.smash, self.siplyj):
             server.start_mac_search(mac)
-        time.sleep(0.1)
+        time.sleep(0.3)
         last_signs = []
         for server in (self.syava, self.smash, self.siplyj):
-            last_sign = server.get_answer()
-            if last_sign:
-                last_signs.append(last_sign)
+            last_server_sign = server.get_answer()
+            if last_server_sign:
+                last_signs.append(last_server_sign)
 
-        try:
+        try:  # сортирует записи серверов по времени, выбирает самую позднюю
             last_signs = sorted(last_signs, key=lambda x: self.get_sign_t(x))
             latest_sign = last_signs[-1]
         except IndexError:
@@ -64,24 +64,27 @@ class DhcpUnity:
 
         if 'Not equal port' in latest_sign:
             return 'Указан неправильный порт'
-
         if 'Not equal switch' in latest_sign:
             return 'Указан неправильный свитч'
-
         return ''
 
     # сжимает время из записи (04:15:13.141 -> 041513141)
     @staticmethod
     def get_sign_t(sign: str) -> int:
-        sign = sign.split(' ')[2].strip(',')
-        sign = sign.replace(':', '')
-        sign = sign.replace('.', '')
-        return int(sign)
+        t = re.search(r'\d\d:\d\d:\d\d\.\d\d\d', sign)
+        if not t:  # если в записи не было времени
+            return 0
+
+        time_info = t.group().replace(':', '')
+        time_info = time_info.replace('.', '')
+        return int(time_info)
 
 
 if __name__ == '__main__':
 
     dhcp_unity = DhcpUnity()
     while True:
-        print('\n', dhcp_unity.check_wrong_flat('30:b5:c2:2c:63:f9'))
-        input()
+        mac = input()
+        wrong_flat = dhcp_unity.check_wrong_flat(mac)
+        print(wrong_flat if wrong_flat else 'ok')
+
