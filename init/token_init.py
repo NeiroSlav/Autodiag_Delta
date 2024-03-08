@@ -33,6 +33,7 @@ class Token:
         self.gcdb_data = None
         self.telnet = None
         self.switch = None
+        self.air = None
 
         Token._dict[token] = self
         logging.info(f'{token} token created')

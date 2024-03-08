@@ -55,3 +55,9 @@ class GcdbData:
                 self.ip_list.append(ip)
     # def __del__(self):
     #     print('gcdb_data object deleted')
+
+
+class Air:
+    def __init__(self):
+        self.base = None
+        self.station = None

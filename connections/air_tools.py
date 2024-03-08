@@ -26,7 +26,7 @@ class Ubiquiti:
         except:
             return False
         self.channel = client.invoke_shell()
-        time.sleep(0.1)
+        time.sleep(0.5)
         self.channel.recv(1000)
         return True
 
@@ -52,19 +52,29 @@ class Ubiquiti:
     def get_local_link(self) -> dict:
         result = {
             'lan_speed': self._get_lan_speed(),
-            'eth0': self._get_eth_link('eth0'),
-            'eth1': self._get_eth_link('eth1'),
-            'wifi0': self._get_eth_link('wifi0'),
+            'interfaces': {
+                'eth0': self._get_eth_link('eth0'),
+                'eth1': self._get_eth_link('eth1'),
+                'wifi': self._get_eth_link('wifi0'),
+            }
         }
         return result
 
     # возвращает данные о маках устройств за станцией
-    def get_local_mac(self) -> dict:
+    def get_local_mac(self, macs) -> dict:
+        if not macs:
+            macs = []
+
         answer = self._exec_command('brctl showmacs br0\n')
         answer = answer.replace('\t', ' ')
         mac_list = re.findall(r'1 [a-z0-9:]+ +no +[0-9]', answer)
         mac_list = list(map(lambda x: x.split()[1], mac_list))
-        return {'mac_list': mac_list}
+
+        result = {}
+        for mac in mac_list:
+            result[mac] = (mac in macs)
+
+        return result
 
     # ищет во всей информации данные из wstalist
     def _find_base_wifi_info(self, st_ip: str) -> json:
@@ -107,7 +117,7 @@ class Ubiquiti:
         answer = self._exec_command('mca-status\n')
         answer = re.findall(r'lanSpeed=[0-9A-Za-z-]+', answer)
         try:
-            return answer[0].split('=')[-1]
+            return answer[0].split('=')[-1].replace('bps', '')
         except IndexError:
             return ''
 
@@ -137,13 +147,15 @@ if __name__ == '__main__':
     # station_ip = '172.16.2.217'
 
     ubqBase = Ubiquiti(base_ip)
+    ubqStation = Ubiquiti(station_ip)
+    print('Инициализировано\n\n')
+
     if ubqBase.connected:
         print('\nИНФОРМАЦИЯ О ПОДКЛЮЧЕНИИ С БАЗЫ')
         pprint(ubqBase.get_wifi_info(station_ip))
     else:
         print('ошибка подключения к базе')
 
-    ubqStation = Ubiquiti(station_ip)
     if ubqStation.connected:
         print('\nИНФОРМАЦИЯ О СЕТИ НА СТАНЦИИ')
         pprint(ubqStation.get_local_link())

@@ -1,11 +1,8 @@
 # import token
-
-from connections import _switch, DhcpUnity
+from connections import _switch
 from connections import Telnet, fping, nmap
 from flask import request, redirect
 from init import *
-
-dhcp_unity = DhcpUnity()
 
 
 # вход на свитч, перенаправление на страницу свитча
@@ -78,7 +75,7 @@ def switch_page(switch_type, token_number):
 
     try:
         if not token:
-            render_error(f'Токен {token_number} удалён')
+            return render_error(f'Токен {token_number} удалён')
         telnet = token.telnet
         gcdb_data = token.gcdb_data
         gcdb_data.update_data()
@@ -112,9 +109,6 @@ def switch_page(switch_type, token_number):
     except EOFError:  # если сессия telnet была разорвана
         token.delete()
         return render_error('Сессия Telnet разорвана')
-
-    except KeyError:  # если не нашлось токена
-        return render_error(f'Токен {token_number} удалён')
 
     except Exception as ex:
         if token:

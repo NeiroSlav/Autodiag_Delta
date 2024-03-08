@@ -3,6 +3,7 @@ import logging
 import os
 from flask import Flask, render_template, session
 from .user_settings import UserSettings
+from connections import DhcpUnity
 
 # инициализация лога
 date_time = str(datetime.datetime.now()).split('.')[0]
@@ -22,6 +23,7 @@ flask_log = logging.getLogger('werkzeug')  # перенаправление ло
 flask_log.disabled = True  # и выключение его, чтобы не видеть get-запросы
 
 user_sets = UserSettings()
+dhcp_unity = DhcpUnity()
 
 
 # собственный класс исключений
@@ -33,7 +35,11 @@ class DiagError(Exception):
 
 # функция отрисовки ошибки
 def render_error(err_text):
+    theme = session.get('theme')
+    if not theme:
+        theme = 'dark'
     return render_template(
         'error.html',
         title='Ошибка', topinfo=err_text,
-        theme=session['theme'])
+        theme=theme
+    )

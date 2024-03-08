@@ -10,6 +10,15 @@ def test_theme(theme):
     )
 
 
+@app.route("/test/air")
+def test_air():
+    return render_template(
+        '/air.html',
+        theme='dark',
+        topinfo='air_test_top',
+    )
+
+
 @app.route("/test/ping")
 def test_ping():
     print('pinged')

@@ -4,6 +4,7 @@ from .switches.bdcom import *
 from .switches.foxgate import *
 from .switches.raisecom import *
 from .switches.bdcom_fe import *
+from .air_tools import Ubiquiti
 from .dhcp_tools import DhcpUnity
 
 from .ip_tools import fping, nmap, IterPing

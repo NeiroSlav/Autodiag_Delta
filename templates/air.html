@@ -1,0 +1,39 @@
+{% extends 'switch.html' %}
+
+{% block imports %}
+
+    <script src="{{ url_for('static', filename='js/air/ajax_init.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/air/leftrow.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/air/rightrow.js') }}"></script>
+    <script>
+        var base_ip = '{{ip_list[0]}}'
+        var station_ip = '{{ip_list[1]}}'
+    </script>
+
+{% endblock %}
+
+{% block leftrow %}
+        <div class="diagMiniBlock" id="baseInfo">
+            <button class="diagButton" style="width: 236px; height: 316px;"></button>
+        </div>
+        <div class="diagMiniBlock"></div>
+{% endblock %}
+
+{% block rightrow %}
+    <div class="diagLongBlock" style="margin: 0 auto 0 0;">
+
+        <div style="margin-bottom: 40px;"></div>
+
+        <div class="diagMiniBlock">
+            <button class="diagButton"
+                    style="width: 236px; height: 40px; margin-top: 0; font-size: 18px;">
+                Подключение AIR
+            </button>
+        </div>
+
+        <div class="diagMiniBlock" id="stationInfo">
+            <button class="diagButton" style="width: 236px; height: 316px;"></button>
+        </div>
+        <div class="diagMiniBlock"></div>
+    </div>
+{% endblock %}
