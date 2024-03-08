@@ -30,6 +30,9 @@ class Ubiquiti:
         self.channel.recv(1000)
         return True
 
+    def close(self):
+        self.channel.close()
+
     # выполняет команду на ubiquiti, возвращает ответ
     def _exec_command(self, command: str) -> str:
         self.channel.send(command.encode())

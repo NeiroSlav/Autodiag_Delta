@@ -77,6 +77,13 @@ class Token:
         except Exception as ex:
             logging.error(f'can\'t close telnet connection {self.number}: \n{ex}')
 
+        if self.air:
+            try:
+                self.air.base.close()
+                self.air.station.close()
+            except Exception as ex:
+                logging.error(f'can\'t close air ssh connection {self.number}: \n{ex}')
+
         del Token._dict[self.number]
 
 
