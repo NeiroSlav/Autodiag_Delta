@@ -59,11 +59,24 @@
         <div style="margin-bottom: 40px;"></div>
 
         <div class="diagMiniBlock">
-            <button class="diagButton"
-                    style="width: 236px; height: 40px; margin-top: 0; font-size: 18px;"
-                    onclick="saveClip('{{ switchip }}')">
-                {{ topinfo }}
-            </button>
+            {% if True %}
+                <button class="diagButton"
+                        style="width: 236px; height: 40px; margin-top: 0; font-size: 18px;"
+                        onclick="saveClip('{{ switchip }}')">
+                    {{ topinfo }}
+                </button>
+            {% else %}
+                <button class="head-button matrix-img"
+                        title='Профиль&#10;Абонента'
+                        style="float: right;"
+                        onclick="openInNewTab('http://localhost:8000/air_init/{{token}}/?base_ip=&station_ip=');"
+                ></button>
+                <button class="diagButton"
+                        style="width: 188px; height: 40px; margin-top: 0; font-size: 18px;"
+                        onclick="saveClip('{{ switchip }}')">
+                    {{ topinfo }}
+                </button>
+            {% endif %}
         </div>
 
         <div class="diagMiniBlock" id="logInfo">

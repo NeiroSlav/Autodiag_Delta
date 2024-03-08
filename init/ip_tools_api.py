@@ -1,12 +1,9 @@
 import json
-import time
-from pprint import pprint
 
 from connections import nmap, IterPing
 from .app_init import app
 from .token_init import Token, jsonify
 from flask import request
-from random import randint
 
 
 # обработчик для проверки уд
@@ -39,7 +36,6 @@ def iter_ping(token):
 
     # перебирает словарь со статусами
     for ip, status in ping_status.items():
-        print(ip, status)
 
         if status == 'ping':  # отправит пинг на объект
             if ip not in token.abon_ping_dict:
