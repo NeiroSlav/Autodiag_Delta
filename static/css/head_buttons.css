@@ -53,3 +53,11 @@
     background-repeat: no-repeat;
     background-size: 32px;
 }
+
+.air-img {
+    background: var(--act-color) url('/static/img/air.png');
+    background-position: 1px 1px;
+    float: left;
+    background-repeat: no-repeat;
+    background-size: 32px;
+}

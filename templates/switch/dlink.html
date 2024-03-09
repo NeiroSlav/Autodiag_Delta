@@ -66,16 +66,16 @@
                     {{ topinfo }}
                 </button>
             {% else %}
-                <button class="head-button matrix-img"
+                <button class="diagButton"
+                        style="width: 191px; height: 40px; margin-top: 0; font-size: 18px;"
+                        onclick="saveClip('{{ switchip }}')">
+                    {{ topinfo }}
+                </button>
+                <button class="head-button air-img"
                         title='Профиль&#10;Абонента'
                         style="float: right;"
                         onclick="openInNewTab('http://localhost:8000/air_init/{{token}}/?base_ip=&station_ip=');"
                 ></button>
-                <button class="diagButton"
-                        style="width: 188px; height: 40px; margin-top: 0; font-size: 18px;"
-                        onclick="saveClip('{{ switchip }}')">
-                    {{ topinfo }}
-                </button>
             {% endif %}
         </div>
 
