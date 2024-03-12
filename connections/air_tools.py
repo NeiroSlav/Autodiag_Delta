@@ -3,7 +3,7 @@ import json
 from pprint import pprint
 from datetime import datetime, timedelta
 import re
-from switches.utils.timing import plural_days
+from .switches.utils.timing import plural_days
 
 from paramiko import SSHClient, AutoAddPolicy
 
