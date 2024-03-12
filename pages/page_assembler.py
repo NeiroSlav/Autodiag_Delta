@@ -97,6 +97,7 @@ def switch_page(switch_type, token_number):
         return render_template(  # рендер страницы диагностики
             f'/switch/{switch_type}.html',
             anumber=gcdb_data.anumber,
+            ctype=gcdb_data.ctype,
             switchip=gcdb_data.switch_ip,
             ip_list=gcdb_data.ip_list,
             switchtype=f'{switch_type.upper()} {token.switch.model}',

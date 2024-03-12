@@ -31,8 +31,7 @@
 
         <div class="diagMiniBlock">
             <button class="diagButton"
-                    style="width: 236px; height: 40px; margin-top: 0; font-size: 18px;
-">
+                    style="width: 236px; height: 40px; margin-top: 0; font-size: 18px;">
                 {{ switchtype }}
             </button>
         </div>
@@ -59,13 +58,10 @@
         <div style="margin-bottom: 40px;"></div>
 
         <div class="diagMiniBlock">
-            {% if True %}
-                <button class="diagButton"
-                        style="width: 236px; height: 40px; margin-top: 0; font-size: 18px;"
-                        onclick="saveClip('{{ switchip }}')">
-                    {{ topinfo }}
-                </button>
-            {% else %}
+            {% if ctype == 'air' %}
+                <script src="/static/js/air/air_init.js"></script>
+                <link rel="stylesheet" type="text/css" href="/static/css/air_input.css">
+
                 <button class="diagButton"
                         style="width: 191px; height: 40px; margin-top: 0; font-size: 18px;"
                         onclick="saveClip('{{ switchip }}')">
@@ -74,8 +70,15 @@
                 <button class="head-button air-img"
                         title='Профиль&#10;Абонента'
                         style="float: right;"
-                        onclick="openInNewTab('http://localhost:8000/air_init/{{token}}/?base_ip=&station_ip=');"
+                        onclick="air_prompt_show();"
                 ></button>
+
+            {% else %}
+                <button class="diagButton"
+                        style="width: 236px; height: 40px; margin-top: 0; font-size: 18px;"
+                        onclick="saveClip('{{ switchip }}')">
+                    {{ topinfo }}
+                </button>
             {% endif %}
         </div>
 
@@ -85,4 +88,20 @@
         </div>
         <div class="diagMiniBlock"></div>
     </div>
+
+    {% if ctype == 'air' %}
+        <div id="myPrompt" class="airInputOverlay">
+            <div class="airInputWindow">
+                <button class="diagButton"
+                        style="width: 255px; height: 40px; margin: 20px 0 0 20px; font-size: 18px;">
+                    Ввод IP-адресов AIR:
+                </button>
+                <button class="head-button close-img" style="float: right;" onclick="air_prompt_close()"></button>
+
+                <input class="airInputField" autocomplete="off" id="baseIp" placeholder="ip базы">
+                <input class="airInputField" autocomplete="off" id="stationIp" style="margin-left: 9px" placeholder="ip станции">
+                <button class="head-button confirm-img" style="float: right;" onclick="open_air_page()"></button>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
