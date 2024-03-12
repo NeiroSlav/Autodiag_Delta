@@ -3,6 +3,7 @@ import json
 from pprint import pprint
 from datetime import datetime, timedelta
 import re
+from switches.utils.timing import plural_days
 
 from paramiko import SSHClient, AutoAddPolicy
 
@@ -90,7 +91,10 @@ class Ubiquiti:
 
         for st_info in all_info:
             if st_info['lastip'] == st_ip:
-                return st_info['remote'] | {'stats': st_info['stats']}
+                remote = st_info.get('remote')
+                if not remote:
+                    remote = {'hostname': 'нет данных', 'noisefloor': 0, 'signal': 0, 'uptime': 0}
+                return remote | {'stats': st_info['stats']}
 
     # структурирует сырые данные в нужный вид
     @staticmethod
@@ -111,7 +115,8 @@ class Ubiquiti:
         # приведение uptime к читаемому виду
         uptime_sec = timedelta(seconds=st_info['uptime'])
         t = datetime(1, 1, 1) + uptime_sec
-        result['uptime'] = "%d дней %d:%d:%d" % (t.day-1, t.hour, t.minute, t.second)
+        day_word = plural_days(t.day-1)
+        result['uptime'] = "%d %s %02d:%02d:%02d" % (t.day-1, day_word, t.hour, t.minute, t.second)
 
         return result
 
@@ -162,6 +167,6 @@ if __name__ == '__main__':
     if ubqStation.connected:
         print('\nИНФОРМАЦИЯ О СЕТИ НА СТАНЦИИ')
         pprint(ubqStation.get_local_link())
-        pprint(ubqStation.get_local_mac())
+        pprint(ubqStation.get_local_mac([]))
     else:
         print('ошибка подключения к станции')
