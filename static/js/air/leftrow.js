@@ -14,6 +14,7 @@ function get_base_business(response) {
     var bName = setB() // кнопка с именем базы
     bName['text'] = response.hostname
     bName['style'] = 'width: 236px; margin-bottom: 32px;'
+    bName['onclick'] = "saveClip('"+response.hostname+"');"
 
     if (response.error) {
         bInfo['color'] = bIp['color'] = bName['color'] = 'Red'
@@ -25,6 +26,14 @@ function get_base_business(response) {
     } else {
         var topButtons = getB(bInfo) + getB(bIp) + getB(bName)
 
+        var diagData = '! Сигнал плохой:\n'
+        if (response.ok) {
+            diagData = '+ Сигнал хороший:\n'
+        }
+        diagData += gap + 'ур. шума: ' + response.noise + '\n'
+        diagData += gap + 'ур. сигнал: ' + response.signal + '\n'
+        updateDiagDict('signal', diagData)
+
         var bNoise = setB()
         bNoise['text'] = 'Уровень шума: ' + response.noise
         bNoise['style'] = 'width: 236px;'
@@ -32,6 +41,7 @@ function get_base_business(response) {
         var bSignal = setB()
         bSignal['text'] = 'Сила сигнала: ' + response.signal
         bSignal['style'] = 'width: 236px; margin-bottom: 32px;'
+        bNoise['onclick'] = bSignal['onclick'] = "copyDiag('signal')"
 
         if (response.ok) {
             bNoise['color'] = bSignal['color'] = 'Green'
@@ -39,6 +49,7 @@ function get_base_business(response) {
             bNoise['color'] = bSignal['color'] = 'Red'
         }
         var signalButtons = getB(bNoise) + getB(bSignal)
+
 
         var bPktInfo = setB()
         bPktInfo['style'] = 'width: 236px;'
@@ -50,11 +61,17 @@ function get_base_business(response) {
         bTx['text'] = 'out: ' + response.pkt_tx + ' Pkt/s'
         pktButtons = getB(bPktInfo) + getB(bRx) + getB(bTx)
 
+        var diagData = 'Время соединения:\n'
+        diagData += gap + response.uptime + '\n'
+        updateDiagDict('uptime', diagData)
+
         var bUptimeText = setB()
         var bUptime = setB()
         bUptimeText['text'] = 'Время соединения:'
         bUptime['text'] = response.uptime
         bUptime['style'] = bUptimeText['style'] = 'width: 236px;'
+
+        bUptimeText['onclick'] = bUptime['onclick'] = "copyDiag('uptime')"
         uptimeButtons = getB(bUptimeText) + getB(bUptime)
 
     }

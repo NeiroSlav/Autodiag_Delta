@@ -26,6 +26,22 @@ function get_station_business (response) {
         var topButtons = getB(bInfo) + getB(bIp)
 
 
+        var diagData = '! Маки за антенной не изучены\n'
+        if (response.mac) {
+            diagData = '+ Мак за антенной изучился:\n'
+        }
+        for (var key in response.mac) {
+            diagData += gap + key;
+
+            if (response.mac[key]) {
+                diagData += ' прописан\n';
+            } else {
+                diagData += ' не прописан\n';
+            }
+        }
+        updateDiagDict('mac', diagData)
+
+        var diagData = 'Линки за антенной:\n'
         var bn_ = setB()
         var bn = setB()
         bn['style'] = bn_['style'] = 'width: 116px;'
@@ -33,6 +49,8 @@ function get_station_business (response) {
         bn['text'] = response.link.lan_speed
         var all_links = getB(bn_) + getB(bn)
         for (var key in response.link.interfaces) {
+            console.log('test lan ' + key)
+            diagData += gap + key + ': ' + response.link.interfaces[key].link + '\n'
             bn_['text'] = key
             bn['text'] = 'link ' + response.link.interfaces[key].link
             if (response.link.interfaces[key].link == 'up') {
@@ -40,8 +58,10 @@ function get_station_business (response) {
             } else {
                 bn['color'] = 'Red'
             }
+            bn['onclick'] = "copyDiag('lan')"
             all_links = all_links + getB(bn_) + getB(bn)
         }
+        updateDiagDict('lan', diagData)
 
 
         bn['style'] = 'width: 176px;'

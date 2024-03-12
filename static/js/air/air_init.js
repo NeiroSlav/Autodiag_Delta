@@ -18,7 +18,7 @@ function open_air_page() {
     var base_ip = document.getElementById('baseIp').value
     var station_ip = document.getElementById('stationIp').value
 
-    openInNewTab('http://adiag.entele.net:8000/air_init/' + token +
+    openInNewTab('/air_init/' + token +
                  '?base_ip=' + base_ip +
                  '&station_ip=' + station_ip);
 }
