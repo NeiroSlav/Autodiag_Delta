@@ -7,12 +7,10 @@ function get_port_business(response) {
     b1['id'] = 'mainButton'
 
     var b2 = setB() // кнопка "100M/F"
-    var b6 = setB() // кнопка "Ошибки"
 
 
     b2['style'] = 'width: 176px;'
-    b6['style'] = 'width: 176px; margin-left: 62px;'
-    b2['onclick'] = b6['onclick'] = "copyDiag('port')"
+    b2['onclick'] = "copyDiag('port')"
 
 
     if (response.error) {
@@ -26,12 +24,11 @@ function get_port_business(response) {
             diagData = '+ Состояние порта:\n'
         }
 
-        diagData += gap + response.port + '\n' + gap + 'ошибки: ' + response.errors + '\n';
+        diagData += gap + response.port + '\n'
         updateDiagDict('port', diagData)
 
 
         b2['text'] = response.port
-        b6['text'] = 'Ошибки: ' + response.errors
 
         if (response.ok) {
             b1['color'] = 'Green'
@@ -40,7 +37,7 @@ function get_port_business(response) {
         }
     }
 
-    return getB(b1) + getB(b2) + getB(b6);
+    return getB(b1) + getB(b2);
 }
 
 

@@ -22,7 +22,7 @@ class Bdcom(SwitchMixin):
 
     # диагностика порта, ошибок, и аптайма
     def port(self, port: int, pon: int) -> dict:
-        result = {'port': 'Down', 'errors': '0',
+        result = {'port': 'Down',
                   'ok': True, 'error': False}
 
         command = f'\nsh interface epon 0/{port}:{pon}'
@@ -42,13 +42,6 @@ class Bdcom(SwitchMixin):
             if self._find(elem[0], answer):
                 result['port'] = self._finded.replace(',', '').replace('is', 'Link')
                 result['ok'] = elem[1]
-
-        # поиск ошибок
-        if self._find(r'[0-9]+ error', answer):
-            port_errors = self._finded.split(' ')[0]
-            if int(port_errors):
-                result['ok'] = False
-            result['errors'] = port_errors
 
         return result
 
