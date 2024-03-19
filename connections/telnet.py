@@ -139,10 +139,16 @@ class Telnet:
 
     def _bdcom_login(self):
         self.push(self.username)
+        self.read(5, 'ssword')
         self.push(self.password)
-        self.push('admin')
-        self.push('GfhfljrC')
-        answer = self.read(2, '-').replace("'b'", "")
+        answer = self.read(5, 'elcome')
+
+        if 'elcome' not in answer:
+            self.push('admin')
+            self.read(5, 'ssword')
+            self.push('GfhfljrC')
+
+        answer += self.read(2, '-')
         if not ('-' in answer):
             return False
         switch_model = re.search(r'BDCOM [A-Z0-9-]+', answer)
