@@ -21,15 +21,23 @@ class BdcomFE(SwitchMixin):
 
     # диагностика порта, ошибок, и аптайма
     def port(self, port: int) -> dict:
+        time.sleep(0.5)
         result = {'port': 'Down', 'errors': '0',
                   'ok': True, 'error': False}
 
-        command = f'\nsh int fastEthernet 0/{port}'
-        self.session.read()
-        self.session.push(command)
-        self.session.push('\nn')
+        commands = [f'\n  sh int fastEthernet 0/{port}\n',
+                    f'\n  sh int gigaEthernet 0/{port}\n']
 
-        answer = self.session.read(timeout=2, string='Received')
+        # пробует разные команды для проверки порта
+        for command in commands:
+            self.session.read()
+            self.session.push(command)
+            answer = self.session.read(timeout=5, string='Received')
+            if 'invalid' not in answer and 'nknown' not in answer:
+                break
+        else:  # если ни одна команда не сработала
+            return {'error': True}
+
         if not ('Received' in answer):
             return {'error': True}
 
@@ -53,15 +61,19 @@ class BdcomFE(SwitchMixin):
 
     # поиск мака
     def mac(self, port: int, macs: list) -> dict:
+        time.sleep(0.5)
         result = {'mac': {}, 'ok': False, 'error': False}
-        command = f'\nsh mac address-table interface f0/{port}'
+        commands = [f'\n sh mac address-table interface f0/{port}',
+                    f'\n sh mac address-table interface gigaEthernet 0/{port}']
 
-        self.session.read()
-        self.session.push(command)
-        answer = self.session.read(timeout=0.5, string='#')
-
-        # если ошибка при вводе команды
-        if 'invalid' in answer:
+        # пробует разные команды для поиска мака
+        for command in commands:
+            self.session.read()
+            self.session.push(command)
+            answer = self.session.read(timeout=5, string='#')
+            if 'invalid' not in answer and 'nknown' not in answer:
+                break
+        else:  # если ни одна команда не сработала
             return {'error': True}
 
         # если таблица маков пустая
