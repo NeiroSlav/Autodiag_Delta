@@ -24,7 +24,9 @@ class GcdbData:
         if not self.phone:
             self.phone = 'телефон не указан'
 
-        self.ip_list = [self.abon_ip]
+        self.ip_list = []
+        if self.abon_ip:
+            self.ip_list.append(self.abon_ip)
         self.mac_list = []
         self.group_tickets = {}
 
