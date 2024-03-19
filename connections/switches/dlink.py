@@ -23,7 +23,7 @@ class Dlink(SwitchMixin):
         result = {'enabled': 'Enabled', 'port': '', 'ok': True, 'error': False}
         self.session.read(timeout=0)
         self.session.push(f'\nshow ports {port} ')
-        answer = self.session.read(string='Speed', timeout=1)
+        answer = self.session.read(string='Speed', timeout=2)
         self.session.push('q')
 
         if self._find(r'[0-9][ ]+Disabled[ ]+', answer):
@@ -114,10 +114,10 @@ class Dlink(SwitchMixin):
         result = {'rx': {}, 'tx': {}, 'ok': True, 'ok_tx': True, 'error': False}
         self.session.read()
         self.session.push(f'\nshow error ports {port}')
-        answer = self.session.read(string='RX Frames', timeout=1)
+        answer = self.session.read(string='Collision', timeout=1)
         self.session.push('\nq', read=True)
 
-        if not ('RX Frames' in answer):
+        if not ('Collision' in answer):
             return {'error': True}
 
         err_patterns = {'crc': r'CRC Error[ ]+[0-9-]+',
@@ -154,6 +154,10 @@ class Dlink(SwitchMixin):
         self.session.push(f'cable_diag ports {port}\n')
         answer = self.session.read(timeout=2, string='Result')
         self.session.push('q\n')
+
+        if 'fiber' in answer.lower():
+            result['cable'] = ['оптический']
+            return result
 
         if self._findall(r'Pair[A-Za-z0-9 ]+M', answer):
             pairs = self._finded
@@ -275,9 +279,9 @@ class Dlink(SwitchMixin):
             tx = int(tx) / 128
 
             # если трафик больше мбита, переводит в них
-            value = ' KB/s'
+            value = 'KB/s'
             if tx > 1024 or rx > 1024:
-                value = ' MB/s'
+                value = 'MB/s'
                 rx, tx = rx/1024, tx/1024
 
             result['rx'] = f'{int(rx)} {value}'
@@ -289,7 +293,7 @@ class Dlink(SwitchMixin):
     def flood(self) -> dict:
         self.session.read(timeout=0)
         self.session.push('\nshow util ports')
-        answer = self.session.read(string='RX', timeout=0.3)
+        answer = self.session.read(string='RX', timeout=3)
         self.session.push('q')
         if not ('RX' in answer):
             return {'error': True}
@@ -340,7 +344,7 @@ class Dlink(SwitchMixin):
         self.session.read()
         self.session.push('\nshow address_binding ports')
         self.session.push('nnnn')
-        answer = self.session.read(string='ARP', timeout=0.3)
+        answer = self.session.read(string='ARP', timeout=2)
         if not ('ARP' in answer):
             return {'error': True}
 
@@ -356,7 +360,7 @@ class Dlink(SwitchMixin):
     def vlan(self, port: int) -> int:
         self.session.read()
         self.session.push(f'\nshow vlan ports {port}')
-        answer = self.session.read(string=' - ', timeout=0.5)
+        answer = self.session.read(string=' - ', timeout=2)
 
         if not (' - ' in answer):
             return 0
