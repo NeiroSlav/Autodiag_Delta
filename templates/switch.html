@@ -30,7 +30,7 @@
         var abonPingStatus = {};
         var switch_info = "{{ topinfo }}";
 
-        {% for ip in ip_list %}
+        {% for ip in data.ip_list %}
             abonPingStatus['{{ip}}'] = 'not started';
         {% endfor %}
     </script>
@@ -57,7 +57,7 @@
 
                 <button class="head-button matrix-img"
                         title='Профиль&#10;Абонента'
-                        onclick="openInNewTab('https://gcdbviewer.matrixhome.net/usersearch.php?anumber=' + '{{ anumber }}');"
+                        onclick="openInNewTab('https://gcdbviewer.matrixhome.net/usersearch.php?anumber=' + '{{ data.anumber }}');"
                 ></button>
 
                 <button class="head-button clipboard-img"

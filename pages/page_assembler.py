@@ -1,7 +1,8 @@
 # import token
-from connections import _switch
-from connections import Telnet, fping, nmap
-from flask import request, redirect
+
+from .page_assembler_utils import *
+from connections import Telnet, fping
+from flask import redirect
 from init import *
 
 
@@ -11,55 +12,24 @@ def main_redirect():
     #  инициализация данных из GET запроса
     gcdb_data = GcdbData(request)  # парсинг GET запроса
     switch_ip = gcdb_data.switch_ip
+    switch_port = gcdb_data.switch_port
 
     session['theme'] = user_sets.get(gcdb_data.username, 'theme')
 
     try:
-        if not fping(switch_ip):  # если свитч не отвечает
-            decview_info = DecviewApi.get_status(switch_ip)
+        if not fping(gcdb_data.switch_ip):  # если свитч не отвечает
+            return render_switch_down(gcdb_data)  # попытка пинга свитча
+        telnet = Telnet(switch_ip)  # логин на свитч
+        validate_switch_access(telnet, switch_port)
 
-            return render_template(
-                'switch_down.html',
-                topinfo=decview_info['state'],
-                switch_log=decview_info['log'],
-                abon_login=gcdb_data.abon_login,
-                anumber=gcdb_data.anumber,
-                phone=gcdb_data.phone,
-                user=gcdb_data.username,
-                group_tickets=gcdb_data.group_tickets,
-                theme=session['theme']
-            )
+        token = Token()  # создание токена,
+        token.gcdb_data = gcdb_data  # сохранение данных
+        token.telnet = telnet  # сохранение данных
+        init_switch(token)  # создание объекта свитча
 
-        telnet = Telnet(gcdb_data.switch_ip)  # логин на свитч
-        if not telnet.switch_type:  # если тип свитча не определён
-            raise DiagError(f'Тип {switch_ip} не определён')
+        if wrong_flats_page := find_wrong_flats(token):
+            return wrong_flats_page
 
-        if telnet.switch_type == 'DGS':
-            raise DiagError(f'Гигабитный свитч, доступ запрещён')
-
-        if telnet.switch_type == 'dlink':
-            ports = int(telnet.switch_model[-2] + telnet.switch_model[-1])
-            allowed_ports = 24 if ports > 24 else (ports - 2)
-            if int(gcdb_data.switch_port) > allowed_ports:
-                raise DiagError(f'Гигабитный порт, доступ запрещён')
-
-        #  создание токена, сохранение данных, запись в сессию
-        token = Token()
-        token.gcdb_data = gcdb_data
-        token.telnet = telnet
-
-        try:  # проверяет, есть ли неправильные флаты
-            wrong_flats = dhcp_unity.check_wrong_flat(gcdb_data.mac_list[0])
-            if wrong_flats:
-                return render_template(
-                    'wrong_flat.html',
-                    continue_link=f'/{telnet.switch_type}/{token}',
-                    flat_info=wrong_flats,
-                    anumber=gcdb_data.anumber,
-                    theme='dark',
-                )
-        except:
-            pass
         # если тип свитча определён, и флаты ок - открыть его страницу
         return redirect(f'/{telnet.switch_type}/{token}')
 
@@ -83,28 +53,18 @@ def switch_page(switch_type, token_number):
         if telnet.switch_type != switch_type:  # редирект, если другой свитч
             return redirect(f'/{telnet.switch_type}/{token}')
 
-        #  если это медленный свитч, к нему доп параметры
-        if 'DES-1210' in telnet.switch_model:
-            telnet.x_timeout = 2
-            token.switch = _switch['dlink1210'](telnet)
-        else:
-            token.switch = _switch[switch_type](telnet)  # сохраняет в токен объект свитча
-
         switch_info = f'{gcdb_data.switch_ip} : {gcdb_data.switch_port}'
         if gcdb_data.pon_port:
             switch_info += f' : {gcdb_data.pon_port}'
 
         return render_template(  # рендер страницы диагностики
             f'/switch/{switch_type}.html',
-            anumber=gcdb_data.anumber,
-            ctype=gcdb_data.ctype,
-            switchip=gcdb_data.switch_ip,
-            ip_list=gcdb_data.ip_list,
             switchtype=f'{switch_type.upper()} {token.switch.model}',
-            topinfo=switch_info,
             title=f'{switch_type.title()[0]} {switch_info}',
-            token=str(token),
             theme=user_sets.get(gcdb_data.username, 'theme'),
+            topinfo=switch_info,
+            token=str(token),
+            data=gcdb_data,
         )
 
     except EOFError:  # если сессия telnet была разорвана

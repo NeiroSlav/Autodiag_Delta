@@ -58,13 +58,13 @@
         <div style="margin-bottom: 40px;"></div>
 
         <div class="diagMiniBlock">
-            {% if ctype == 'air' %}
+            {% if data.ctype == 'air' %}
                 <script src="/static/js/air/air_init.js"></script>
                 <link rel="stylesheet" type="text/css" href="/static/css/air_input.css">
 
                 <button class="diagButton"
                         style="width: 191px; height: 40px; margin-top: 0; font-size: 18px;"
-                        onclick="saveClip('{{ switchip }}')">
+                        onclick="saveClip('{{ data.switch_ip }}')">
                     {{ topinfo }}
                 </button>
                 <button class="head-button air-img"
@@ -76,7 +76,7 @@
             {% else %}
                 <button class="diagButton"
                         style="width: 236px; height: 40px; margin-top: 0; font-size: 18px;"
-                        onclick="saveClip('{{ switchip }}')">
+                        onclick="saveClip('{{ data.switch_ip }}')">
                     {{ topinfo }}
                 </button>
             {% endif %}
@@ -89,7 +89,7 @@
         <div class="diagMiniBlock"></div>
     </div>
 
-    {% if ctype == 'air' %}
+    {% if data.ctype == 'air' %}
         <div id="myPrompt" class="airInputOverlay">
             <div class="airInputWindow">
                 <button class="diagButton"
