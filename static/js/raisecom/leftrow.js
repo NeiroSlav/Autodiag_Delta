@@ -105,6 +105,8 @@ function get_mac_business(response) {
         for (var key in response.mac) {
             if (response.mac[key]) {
                 bn['color'] = 'Green'
+            } else {
+                bn['color'] = ''
             }
             if (all_macs != '') {
                 bn['style'] = 'width: 176px; margin-left: 62px;'

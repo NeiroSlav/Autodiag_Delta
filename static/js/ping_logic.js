@@ -163,7 +163,7 @@ function renderPingResult(response) {
 
         } else if(data.lost == 100) { // если 100% потерь
             bRes['color'] = 'Red'
-            bRes['text'] = 'пинг адреса '+ ip + '<br>'
+            bRes['text'] = 'пинг на '+ ip + '<br>'
             bRes['text'] += 'не прошёл (пакетов: ' + data.sent + ')'
 
         } else { // если пинг прошёл, но были потери
