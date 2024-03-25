@@ -1,7 +1,7 @@
 from pprint import pprint
 
 from .app_init import DiagError, logging
-from .requests_api import GcdbApi
+from .requests_out import GcdbApi
 
 
 class GcdbData:
@@ -64,3 +64,4 @@ class Air:
     def __init__(self):
         self.base = None
         self.station = None
+        self.ip_list = []

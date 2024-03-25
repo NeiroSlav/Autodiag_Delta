@@ -2,7 +2,7 @@
 # import psutil
 # import os
 import tracemalloc
-from .app_init import app
+from init.app_init import app
 
 tracemalloc.start()
 snap_old = tracemalloc.take_snapshot()

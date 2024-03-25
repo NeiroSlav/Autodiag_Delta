@@ -1,8 +1,8 @@
 import json
 
 from connections import nmap, IterPing
-from .app_init import app
-from .token_init import Token, jsonify
+from init.app_init import app
+from init.token_init import Token, jsonify
 from flask import request
 
 

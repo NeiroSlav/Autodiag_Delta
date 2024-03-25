@@ -1,6 +1,6 @@
 from init import *
 from connections import Ubiquiti
-from flask import redirect
+from flask import redirect, request
 
 
 # инициализация air-подключения в токене
@@ -20,9 +20,10 @@ def air_init(token_number):
         air.base = Ubiquiti(base_ip)
         if not air.base.connected:
             raise DiagError(f'База {base_ip} недоступна')
-        air.station = Ubiquiti(station_ip)
 
-        token = Token.pull(token_number)
+        air.station = Ubiquiti(station_ip)
+        air.ip_list = [base_ip, station_ip]
+
         token.air = air
         return redirect(f'/air/{token}')
     # рендер страницы с ошибкой
@@ -42,13 +43,12 @@ def air_page(token_number):
             return render_error(f'Подключение air не объявлено в токене')
 
         base_ip = token.air.base.ip
-        station_ip = token.air.station.ip
         gcdb_data = token.gcdb_data
 
         return render_template(  # рендер страницы диагностики
             f'/air.html',
             anumber=gcdb_data.anumber,
-            ip_list=[base_ip, station_ip],
+            data=token.air,
             title=f'AIR {base_ip}',
             token=str(token),
             theme=user_sets.get(gcdb_data.username, 'theme'),

@@ -1,9 +1,10 @@
 # import token
 
-from .page_assembler_utils import *
+from flask import redirect, request
+
 from connections import Telnet, fping
-from flask import redirect
 from init import *
+from .page_assembler_utils import *
 
 
 # вход на свитч, перенаправление на страницу свитча

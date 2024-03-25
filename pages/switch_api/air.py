@@ -1,4 +1,4 @@
-from .init_air_page import *
+from pages.init_air_page import *
 
 
 # обработчик для запроса данных базы

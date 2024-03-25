@@ -6,8 +6,8 @@
     <script src="{{ url_for('static', filename='js/air/leftrow.js') }}"></script>
     <script src="{{ url_for('static', filename='js/air/rightrow.js') }}"></script>
     <script>
-        var base_ip = '{{ip_list[0]}}'
-        var station_ip = '{{ip_list[1]}}'
+        var base_ip = '{{data.ip_list[0]}}'
+        var station_ip = '{{data.ip_list[1]}}'
     </script>
 
 {% endblock %}
