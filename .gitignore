@@ -1,7 +1,9 @@
 /connections/personal_data.py
-/venv
-/log
-/.idea
 /static/img/_icons.psd
 /init/user_settings.txt
+/log
+
+/venv
+/.venv
 /.vscode
+/.idea
