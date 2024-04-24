@@ -24,9 +24,17 @@ def validate_switch_access(telnet: Telnet, switch_port: int):
 
 
 #  рендеринг ошибки лежачего свитча
-def render_switch_down(gcdb_data):
+def render_switch_down(gcdb_data, simple: bool = False):
 
     decview_info = DecviewApi.get_status(gcdb_data.switch_ip)
+
+    if simple:
+        return render_template(
+            'simple.html',
+            topinfo=decview_info['state'],
+            theme='light',
+            diag_error=True
+        )
 
     return render_template(
         'switch_down.html',

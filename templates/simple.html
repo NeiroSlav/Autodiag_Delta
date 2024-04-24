@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="/static/css/themes/{{theme}}.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/head.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/buttons.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/head_buttons.css">
+
+    <title>Диагностика</title>
+    <script src="/static/js/buttons.js"></script>
+    <script src="/static/js/diag_buf_copy.js"></script>
+
+    <link rel="shortcat icon" href="/static/img/gear_icon.png" type="image/x-icon"/>
+
+</head>
+<body>
+
+{% block imports %}
+{% endblock %}
+
+<div style="height: 200px;"></div>
+
+<div class="diagTopFrame">
+    <div class="diagTopFrameSub" style="margin: 33px auto 0 auto;; width: 140px;">
+
+        <button class="head-button matrix-img"
+                title='Профиль&#10;Абонента'
+                onclick="openInNewTab('https://gcdbviewer.matrixhome.net/usersearch.php?anumber=' + '{{ anumber }}');"
+        ></button>
+
+        <button class="head-button clipboard-img"
+                title='Копировать&#10;Текст ошибки'
+                onclick="saveClip('{{ topinfo }}');"
+        ></button>
+
+        <button class="head-button update-img"
+                title='Обновить&#10;Страницу'
+                onclick="location.reload();"
+                style="margin-right: 0px;"
+        ></button>
+
+    </div>
+
+
+    <div class="diagTopFrameSub" style="margin: 33px auto 0 0; width: 630px;">
+        {% if diag_error %}
+            <button class="diagButtonRed" onclick="saveClip('{{ topinfo }}');"
+                    style="width: 625px; height: 40px; font-size: 18px; margin-top: 0px;">
+                {{ topinfo }}
+            </button>
+        {% else %}
+            <button class="diagButtonGreen" onclick="saveClip('{{ topinfo }}');"
+                    style="width: 625px; height: 40px; font-size: 18px; margin-top: 0px;">
+                {{ topinfo }}
+            </button>
+        {% endif %}
+
+    </div>
+</div>
+
+</body>
+</html>

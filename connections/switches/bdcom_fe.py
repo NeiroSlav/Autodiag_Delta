@@ -7,7 +7,7 @@ from connections.telnet import Telnet
 class BdcomFE(SwitchMixin):
     """Класс для работы с Bdcom на Fast Ethernet \n
     проверки:
-    port, mac, signal, active"""
+    port, mac"""
 
     def __init__(self, session: Telnet):
         self.session = session
@@ -88,5 +88,11 @@ class BdcomFE(SwitchMixin):
 
         return result
 
-    # def __del__(self):
-    #     print('bdcom_fe object deleted')
+    # базовая быстрая проверка
+    def fast_check(self, port_data: dict) -> dict:
+        port = port_data['port']
+
+        return {
+            'port': self.port(port),
+            'mac': self.mac(port, []),
+        }

@@ -86,5 +86,12 @@ class Foxgate(SwitchMixin):
 
         self.session.push('exit\nexit\n', read=True)
 
-    # def __del__(self):
-    #     print('foxgate object deleted')
+    # базовая быстрая проверка
+    def fast_check(self, port_data: dict) -> dict:
+        port = port_data['port']
+
+        return {
+            'port': self.port(port),
+            'mac': self.mac(port, []),
+        }
+

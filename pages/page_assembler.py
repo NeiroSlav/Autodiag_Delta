@@ -5,6 +5,7 @@ from flask import redirect, request
 from connections import Telnet, fping
 from init import *
 from .page_assembler_utils import *
+from .simple_page import render_simple_page
 
 
 # вход на свитч, перенаправление на страницу свитча
@@ -12,6 +13,11 @@ from .page_assembler_utils import *
 def main_redirect():
     #  инициализация данных из GET запроса
     gcdb_data = GcdbData(request)  # парсинг GET запроса
+
+    # если сотрудник из АО, для него грузится упрощённая страница
+    if user_sets.get(gcdb_data.username, 'division') == 'ao':
+        return render_simple_page(gcdb_data)
+
     switch_ip = gcdb_data.switch_ip
     switch_port = gcdb_data.switch_port
 
@@ -19,7 +25,7 @@ def main_redirect():
 
     try:
         if not fping(gcdb_data.switch_ip):  # если свитч не отвечает
-            return render_switch_down(gcdb_data)  # попытка пинга свитча
+            return render_switch_down(gcdb_data)  # отрисовка страницы с лежачим
         telnet = Telnet(switch_ip)  # логин на свитч
         validate_switch_access(telnet, switch_port)
 

@@ -162,5 +162,12 @@ class Zyxel(SwitchMixin):
         self.session.push('\nexit', read=True)
         self.session.push('\nexit', read=True, timeout=0.3)
 
-    # def __del__(self):
-    #     print('zyxel object deleted')
+    # базовая быстрая проверка
+    def fast_check(self, port_data: dict) -> dict:
+        port = port_data['port']
+
+        return {
+            'port': self.port(port),
+            'mac': self.mac(port, []),
+            'cable': self.cable(port)
+        }

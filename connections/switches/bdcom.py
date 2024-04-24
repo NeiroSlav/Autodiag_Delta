@@ -112,5 +112,14 @@ class Bdcom(SwitchMixin):
 
         return result
 
-    # def __del__(self):
-    #     print('bdcom object deleted')
+    # базовая быстрая проверка
+    def fast_check(self, port_data: dict) -> dict:
+        port = port_data['port']
+        pon = port_data['pon']
+
+        return {
+            'port': self.port(port, pon),
+            'mac': self.mac(port, pon, []),
+            'signal': self.signal(port, pon),
+            'active': self.active(port, pon)
+        }

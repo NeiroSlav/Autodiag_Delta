@@ -109,5 +109,13 @@ class Raisecom(SwitchMixin):
 
         self.session.push('\nexit'*2, read=True)
 
-    # def __del__(self):
-    #     print('raisecom object deleted')
+    # базовая быстрая проверка
+    def fast_check(self, port_data: dict) -> dict:
+        port = port_data['port']
+
+        return {
+            'port': self.port(port),
+            'mac': self.mac(port, []),
+            'errors': self.errors(port)
+        }
+

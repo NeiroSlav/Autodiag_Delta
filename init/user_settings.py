@@ -28,7 +28,8 @@ class UserSettings:
     @staticmethod
     def _default() -> dict:
         return {'theme': 'dark',
-                'panel': 'hidden'}
+                'panel': 'hidden',
+                'division': 'otp'}
 
     # сохраняет настройки в файл user_settings.txt
     def _save(self) -> None:
