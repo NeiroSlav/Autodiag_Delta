@@ -307,12 +307,17 @@ class Dlink(SwitchMixin):
             except Exception:
                 pass
 
-        #  выбирает порты с кол-вом фреймов больше 4к (кроме магистральных)
+        # выбирает порты с кол-вом фреймов больше 4к (кроме магистральных)
         ports_util += right_row
         high_util = list(filter(lambda i: i > 4_000, ports_util[0:-5]))
+        low_util = list(filter(lambda i: 0 < i < 4_000, ports_util[0:-5]))
 
-        #  нагруженных портов меньше трёх, или разница в трафике больше 5к
-        if len(high_util) < 3 or (high_util[0] - high_util[-1]) > 5_000:
+        # если есть порты с маленьким трафиком, или нагруженных портов < 3
+        if low_util or len(high_util) < 3:
+            return {'flood_status': False, 'error': False}
+
+        # или разница в трафике больше 5к
+        if (high_util[0] - high_util[-1]) > 5_000:
             return {'flood_status': False, 'error': False}
 
         return {'flood_status': True, 'flood_rx': high_util[0], 'error': False}
