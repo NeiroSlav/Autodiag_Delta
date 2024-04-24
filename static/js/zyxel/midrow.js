@@ -13,6 +13,7 @@ function get_mac_business(response) {
     if (response.error) {
         b1['color'] = bn['color'] = 'Red'
         bn['text'] = 'ошибка'
+        console.log(response.data)
         return getB(b1) + getB(bn);
 
     } else {

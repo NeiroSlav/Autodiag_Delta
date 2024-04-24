@@ -27,6 +27,7 @@ class Zyxel(SwitchMixin):
 
         answer = self.session.read(timeout=2, string=':0')
         answer = answer.replace('\\t', ' ')
+
         if not (':0' in answer):
             return {'error': True}
 
@@ -82,7 +83,7 @@ class Zyxel(SwitchMixin):
         answer = self.session.read(timeout=2, string='ype')
 
         if not ('ype' in answer):
-            return {'error': True}
+            return {'error': True, 'data': answer}
 
         # перебор списка маков
         mac_list = self._findall(self._mac_pattern, answer)
