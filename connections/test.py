@@ -42,13 +42,14 @@ class GcdbData:
 
 
 def switch_test():
-    # for elem in dlink_ip:
+    for ip in dlink_ip:
     
-    gcdb_data = GcdbData('192.168.50.220')
-    telnet_session = Telnet(gcdb_data)
-    switch = BdcomFE(telnet_session)
-    print(switch.port(7))
-    print(switch.mac(5, ['ac:84:c6:e7:72:6d']))
+        gcdb_data = GcdbData(ip)
+        telnet_session = Telnet(gcdb_data)
+        switch = Dlink(telnet_session)
+        print(switch.port(7))
+        print(switch.mac(5, ['ac:84:c6:e7:72:6d']))
+        print()
 
 
 switch_test()
