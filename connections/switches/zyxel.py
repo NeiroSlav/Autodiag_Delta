@@ -83,7 +83,7 @@ class Zyxel(SwitchMixin):
         answer = self.session.read(timeout=2, string='ype')
 
         if not ('ype' in answer):
-            return {'error': True, 'data': answer}
+            return {'error': True}
 
         # перебор списка маков
         mac_list = self._findall(self._mac_pattern, answer)
@@ -123,13 +123,15 @@ class Zyxel(SwitchMixin):
         result = {'log': [], 'ok': True, 'error': False}
         self.session.read(timeout=0)
         self.session.push('\nsh logging')
-        self.session.push('\n'*3)
+        self.session.push('\n'*2)
 
         # ждёт ответ свитча
         answer = self.session.read(timeout=2, string='Clear')
-        answer += self.session.read()
+        self.session.push('qq\n')
 
-        self.session.push('\nq\n\n')
+        # если просмотр лога не закрылся, ещё раз закрывает
+        if '#' not in self.session.read(timeout=1, string='#'):
+            self.session.push('qq\n')
 
         if not (':' in answer):
             return {'error': True}
