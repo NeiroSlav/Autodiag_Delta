@@ -46,7 +46,7 @@ class DhcpUnity:
         self.smash = DhcpServer('smash.dec.net.ua')
 
     # проверка самой поздней записи о маке на серверах
-    def check_wrong_flat(self, mac) -> str:
+    def check_wrong_flat(self, mac: str) -> str | None:
         for server in (self.syava, self.smash, self.siplyj):
             server.start_mac_search(mac)
         time.sleep(0.3)
@@ -60,13 +60,16 @@ class DhcpUnity:
             last_signs = sorted(last_signs, key=lambda x: self.get_sign_t(x))
             latest_sign = last_signs[-1]
         except IndexError:
-            return ''
+            return
 
         if 'Not equal port' in latest_sign:
             return 'Указан неправильный порт'
-        if 'Not equal switch' in latest_sign:
+        elif 'Not equal switch' in latest_sign:
             return 'Указан неправильный свитч'
-        return ''
+        elif 'Not equal PON' in latest_sign:
+            return 'Указан неправильный PON'
+        elif 'Not equal' in latest_sign:
+            return 'Последний флат с ошибкой'
 
     # сжимает время из записи (04:15:13.141 -> 041513141)
     @staticmethod

@@ -50,20 +50,21 @@ def render_switch_down(gcdb_data, simple: bool = False):
 
 
 #  проверяет, есть ли неправильные флаты
-def find_wrong_flats(token):
+def find_wrong_flat(token):
     try:
-        wrong_flats = dhcp_unity.check_wrong_flat(token.gcdb_data.mac_list[0])
+        return dhcp_unity.check_wrong_flat(token.gcdb_data.mac_list[0])
     except Exception:
-        wrong_flats = False
+        return
 
-    if wrong_flats:
-        return render_template(
-            'wrong_flat.html',
-            continue_link=f'/{token.telnet.switch_type}/{token}',
-            flat_info=wrong_flats,
-            anumber=token.gcdb_data.anumber,
-            theme='dark',
-        )
+
+def render_wrong_flat_page(token, wrong_flat):
+    return render_template(
+        'wrong_flat.html',
+        continue_link=f'/{token.telnet.switch_type}/{token}',
+        flat_info=wrong_flat,
+        anumber=token.gcdb_data.anumber,
+        theme='dark',
+    )
 
 
 def init_switch(token):
