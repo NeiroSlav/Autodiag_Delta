@@ -64,6 +64,12 @@ function createTicket(ticket_id, comment) {
     console.log(user)
     console.log(anumber)
 
+    var input_field = document.getElementById('phoneInput');
+    var phone = input_field.value
+    if (phone == '') {
+        phone = 'телефон не указан'
+    }
+
     $.ajax({
         type: 'GET',
         url : '/create_ticket',
