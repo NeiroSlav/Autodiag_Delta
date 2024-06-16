@@ -490,7 +490,7 @@ class Dlink1210(Dlink):
             result['log'] = log
             return result
 
-        port_patterns = [f'ort {port} ', f'orts {port} ', f' {port}"', f'ort: {port}']
+        port_patterns = [f'ort {port} ', f'orts {port} ', f' {port}"', f'ort: {port})']
 
         for elem in log:  # выборка записей о нужном порте
             if True in [(i in elem) for i in port_patterns]:
