@@ -34,8 +34,8 @@ def main_redirect():
         token.telnet = telnet  # сохранение данных
         init_switch(token)  # создание объекта свитча
 
-        if wrong_flats_page := find_wrong_flats(token):
-            return wrong_flats_page
+        if wrong_flat := find_wrong_flat(token):
+            return render_wrong_flat_page(token, wrong_flat)
 
         # если тип свитча определён, и флаты ок - открыть его страницу
         return redirect(f'/{telnet.switch_type}/{token}')

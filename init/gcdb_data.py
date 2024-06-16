@@ -22,7 +22,7 @@ class GcdbData:
 
         self.phone = request.args.get('phone')
         if not self.phone:
-            self.phone = 'телефон не указан'
+            self.phone = ''
 
         self.ip_list = []
         if self.abon_ip:

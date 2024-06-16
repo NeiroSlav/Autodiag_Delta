@@ -53,15 +53,26 @@ def test_down(group):
     )
 
 
+# пустой датакласс для тестов
+class TestDataClass:
+    pass
+
+
+# тестовый рендер страницы для отладки css/html
 @app.route("/test/<switch_type>")
 def test_switch(switch_type):
+    data = TestDataClass()
+    data.ip_list = ['123.45.67.8']
+    data.anumber = '1234567890'
+    data.switch_ip = '123.45.67.8'
+
     return render_template(  # рендер тестовой страницы
         f'/switch/{switch_type}.html',
-        switchip='192.168.TE.ST',
         switchtype=switch_type.upper(),
         topinfo='192.168.TE.ST : XX',
         title=f'T 192.168.TE.ST',
-        theme='dark'
+        theme='dark',
+        data=data
     )
 
 

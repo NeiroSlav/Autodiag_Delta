@@ -44,20 +44,21 @@ class Telnet:
     def read(self, timeout: float = 0.1, string: str = '$#@&$') -> str | None:
         # если x_timeout стандартный, то ничего не поменяется
         timeout = timeout * self.x_timeout + ((self.x_timeout-1)/10)
-        answer_full = ''
-        answer = ' '
+        full_answer = ''
+        decoded_answer = ' '
         # читает, пока не перестанут появляться новые ответы
-        while str(answer):
+        while decoded_answer:
             answer = self._channel.read_until(string.encode('ascii'), timeout)
-            answer = str(answer).replace("b''", '').replace("'b'", '')
-            answer_full += answer
+            decoded_answer = answer.decode("utf-8")  # ответ без спец-символов
+            raw_answer = str(answer).replace("b''", '').replace("'b'", '')
+            full_answer += raw_answer
             # если попалась искомая строка
-            if string in answer_full:
+            if string in full_answer:
                 time.sleep(0.1)
-                answer_full += str(self._channel.read_very_eager())
+                full_answer += str(self._channel.read_very_eager())
                 break
 
-        return answer_full
+        return full_answer
 
     # вход на свитч, и определения свитча
     def _connect(self, switch_ip: str):
