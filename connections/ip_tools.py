@@ -19,13 +19,13 @@ class IterPing:
         self.result['sent'] += 1
         try:
             answer = subprocess.check_output(self.command)
-            print(answer)
+            # print(answer)
             answer = str(answer).split('ms')[0].split()[-1]
             self.ping_dict['pkg'].append(float(answer))
             return {'ok': True, 'answer': int(float(answer))}
         #  если пинг не прошёл
         except Exception as ex:
-            print(ex)
+            # print(ex)
             self.ping_dict['lost'] += 1
             return {'ok': False}
 
@@ -54,7 +54,7 @@ def fping(ip_address: str) -> bool:
         return True
 
     res = os.system(f"fping -c1 -t500 {ip_address}")
-    print('res =', res)
+    # print('res =', res)
     if res != 0:  # если один пакет не прошёл, пробует ещё два с таймаутом 1сек
         res = os.system(f"fping -c2 -t1000 {ip_address}")
         if res != 0:
