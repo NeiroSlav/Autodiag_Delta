@@ -324,7 +324,7 @@ class Dlink(SwitchMixin):
 
     # проверка, есть ли подписки
     def igmp(self, port: int) -> dict:
-        result = {'port': 0, 'other': 0, 'error': False}
+        result = {'port': 0, 'other': 0, 'error': False, 'details': []}
         self.session.read(timeout=0)
         self.session.push('\nshow igmp_snooping host')
         answer = self.session.read(string='Entries', timeout=1)
@@ -337,6 +337,7 @@ class Dlink(SwitchMixin):
 
         # поиск подписок нужного порта
         for elem in subscribes:
+            result['details'].append(elem.replace('      ', ' | '))
             if int(elem.split()[2]) == port:
                 result['port'] += 1
 

@@ -173,13 +173,16 @@ function get_util_business(response) {
     bTraffic['style'] = 'width: 236px;'
     bTraffic['id'] = 'mainButton'
 
+    if (response.error) {
+        bTraffic['color'] = 'Red'
+    }
 
     var bTx = setB()
     bTx['style'] = 'width: 116px;'
     var bRx = setB()
     bRx['style'] = 'width: 116px;'
 
-    if (response.util.error) {
+    if (response.error || response.util.error) {
         bTx['color'] = bRx['color'] = 'Red'
         bTx['text'] = bRx['text'] = 'Ошибка'
     } else {
@@ -194,22 +197,31 @@ function get_util_business(response) {
     var bIgmp = setB()
     bIgmp['style'] = 'width: 236px;'
 
-    if (response.igmp.error) {
+    if (response.error || response.igmp.error) {
         bIgmp['color'] = 'Red'
         bIgmp['text'] = 'Ошибка'
     } else {
         bIgmp['text'] = 'igmp порта: ' + response.igmp.port
         bIgmp['text'] += ' &nbsp;&nbsp; другие: ' + response.igmp.other
+
+        if (response.igmp.details.length != 0) {
+            bIgmp['id'] = 'igmpButton'
+            var details = 'vlan - group-ip - port - igmp-host <br>'
+            for (var i in response.igmp.details) {
+                details += response.igmp.details[i] + " <br> "
+            }
+            document.getElementById('igmpFullInfo').innerHTML = details
+        }
     }
 
-
+    
 
     var bVlan = setB()
     bVlan['style'] = 'width: 116px;'
     var bFlood = setB()
     bFlood['style'] = 'width: 116px;'
 
-    if (response.flood.error) {
+    if (response.error || response.flood.error) {
         bVlan['color'] = bFlood['color'] = 'Red'
         bVlan['text'] = bFlood['text'] = 'Ошибка'
     } else if (response.flood.flood_status) {

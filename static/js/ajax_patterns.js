@@ -43,7 +43,7 @@ function replace_div(response, divId, func) {
 
 
 // принимает на вход юрл, название блока, и функцию, выполняет запрос
-function ajax_div(url, divId, func) {
+function ajax_div(url, divId, func, final) {
     $.ajax({
         type: 'GET',
         url : url + token,
@@ -52,9 +52,11 @@ function ajax_div(url, divId, func) {
         },
         success: function(response){
             replace_div(response, divId, func);
+            if (final != undefined) {final()};
         },
         error: function(error){
             replace_div(error, divId, func);
+            if (final != undefined) {final()};
         }
 });}
 

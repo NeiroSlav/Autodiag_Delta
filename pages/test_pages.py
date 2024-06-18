@@ -1,3 +1,4 @@
+import random
 from init import *
 
 
@@ -74,6 +75,21 @@ def test_switch(switch_type):
         theme='dark',
         data=data
     )
+
+# @app.route("/dlink/get_util/")
+# def get_test_util():
+#     i = random.randint(0, 2)
+#     details = ['999 | 123.45.67.8  | 1  |  123.45.67.8'] * i
+
+#     answer = {
+#         'util': {'rx': 99, 'tx': 99, 'error': False},
+#         'igmp': {'port': 0, 'other': 0, 'error': False, 'details': details},
+#         'flood': {'flood_status': False, 'error': False},
+#         'vlan': 999,
+#     }
+
+
+#     return jsonify(answer)
 
 
 # меняет тему оформления для юзера

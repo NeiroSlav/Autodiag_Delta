@@ -53,8 +53,8 @@ body {
 
 .diagMiniBlock {
     margin-bottom: 32px;
-    background-color: #0000FF
-    width: 236px;
+    /* background-color: #0000FF */
+    /* width: 236px; */
     height: auto;
 }
 
@@ -75,9 +75,36 @@ body {
     font-size: 13px;
     font-weight: bold;
     margin: 8px 10px 8px 13px;
-    background: #777777
+    /* background: #777777 */
     font-size: 10px;
     width: auto;
     height: auto;
     text-align:justify;
+}
+
+
+.hidden {
+    display: none;
+}
+  
+
+.fullInfo {
+    opacity: 0;
+    padding: 20px 0 20px 35px;
+
+    font-family: Arial;
+    font-size: 14px;
+    font-weight: bold;
+    
+    
+    position: absolute;
+    height: fit-content;
+    width: 255px;
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    
+    transition: opacity 0.3s;
+    border: 3px solid var(--body-background-color);
+    border-radius: 10px;
 }

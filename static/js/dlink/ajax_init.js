@@ -119,7 +119,7 @@ function set_loose(loose_var) {
 function get_util() {
 //    console.log('стартую запрос get_util')
     wait_div('utilInfo', 'Проверка трафика..')
-    ajax_div(get_util_url, 'utilInfo', get_util_business);}
+    ajax_div(get_util_url, 'utilInfo', get_util_business, onIgmpHover);}    
 
 
 function get_open_port() {

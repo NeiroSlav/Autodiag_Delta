@@ -3,6 +3,7 @@
 {% block imports %}
 
     <script src="{{ url_for('static', filename='js/dlink/ajax_init.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dlink/midrow_mouse.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dlink/leftrow.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dlink/midrow.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dlink/rightrow.js') }}"></script>
@@ -104,4 +105,8 @@
             </div>
         </div>
     {% endif %}
+
+    <div class="hidden fullInfo" id="igmpFullInfo">
+    </div>
+
 {% endblock %}
