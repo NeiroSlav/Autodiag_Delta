@@ -70,7 +70,7 @@ class Telnet:
         answer = ''
         # словарь фраз для определения свитча
         phrases = {
-            'DGS': ['DGS', self.close],
+            # 'DGS': ['DGS', self.close],
             'D-Link': ['dlink', self._dlink_login],
             'User name:': ['zyxel', self._zyxel_login],
             'Login:': ['raisecom', self._raisecom_login],
@@ -85,8 +85,7 @@ class Telnet:
                     self.switch_type = var[0]
                     self._login_funk = var[1]
                     if self.switch_type == 'dlink':
-                        self.switch_model = re.search(r'DES[0-9\-]+', answer).group()
-
+                        self.switch_model = re.search(r'D[GE]S[0-9\-]+', answer).group()
                     return True
 
     def close(self):

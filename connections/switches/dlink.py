@@ -151,14 +151,22 @@ class Dlink(SwitchMixin):
     def cable(self, port: int) -> dict:
         result = {'cable': [], 'ok': True, 'error': False}
         self.session.read(timeout=0)
+
+        timeout = 2
+        string = 'Result'
+        if 'DGS' in self.session.switch_model:
+            timeout = 5
+            string = 'Pair'
+
         self.session.push(f'cable_diag ports {port}\n')
-        answer = self.session.read(timeout=2, string='Result')
+        answer = self.session.read(timeout=timeout, string=string)
         self.session.push('q\n')
+        answer = answer.replace("'b'", "")
 
         if 'fiber' in answer.lower():
             result['cable'] = ['оптический']
             return result
-
+        
         if self._findall(r'Pair[A-Za-z0-9 ]+M', answer):
             pairs = self._finded
             try:
@@ -170,7 +178,7 @@ class Dlink(SwitchMixin):
                 result['ok'] = False
             result['cable'] = pairs
             return result
-
+        
         other_cable_patterns = [
             [r'No Cable', False],
             [r'Shutdown', False],

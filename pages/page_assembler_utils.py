@@ -13,8 +13,8 @@ def validate_switch_access(telnet: Telnet, switch_port: int):
     if not telnet.switch_type:  # если тип свитча не определён
         raise DiagError(f'Тип {telnet.switch_ip} не определён')
 
-    if telnet.switch_type == 'DGS':
-        raise DiagError(f'Гигабитный свитч, доступ запрещён')
+    # if telnet.switch_type == 'DGS':
+    #     raise DiagError(f'Гигабитный свитч, доступ запрещён')
 
     if telnet.switch_type == 'dlink':
         ports = int(telnet.switch_model[-2] + telnet.switch_model[-1])
