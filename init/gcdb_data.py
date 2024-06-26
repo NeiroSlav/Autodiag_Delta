@@ -33,7 +33,6 @@ class GcdbData:
         if not (self.username and self.switch_ip and self.switch_port):
             raise DiagError('Неполный запрос')
 
-        self.update_data()
         logging.info(f'{self.username} opened {self.switch_ip} : {self.switch_port} : {self.pon_port}')
 
     # отправляет запрос к gcdb_api, сортирует данные
