@@ -1,3 +1,4 @@
+from pprint import pprint
 from connections.switches.utils.mixin import SwitchMixin
 from connections.telnet import Telnet
 
@@ -31,11 +32,12 @@ class Dlink(SwitchMixin):
             result['ok'] = False
 
         port_patterns = [  # список для поиска в ответе и статусы
-            [r'100M/Full/[A-Za-z]+', True],
-            [r'[0-9]+M/\w\w\w\w/[A-Za-z]+', False],
             [r'LinkDown', False],
             [r'Link Down', False],
-            [r'Err-Disabled', False]]
+            [r'Err-Disabled', False],
+            [r'100M/Full/[A-Za-z]+', True],
+            [r'[0-9]+M/\w\w\w\w/[A-Za-z]+', False],
+        ]
 
         for elem in port_patterns:  # перебор списка с поиском в ответе
             if self._find(elem[0], answer):
@@ -299,6 +301,8 @@ class Dlink(SwitchMixin):
 
     # обнаружение флуда
     def flood(self) -> dict:
+        result = {'flood_status': False, 'error': False, 'flood_rx': 0, 'details': []}
+
         self.session.read(timeout=0)
         self.session.push('\nshow util ports')
         answer = self.session.read(string='RX', timeout=3)
@@ -317,18 +321,23 @@ class Dlink(SwitchMixin):
 
         # выбирает порты с кол-вом фреймов больше 4к (кроме магистральных)
         ports_util += right_row
+        result['details'] = ports_util
         high_util = list(filter(lambda i: i > 4_000, ports_util[0:-5]))
         low_util = list(filter(lambda i: 0 < i < 4_000, ports_util[0:-5]))
 
+        # pprint(result)
+
         # если есть порты с маленьким трафиком, или нагруженных портов < 3
         if low_util or len(high_util) < 3:
-            return {'flood_status': False, 'error': False}
+            return result
 
         # или разница в трафике больше 5к
         if (high_util[0] - high_util[-1]) > 5_000:
-            return {'flood_status': False, 'error': False}
+            return result
 
-        return {'flood_status': True, 'flood_rx': high_util[0], 'error': False}
+        result['flood_rx'] = high_util[0]
+        result['flood_status'] = True
+        return result
 
     # проверка, есть ли подписки
     def igmp(self, port: int) -> dict:
