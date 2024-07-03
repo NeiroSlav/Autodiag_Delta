@@ -1,3 +1,4 @@
+import time
 from connections.switches.utils.mixin import SwitchMixin
 from connections.telnet import Telnet
 
@@ -123,10 +124,12 @@ class Zyxel(SwitchMixin):
         result = {'log': [], 'ok': True, 'error': False}
         self.session.read(timeout=0)
         self.session.push('\nsh logging')
-        self.session.push('\n'*2)
+        time.sleep(1)
+        self.session.push('\n'*3)
+        time.sleep(1)
 
         # ждёт ответ свитча
-        answer = self.session.read(timeout=2, string='Clear')
+        answer = self.session.read(timeout=4, string='Clear')
         self.session.push('qq\n')
 
         # если просмотр лога не закрылся, ещё раз закрывает
@@ -140,6 +143,7 @@ class Zyxel(SwitchMixin):
             r'[0-9]+ [A-Za-z ]+ [0-9]+ +[0-9:]+ [A-Za-z0-9():, -=>]+ort [0-9] [A-Za-z0-9():, -=>]+')
 
         log = self._findall(log_pattern, answer)
+        log.reverse()  # на зикселях записи в обратном порядке (последние снизу)
 
         if port == 0:
             result['log'] = log
