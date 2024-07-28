@@ -25,6 +25,7 @@ def main_redirect():
 
     try:
         if not fping(gcdb_data.switch_ip):  # если свитч не отвечает
+            gcdb_data.update_data()
             return render_switch_down(gcdb_data)  # отрисовка страницы с лежачим
         telnet = Telnet(switch_ip)  # логин на свитч
         validate_switch_access(telnet, switch_port)
