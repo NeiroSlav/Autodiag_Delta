@@ -8,18 +8,21 @@ function get_port_business(response) {
     b1['id'] = 'mainButton'
 
     var b2 = setB()
+    var bDescLeft = setB()
+    var bDesc = setB()
     var b3 = setB()
 
     b2['style'] = 'width: 176px;'
+    bDesc['style'] = 'width: 176px;'
     b3['style'] = 'width: 116px; margin-left: 62px;'
-    b2['onclick'] = b3['onclick'] = "copyDiag('port')"
+    b2['onclick'] = b3['onclick'] = bDescLeft['onclick'] = bDesc['onclick'] = "copyDiag('port')"
 
     var b4 = setB()
     b4['color'] = 'Blue'
 
     if (response.error) {
-        b1['color'] = b2['color'] = b3['color'] = 'Red'
-        b2['text']= b3['text'] = 'ошибка'
+        b1['color'] = b2['color'] = bDesc['color'] = b3['color'] = 'Red'
+        b2['text'] = bDesc['text'] = b3['text'] = 'ошибка'
         b4['text'] = '-'
     } else {
 
@@ -29,10 +32,21 @@ function get_port_business(response) {
         }
 
         diagData += gap + response.enabled + '\n' + gap + response.port + '\n';
+
+        if (response.desc) {
+            diagData += gap + 'Описание: ' + response.desc + '\n';
+        }
+
         updateDiagDict('port', diagData)
 
 
         b2['text'] = response.port
+
+        bDescLeft['text'] = 'Опис:'
+        if (response.desc) {
+            bDesc['text'] = response.desc;
+        }
+
         b3['text'] = response.enabled
 
         if (response.ok) {
@@ -50,7 +64,12 @@ function get_port_business(response) {
         }
     }
 
-    return getB(b1) + getB(b2) + getB(b3) + getB(b4);
+    descData = ''
+    if (response.desc) {
+        descData += getB(bDescLeft) + getB(bDesc)
+    }
+
+    return getB(b1) + getB(b2) + descData + getB(b3) + getB(b4);
 }
 
 
