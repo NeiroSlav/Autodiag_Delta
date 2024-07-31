@@ -23,15 +23,16 @@ class Dlink(SwitchMixin):
     def port(self, port: int) -> dict:
         result = {'enabled': 'Enabled', 'port': '', 'desc': '', 'ok': True, 'error': False}
         self.session.read(timeout=0)
-        self.session.push(f'\nshow ports {port} d')
+        self.session.push(f'\nshow ports {port} desc')
         answer = self.session.read(string='Speed', timeout=2)
         self.session.push('q')
 
         # ищет описание порта
-        desc = self._find(r'Desc:[A-Za-z0-9 ]+', answer)
-        result['desc'] = desc.replace('Desc:', '').strip()
-        if len(result['desc']) > 23:
-            result['desc'] = result['desc'][0:21] + '..'
+        desc = self._find(r'Des[a-z]+:[A-Za-z0-9_()\- ]+', answer)
+        if desc:
+            result['desc'] = desc.replace('ription', '').replace('Desc:', '').strip()
+            if len(result['desc']) > 23:
+                result['desc'] = result['desc'][0:21] + '..'
 
         if self._find(r'[0-9][ ]+Disabled[ ]+', answer):
             result['enabled'] = 'Disabled'
