@@ -18,7 +18,7 @@ class IterPing:
     def ping(self) -> dict:
         self.result['sent'] += 1
         try:
-            answer = subprocess.check_output(self.command)
+            answer = subprocess.check_output(self.command, stderr=subprocess.PIPE)
             # print(answer)
             answer = str(answer).split('ms')[0].split()[-1]
             self.ping_dict['pkg'].append(float(answer))
