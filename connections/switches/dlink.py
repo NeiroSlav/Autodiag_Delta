@@ -28,7 +28,7 @@ class Dlink(SwitchMixin):
         self.session.push('q')
 
         # ищет описание порта
-        desc = self._find(r'Des[a-z]+:[A-Za-z0-9_()\- ]+', answer)
+        desc = self._find(r'Des[a-z]+:[A-Za-z0-9_().\- ]+', answer)
         if desc:
             result['desc'] = desc.replace('ription', '').replace('Desc:', '').strip()
             if len(result['desc']) > 23:
