@@ -30,6 +30,7 @@
         var abonPingStatus = {};
         var switch_info = "{{ topinfo }}";
 
+        abonPingStatus['{{data.switch_ip}}'] = 'not started';
         {% for ip in data.ip_list %}
             abonPingStatus['{{ip}}'] = 'not started';
         {% endfor %}

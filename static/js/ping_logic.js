@@ -81,7 +81,7 @@ function renderPingButtons(addStyle = 'opacity: 1') {
 
     bTitle = setB()
     bTitle['style'] = 'width: 220px;' + addStyle
-    bTitle['text'] = 'Пинг абонентских IP:'
+    bTitle['text'] = 'Пинг IP-адресов:'
     bTitle['extra'] = 'sideElem'
     var htmlText = getB(bTitle)
 
