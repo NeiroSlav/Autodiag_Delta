@@ -42,6 +42,7 @@ class Dlink(SwitchMixin):
             [r'LinkDown', False],
             [r'Link Down', False],
             [r'Err-Disabled', False],
+            [r'Loop-disabled', False],
             [r'100M/Full/[A-Za-z]+', True],
             [r'[0-9]+M/\w\w\w\w/[A-Za-z]+', False],
         ]
