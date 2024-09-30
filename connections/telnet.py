@@ -49,7 +49,10 @@ class Telnet:
         # читает, пока не перестанут появляться новые ответы
         while decoded_answer:
             answer = self._channel.read_until(string.encode('ascii'), timeout)
-            decoded_answer = answer.decode("utf-8")  # ответ без спец-символов
+            try:
+                decoded_answer = answer.decode("utf-8")  # ответ без спец-символов
+            except:
+                decoded_answer = answer.replace('\\\\r', '\\r')
             raw_answer = str(answer).replace("b''", '').replace("'b'", '')
             full_answer += raw_answer
             # если попалась искомая строка
